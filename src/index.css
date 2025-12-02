@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Barlow", sans-serif;
+  list-style: none;
+  text-decoration: none;
+
+}
+
+.container {
+  max-width: 1240px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
+
+.public-list {
+  animation: loop 7s linear infinite;
+}
+
+@keyframes loop {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.public-list:hover {
+  animation-play-state: paused;
+}
