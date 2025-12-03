@@ -1,4 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
+import API from "../../API/API";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function HomeHeroSection() {
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
+
+  const { data: searchBooks } = useQuery({
+    queryFn: async () => {
+      if (!search) return [];
+
+      const res = await API.get(`/books/search/book/?q=${search}`);
+      return res?.data;
+    },
+    queryKey: ["searchBooks", search],
+  });
+  console.log(searchBooks);
+
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -20,6 +40,7 @@ export default function HomeHeroSection() {
           <div className="w-full max-w-2xl">
             <div className="relative">
               <input
+                onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 placeholder="Search your book here..."
                 className="w-full h-14 pl-6 pr-14 border-2 border-gray-300 rounded-full 
@@ -47,6 +68,44 @@ export default function HomeHeroSection() {
                 </svg>
               </button>
             </div>
+            {search &&
+              (searchBooks?.length > 0 ? (
+                <ul
+                  className="max-h-80 overflow-y-scroll 
+  [scrollbar-width:thin] 
+  [scrollbar-color:theme(colors.yellow.700)_theme(colors.gray.100)] 
+  p-2.5 rounded-lg bg-white"
+                >
+                  {searchBooks.map((el) => (
+                    <li
+                      key={el.id}
+                      className="flex items-center justify-between p-2 border-b border-b-gray-300"
+                    >
+                      <div className="">
+                        <h3 className="text-[18px] font-semibold mb-2">
+                          {el.name}
+                        </h3>
+                        <div className="">
+                          <span className="text-[14px] text-gray-400 pr-2 font-medium border-r border-r-gray-400">
+                            {el.author}
+                          </span>
+                          <span className="text-[14px] text-gray-400 pl-2 font-medium">
+                            {el.publisher}
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        onClick={() => navigate(`/book/${el.id}`)}
+                        className="border border-yellow-600 p-[5px_20px] rounded-lg cursor-pointer text-yellow-600 text-[18px]"
+                      >
+                        visit
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <li className="p-2 text-gray-500">No results found</li>
+              ))}
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ import Library from "./pages/Library";
 import PublicBookDetailPage from "./pages/PublicBookDetailPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Books from "./pages/Books";
+import PublicLibraryPage from "./pages/PublicLibraryPage";
 
 export default function App() {
   return (
@@ -14,6 +16,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/library" element={<Library />} />
+        <Route path="/library/:libraryId" element={<PublicLibraryPage />} />
+        <Route path="/books" element={<Books />} />
         <Route path="/book/:bookId" element={<PublicBookDetailPage />} />
       </Route>
       <Route path="/login" element={<Login />} />

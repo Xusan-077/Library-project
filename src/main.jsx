@@ -6,6 +6,8 @@ import "./i18next.js";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter } from "react-router-dom";
 
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(

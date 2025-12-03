@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import publicImg from "../assets/images/publicImg.jpg";
+import publicImg from "../assets/images/book-img.avif";
 
 export default function PublicBooksItem({
   name,

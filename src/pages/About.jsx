@@ -68,7 +68,7 @@ export default function About() {
 
             <div className="space-y-8">
               <div className="flex gap-6">
-                <div className="flex-shrink-0 w-24 text-right">
+                <div className="shrink-0 w-24 text-right">
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     2010
                   </span>
@@ -85,7 +85,7 @@ export default function About() {
               </div>
 
               <div className="flex gap-6">
-                <div className="flex-shrink-0 w-24 text-right">
+                <div className="shrink-0 w-24 text-right">
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     2015
                   </span>
@@ -102,7 +102,7 @@ export default function About() {
               </div>
 
               <div className="flex gap-6">
-                <div className="flex-shrink-0 w-24 text-right">
+                <div className="shrink-0 w-24 text-right">
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     2020
                   </span>
@@ -119,7 +119,7 @@ export default function About() {
               </div>
 
               <div className="flex gap-6">
-                <div className="flex-shrink-0 w-24 text-right">
+                <div className="shrink-0 w-24 text-right">
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     2024
                   </span>

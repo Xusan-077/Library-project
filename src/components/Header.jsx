@@ -8,12 +8,12 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="border-b border-b-gray-300 shadow-sm">
+    <header className="border-b border-b-gray-300 shadow-sm sticky top-0 z-100 w-full bg-white">
       <div className="container">
         <div className="flex p-[20px_0] items-center justify-between">
           <Link className="flex items-center gap-2" to="/">
-            <img src={Logo} alt="" className="w-[50px] h-[50px]" />
-            <span className="text-[35px] font-bold text-gray-900">
+            <img src={Logo} alt="" className="w-10 h-10" />
+            <span className="text-[25px] font-bold text-gray-900">
               LibraSpace
             </span>
           </Link>
@@ -27,6 +27,10 @@ export default function Header() {
               {
                 text: "About",
                 path: "/about",
+              },
+              {
+                text: "Books",
+                path: "/books",
               },
               {
                 text: "Library",
@@ -51,15 +55,15 @@ export default function Header() {
           <div className="flex gap-5 items-center">
             <button
               onClick={toggleTheme}
-              className={`relative rounded-full w-20 h-10 transition-all duration-300 shadow-inner ${
+              className={`relative rounded-full w-18 h-8 transition-all duration-300 shadow-inner ${
                 theme === "light"
-                  ? "bg-gradient-to-r from-yellow-400 to-orange-400"
-                  : "bg-gradient-to-r from-slate-700 to-slate-900"
+                  ? "bg-linear-to-r from-yellow-400 to-orange-400"
+                  : "bg-linear-to-r from-slate-700 to-slate-900"
               }`}
               aria-label="Toggle theme"
             >
               <span
-                className={`absolute top-1 flex items-center justify-center w-8 h-8 rounded-full shadow-lg transition-all duration-300 ${
+                className={`absolute top-1 flex items-center justify-center w-6 h-6 rounded-full shadow-lg transition-all duration-300 ${
                   theme === "light"
                     ? "translate-x-1 bg-white"
                     : "translate-x-11 bg-slate-300"
@@ -90,7 +94,7 @@ export default function Header() {
             </button>
             <button
               onClick={() => navigate("/login")}
-              className="cursor-pointer text-[18px] font-medium p-[10px_20px] bg-blue-400 text-white rounded-lg"
+              className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
             >
               Login to Library
             </button>

@@ -12,8 +12,6 @@ export default function HomePublicBooksSection() {
     },
   });
 
-  console.log(books?.data);
-
   return (
     <section className="">
       <div className="container">

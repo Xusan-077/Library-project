@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import API from "../../API/API";
 
-import publicImg from "../assets/images/publicImg.jpg";
+import publicImg from "../assets/images/book-img.avif";
 import PublicBooksItem from "../components/PublicBooksItem";
 import { useEffect } from "react";
 
@@ -28,8 +28,10 @@ export default function PublicBookDetailPage() {
   });
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [params]);
+
+  const filtred = books?.data?.filter((el) => el.id !== book?.data?.id);
 
   return (
     <section className="">
@@ -39,29 +41,44 @@ export default function PublicBookDetailPage() {
             {book?.data.name}
           </h3>
 
-          <div className="flex items-center gap-3 mb-10 bg-white p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
+          <div className="flex items-center gap-5 mb-10 bg-white p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
             <img
               src={publicImg}
               alt=""
-              className="w-[200px] h-[200px] rounded-lg"
+              className="w-[250px] h-[200px] rounded-lg"
             />
             <div className="">
-              <h3 className="text-[30px] font-semibold">{book?.data.name}</h3>
               <span className="bg-yellow-600 p-[5px_10px] text-white rounded-lg">
-                <span className="">id: </span> {book?.data.id}
+                <span className=""># id:</span> {book?.data.id}
               </span>
-              <h3 className="mb-2 text-[16px] font-medium">
-                <span className="text-[18px] font-semibold">author: </span>
-                {book?.data.author}
-              </h3>
-              <h3 className="mb-2 text-[16px] font-medium">
-                <span className="text-[18px] font-semibold">publisher: </span>
-                {book?.data.publisher}
-              </h3>
-              <h3 className="mb-2 text-[16px] font-medium">
-                <span className="text-[18px] font-semibold">quantity: </span>
-                {book?.data.quantity_in_library}
-              </h3>
+              <h3 className="text-[30px] font-semibold">{book?.data.name}</h3>
+              <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                <i className="text-yellow-600 bi bi-person-fill"></i>
+                <div className="flex items-center gap-1">
+                  <span className="">Author:</span>
+                  <span className="text-[18px] font-semibold">
+                    {book?.data.author}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                <i className="text-yellow-600 bi bi-shop-window"></i>
+                <div className="flex items-center gap-1">
+                  <span className="">Publisher:</span>
+                  <span className="text-[18px] font-semibold">
+                    {book?.data.publisher}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                <i className="text-yellow-600 bi bi-journal-bookmark-fill"></i>
+                <div className="flex items-center gap-1">
+                  <span className="">Quantity:</span>
+                  <span className="text-[18px] font-semibold">
+                    {book?.data.quantity_in_library}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -81,7 +98,7 @@ export default function PublicBookDetailPage() {
                       </div>
                     </li>
                   ))
-                : books.data.map((book) => (
+                : filtred.map((book) => (
                     <PublicBooksItem
                       book={book}
                       library
