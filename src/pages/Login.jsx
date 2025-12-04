@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -11,6 +10,7 @@ import useAuthStore from "../store/useUserAuth";
 
 import loginImage from "../assets/images/login-img.png";
 import Logo from "../assets/icons/Logo.png";
+import API from "../../API/API";
 
 export default function Login() {
   const schema = yup.object({
@@ -31,10 +31,7 @@ export default function Login() {
 
   const mutation = useMutation({
     mutationFn: async (body) => {
-      const res = await axios.post(
-        "https://org-ave-jimmy-learners.trycloudflare.com/api/v1/auth/login/",
-        body
-      );
+      const res = await API.post("/auth/login/", body);
       return res.data;
     },
     onSuccess: (data) => {

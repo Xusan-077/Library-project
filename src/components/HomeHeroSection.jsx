@@ -71,12 +71,7 @@ export default function HomeHeroSection() {
             </div>
             {search &&
               (isLoading ? (
-                <ul
-                  className="max-h-80 overflow-y-scroll 
-      [scrollbar-width:thin] 
-      [scrollbar-color:theme(colors.yellow.700)_theme(colors.gray.100)] 
-      p-2.5 rounded-lg bg-white"
-                >
+                <ul className="max-h-80 overflow-y-scroll p-2.5 rounded-lg bg-white">
                   {Array.from({ length: 4 }).map((_, index) => (
                     <div
                       key={index}
@@ -126,7 +121,9 @@ export default function HomeHeroSection() {
                   ))}
                 </ul>
               ) : (
-                <li className="p-2 text-gray-500">No results found</li>
+                <li className="p-2 text-center mt-10 text-red-500 text-[20px]">
+                  No results found
+                </li>
               ))}
           </div>
         </div>

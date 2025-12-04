@@ -4,10 +4,10 @@ import useAuthStore from "../store/useUserAuth";
 import useThemeStore from "../store/useThemeStore";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import API from "../../API/API";
 
 export default function Header() {
-  const { theme, toggleTheme } = useThemeStore();
+  // const { theme, toggleTheme } = useThemeStore();
   const { isAuth, setIsAuth, user, setUser } = useAuthStore();
   const navigate = useNavigate();
 
@@ -24,14 +24,11 @@ export default function Header() {
 
   const { data: userAction } = useQuery({
     queryFn: async () => {
-      const res = await axios.get(
-        "https://org-ave-jimmy-learners.trycloudflare.com/api/v1/auth/profile/",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const res = await API.get("/auth/profile/", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       return res.data;
     },

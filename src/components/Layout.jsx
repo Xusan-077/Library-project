@@ -6,7 +6,9 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <Outlet />
+      <main className="min-h-[calc(100vh-24rem)]">
+        <Outlet />
+      </main>
       <Footer />
     </>
   );
