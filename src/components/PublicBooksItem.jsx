@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import publicImg from "../assets/images/book-img.avif";
+import publicImg2 from "../assets/images/book-img2.png";
+import publicImg3 from "../assets/images/book-img3.webp";
 
 export default function PublicBooksItem({
   name,
@@ -8,6 +10,7 @@ export default function PublicBooksItem({
   quantity_in_library,
   library,
   book,
+  index,
 }) {
   const navigate = useNavigate();
 
@@ -15,15 +18,34 @@ export default function PublicBooksItem({
     <li
       onClick={() => navigate(`/book/${book.id}`)}
       className={`${
-        library ? "min-w-[250px]" : ""
+        library ? "min-w-[280px]" : ""
       } cursor-pointer shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
     >
-      <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-800">
-        <img
-          src={publicImg || "/placeholder-book.jpg"}
-          alt={name}
-          className="w-full h-[220px]  object-cover transition-transform duration-300"
-        />
+      <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100">
+        <div className="w-full h-[220px] bg-gray-200">
+          {index % 2 == 0 ? (
+            <img
+              src={publicImg || "/placeholder-book.jpg"}
+              alt={name}
+              className="w-full h-[220px]  object-cover transition-transform duration-300"
+            />
+          ) : index % 3 == 1 || index % 3 == 2 || index % 3 == 3 ? (
+            <img
+              src={publicImg2 || "/placeholder-book.jpg"}
+              alt={name}
+              className="w-full h-[220px]  object-cover transition-transform duration-300"
+            />
+          ) : index % 4 == 1 || index % 3 == 4 || index % 4 == 3 ? (
+            <img
+              src={publicImg3 || "/placeholder-book.jpg"}
+              alt={name}
+              className="w-full h-[220px]  object-cover transition-transform duration-300"
+            />
+          ) : (
+            ""
+          )}
+        </div>
+
         {quantity_in_library > 0 && (
           <span className="absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded">
             quantity: {quantity_in_library}

@@ -14,7 +14,7 @@ body {
 }
 
 .public-list {
-  animation: loop 7s linear infinite;
+  animation: loop 15s linear infinite;
 }
 
 @keyframes loop {

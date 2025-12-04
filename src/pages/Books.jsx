@@ -19,7 +19,7 @@ export default function Books() {
           <h2 className="text-[35px] font-bold mb-5">All Books</h2>
           <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
             {isLoading
-              ? Array.from({ length: 5 }).map((_, index) => (
+              ? Array.from({ length: 12 }).map((_, index) => (
                   <li key={index} className="min-w-[250px]">
                     <div className="mb-3 rounded-lg bg-gray-200 h-[280px]"></div>
 
@@ -31,8 +31,9 @@ export default function Books() {
                     </div>
                   </li>
                 ))
-              : books.data.map((book) => (
+              : books.data.map((book, index) => (
                   <PublicBooksItem
+                    index={index}
                     book={book}
                     library
                     key={book.id}

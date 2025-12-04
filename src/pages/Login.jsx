@@ -1,24 +1,68 @@
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import useAuthStore from "../store/useUserAuth";
+
 import loginImage from "../assets/images/login-img.png";
 import Logo from "../assets/icons/Logo.png";
 
 export default function Login() {
+  const schema = yup.object({
+    phone: yup.string().min(6, "Phone number is required.").required(),
+    password: yup.string().min(6).required(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const { login } = useAuthStore();
   const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: async (body) => {
+      const res = await axios.post(
+        "https://org-ave-jimmy-learners.trycloudflare.com/api/v1/auth/login/",
+        body
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success("Success login to system");
+      login(data);
+      navigate("/");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Error in login");
+    },
+  });
+
+  const onSubmit = (data) => {
+    mutation.mutate(data);
+  };
 
   return (
     <section className="bg-[#F1F3F6FF] h-screen">
       <div className="w-full h-full flex items-center justify-between">
-        <div className="bg-white w-[40%] relative h-full flex items-start justify-center flex-col p-[20px_40px]">
-          <div className="flex justify-end absolute top-5 left-5">
-            <button
-              onClick={() => navigate(-1)}
-              className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700"
-            >
-              Orqaga
-            </button>
-          </div>
+        <div className="bg-white w-[40%] relative h-full flex flex-col p-[20px_40px]">
+          <button
+            onClick={() => navigate("/")}
+            className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700 absolute top-5 left-5"
+          >
+            Orqaga
+          </button>
 
-          <div className=" w-full ">
+          <div className="w-full mt-20">
             <div className="flex flex-col items-center gap-4">
               <Link className="flex items-center gap-2" to="/">
                 <img src={Logo} alt="" className="w-[50px] h-[50px]" />
@@ -31,18 +75,28 @@ export default function Login() {
                 Login into your account
               </h2>
             </div>
-            <form className="flex flex-col">
+
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
               <label className="mb-[30px]">
                 <span className="text-[16px] text-[#555] mb-2.5 block">
-                  tel number
+                  Phone number
                 </span>
 
                 <input
                   type="text"
-                  placeholder="Enter your tel"
-                  className="text-[14px] text-[#555555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
+                  {...register("phone")}
+                  placeholder="Enter your phone number"
+                  className="text-[14px] text-[#555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
                 />
+
+                {errors.phone && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.phone.message}
+                  </p>
+                )}
               </label>
+
+              {/* Password */}
               <label>
                 <span className="text-[16px] text-[#555] mb-2.5 block">
                   Password
@@ -50,17 +104,28 @@ export default function Login() {
 
                 <input
                   type="password"
+                  {...register("password")}
                   placeholder="Enter your password"
-                  className="text-[14px] text-[#555555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
+                  className="text-[14px] text-[#555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
                 />
+
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
               </label>
 
-              <button className="w-full cursor-pointer p-[15px_0] bg-yellow-700  text-white rounded-lg text-[16px] mt-4">
+              <button
+                type="submit"
+                className="w-full cursor-pointer p-[15px_0] bg-yellow-700 text-white rounded-lg text-[16px] mt-4"
+              >
                 Tizimga kirish
               </button>
             </form>
           </div>
         </div>
+
         <div className="w-[60%] h-full flex justify-center items-center">
           <img src={loginImage} alt="" className="w-[700px] h-[700px]" />
         </div>

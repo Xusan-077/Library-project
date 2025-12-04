@@ -1,23 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
-import API from "../../API/API";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+
+import API from "../../API/API";
 
 export default function HomeHeroSection() {
   const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
 
-  const { data: searchBooks } = useQuery({
+  const { data: searchBooks, isLoading } = useQuery({
     queryFn: async () => {
-      if (!search) return [];
+      if (!search || search.trim() == "") return [];
 
-      const res = await API.get(`/books/search/book/?q=${search}`);
+      const res = await API.get(`/books/search/book/?q=${search.trim()}`);
+
       return res?.data;
     },
     queryKey: ["searchBooks", search],
   });
-  console.log(searchBooks);
 
   return (
     <section className="py-16 md:py-24">
@@ -69,23 +70,44 @@ export default function HomeHeroSection() {
               </button>
             </div>
             {search &&
-              (searchBooks?.length > 0 ? (
+              (isLoading ? (
                 <ul
                   className="max-h-80 overflow-y-scroll 
-  [scrollbar-width:thin] 
-  [scrollbar-color:theme(colors.yellow.700)_theme(colors.gray.100)] 
-  p-2.5 rounded-lg bg-white"
+      [scrollbar-width:thin] 
+      [scrollbar-color:theme(colors.yellow.700)_theme(colors.gray.100)] 
+      p-2.5 rounded-lg bg-white"
+                >
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 border-b border-b-gray-300 animate-pulse"
+                    >
+                      <div>
+                        <div className="w-[200px] h-5 bg-gray-200 rounded mb-2"></div>
+                        <div className="flex gap-2">
+                          <div className="w-24 h-4 bg-gray-200 rounded"></div>
+                          <div className="w-20 h-4 bg-gray-200 rounded"></div>
+                        </div>
+                      </div>
+                      <div className="w-20 h-8 bg-gray-200 rounded"></div>
+                    </div>
+                  ))}
+                </ul>
+              ) : searchBooks?.length > 0 ? (
+                <ul
+                  className="max-h-80 overflow-y-scroll 
+      p-2.5 rounded-lg bg-white"
                 >
                   {searchBooks.map((el) => (
                     <li
                       key={el.id}
                       className="flex items-center justify-between p-2 border-b border-b-gray-300"
                     >
-                      <div className="">
+                      <div>
                         <h3 className="text-[18px] font-semibold mb-2">
                           {el.name}
                         </h3>
-                        <div className="">
+                        <div>
                           <span className="text-[14px] text-gray-400 pr-2 font-medium border-r border-r-gray-400">
                             {el.author}
                           </span>
