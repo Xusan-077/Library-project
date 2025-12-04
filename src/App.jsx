@@ -13,6 +13,7 @@ import MyBooks from "./pages/MyBooks";
 import useAuthStore from "./store/useUserAuth";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
+import Likes from "./pages/Likes";
 
 export default function App() {
   const { isAuth } = useAuthStore();
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="library" element={<Library />} />
           <Route path="library/:libraryId" element={<PublicLibraryPage />} />
           <Route path="books" element={<Books />} />
+          <Route path="likes" element={<Likes />} />
           {isAuth && <Route path="my-books" element={<MyBooks />} />}
           {isAuth && <Route path="profile" element={<Profile />} />}
           <Route path="book/:bookId" element={<PublicBookDetailPage />} />

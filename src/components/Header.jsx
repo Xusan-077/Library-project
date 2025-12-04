@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../assets/icons/Logo.png";
 import useAuthStore from "../store/useUserAuth";
-import useThemeStore from "../store/useThemeStore";
+// import useThemeStore from "../store/useThemeStore";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import API from "../../API/API";
@@ -70,6 +70,10 @@ export default function Header() {
                 text: "libraries",
                 path: "/library",
               },
+              {
+                text: "Likes",
+                path: "/likes",
+              },
             ].map((el, index) => (
               <li key={index} className="p-[10px_20px]">
                 <NavLink
@@ -100,8 +104,37 @@ export default function Header() {
             )}
           </nav>
 
-          <div className="flex gap-5 items-center">
-            {/* <button
+          <div className="">
+            {isAuth ? (
+              <div
+                onClick={() => navigate("/profile")}
+                className="flex gap-5 cursor-pointer items-center "
+              >
+                <p className="text-[26px] font-bold">
+                  <span className="text-yellow-700 font-semibold">Hi ,</span>
+                  {capitalizedName ? capitalizedName : "User"}!
+                </p>
+
+                <button className="cursor-pointer">
+                  <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
+              >
+                Login to Library
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+/* <button
               onClick={toggleTheme}
               className={`relative rounded-full w-18 h-8 transition-all duration-300 shadow-inner ${
                 theme === "light"
@@ -139,33 +172,4 @@ export default function Header() {
                   </svg>
                 )}
               </span>
-            </button> */}
-            {isAuth ? (
-              <div className="text-[26px] font-bold">
-                <span className="text-yellow-700 font-semibold">Hi ,</span>
-                {capitalizedName ? capitalizedName : "User"}!
-              </div>
-            ) : (
-              ""
-            )}
-            {isAuth ? (
-              <button
-                onClick={() => navigate("/profile")}
-                className="cursor-pointer"
-              >
-                <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
-              </button>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
-              >
-                Login to Library
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
+            </button> */

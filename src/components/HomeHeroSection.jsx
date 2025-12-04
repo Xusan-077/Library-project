@@ -21,7 +21,7 @@ export default function HomeHeroSection() {
   });
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="hero py-16 md:py-24 h-full">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-8 max-w-5xl mx-auto">
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center leading-tight">
@@ -38,8 +38,8 @@ export default function HomeHeroSection() {
             into another world, we're here to support your journey.
           </p>
 
-          <div className="w-full max-w-2xl">
-            <div className="relative">
+          <div className="w-full relative max-w-2xl">
+            <div className="relative mb-[190px]">
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
@@ -69,62 +69,64 @@ export default function HomeHeroSection() {
                 </svg>
               </button>
             </div>
-            {search &&
-              (isLoading ? (
-                <ul className="max-h-80 overflow-y-scroll p-2.5 rounded-lg bg-white">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-2 border-b border-b-gray-300 animate-pulse"
-                    >
-                      <div>
-                        <div className="w-[200px] h-5 bg-gray-200 rounded mb-2"></div>
-                        <div className="flex gap-2">
-                          <div className="w-24 h-4 bg-gray-200 rounded"></div>
-                          <div className="w-20 h-4 bg-gray-200 rounded"></div>
-                        </div>
-                      </div>
-                      <div className="w-20 h-8 bg-gray-200 rounded"></div>
-                    </div>
-                  ))}
-                </ul>
-              ) : searchBooks?.length > 0 ? (
-                <ul
-                  className="max-h-80 overflow-y-scroll 
-      p-2.5 rounded-lg bg-white"
-                >
-                  {searchBooks.map((el) => (
-                    <li
-                      key={el.id}
-                      className="flex items-center justify-between p-2 border-b border-b-gray-300"
-                    >
-                      <div>
-                        <h3 className="text-[18px] font-semibold mb-2">
-                          {el.name}
-                        </h3>
-                        <div>
-                          <span className="text-[14px] text-gray-400 pr-2 font-medium border-r border-r-gray-400">
-                            {el.author}
-                          </span>
-                          <span className="text-[14px] text-gray-400 pl-2 font-medium">
-                            {el.publisher}
-                          </span>
-                        </div>
-                      </div>
+            <div className="absolute top-15 w-full">
+              {search &&
+                (isLoading ? (
+                  <ul className="max-h-60 overflow-y-scroll p-2.5 rounded-lg bg-white">
+                    {Array.from({ length: 4 }).map((_, index) => (
                       <div
-                        onClick={() => navigate(`/book/${el.id}`)}
-                        className="border border-yellow-600 p-[5px_20px] rounded-lg cursor-pointer text-yellow-600 text-[18px]"
+                        key={index}
+                        className="flex items-center justify-between p-2 border-b border-b-gray-300 animate-pulse"
                       >
-                        visit
+                        <div>
+                          <div className="w-[200px] h-5 bg-gray-200 rounded mb-2"></div>
+                          <div className="flex gap-2">
+                            <div className="w-24 h-4 bg-gray-200 rounded"></div>
+                            <div className="w-20 h-4 bg-gray-200 rounded"></div>
+                          </div>
+                        </div>
+                        <div className="w-20 h-8 bg-gray-200 rounded"></div>
                       </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <li className="p-2 text-center mt-10 text-red-500 text-[20px]">
-                  No results found
-                </li>
-              ))}
+                    ))}
+                  </ul>
+                ) : searchBooks?.length > 0 ? (
+                  <ul
+                    className="max-h-60 overflow-y-scroll 
+      p-2.5 rounded-lg bg-white"
+                  >
+                    {searchBooks.map((el) => (
+                      <li
+                        key={el.id}
+                        className="flex items-center justify-between p-2 border-b border-b-gray-300"
+                      >
+                        <div>
+                          <h3 className="text-[18px] font-semibold mb-2">
+                            {el.name}
+                          </h3>
+                          <div>
+                            <span className="text-[14px] text-gray-400 pr-2 font-medium border-r border-r-gray-400">
+                              {el.author}
+                            </span>
+                            <span className="text-[14px] text-gray-400 pl-2 font-medium">
+                              {el.publisher}
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          onClick={() => navigate(`/book/${el.id}`)}
+                          className="border border-yellow-600 p-[5px_20px] rounded-lg cursor-pointer text-yellow-600 text-[18px]"
+                        >
+                          visit
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <li className="p-2 text-center mt-10 text-red-500 text-[20px]">
+                    No results found
+                  </li>
+                ))}
+            </div>
           </div>
         </div>
       </div>

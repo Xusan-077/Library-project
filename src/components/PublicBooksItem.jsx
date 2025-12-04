@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import publicImg from "../assets/images/book-img.avif";
-import publicImg2 from "../assets/images/book-img2.png";
-import publicImg3 from "../assets/images/book-img3.webp";
+import publicImg2 from "../assets/images/book-img3.webp";
+import useLikeStore from "../store/useLikeStore";
 
 export default function PublicBooksItem({
   name,
@@ -12,6 +12,8 @@ export default function PublicBooksItem({
   book,
   index,
 }) {
+  const { likes, toggleLike } = useLikeStore();
+
   const navigate = useNavigate();
 
   return (
@@ -29,31 +31,42 @@ export default function PublicBooksItem({
               alt={name}
               className="w-full h-[220px]  object-cover transition-transform duration-300"
             />
-          ) : index % 3 == 1 || index % 3 == 2 || index % 3 == 3 ? (
+          ) : (
             <img
               src={publicImg2 || "/placeholder-book.jpg"}
               alt={name}
               className="w-full h-[220px]  object-cover transition-transform duration-300"
             />
-          ) : index % 4 == 1 || index % 3 == 4 || index % 4 == 3 ? (
-            <img
-              src={publicImg3 || "/placeholder-book.jpg"}
-              alt={name}
-              className="w-full h-[220px]  object-cover transition-transform duration-300"
-            />
-          ) : (
-            ""
           )}
         </div>
 
-        {quantity_in_library > 0 && (
-          <span className="absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded">
-            quantity: {quantity_in_library}
-          </span>
-        )}
+        <div className="absolute flex items-center justify-between w-full p-[0_15px] top-2 right-0">
+          {quantity_in_library > 0 && (
+            <span className="px-2 py-1 text-xs font-medium bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded">
+              quantity: {quantity_in_library}
+            </span>
+          )}
+
+          <div className="cursor-pointer">
+            <button
+              className="text-[20px] text-white left-2.5"
+              onClick={(e) => {
+                e.stopPropagation();
+
+                toggleLike(book);
+              }}
+            >
+              {likes.find((el) => el.id == book.id) ? (
+                <i className="text-red-500 bi bi-heart-fill"></i>
+              ) : (
+                <i className="bi bi-heart"></i>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="">
+      <div>
         <h3 className="font-semibold text-sm line-clamp-2 text-gray-900 border-b border-b-gray-200 pb-2.5 transition-colors">
           {name}
         </h3>

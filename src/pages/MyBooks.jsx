@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import PublicBooksItem from "../components/PublicBooksItem";
 import API from "../../API/API";
+import { useState } from "react";
 
 export default function MyBooks() {
   const accessToken = localStorage.getItem("access");
+
+  const [addBookFirst, setAddBookFirst] = useState(false);
 
   const { data: myBooks, isLoading } = useQuery({
     queryFn: async () => {
@@ -19,10 +22,43 @@ export default function MyBooks() {
     enabled: !!accessToken,
   });
 
-  console.log(myBooks?.data);
-
   return (
     <section className="mb-auto">
+      <button
+        onClick={() => {
+          addBookFirst == true ? setAddBookFirst(false) : setAddBookFirst(true);
+        }}
+        className="fixed  bg-yellow-700 cursor-pointer active:opacity-90 transition-all duration-300 rounded-lg shadow bottom-[30px] right-[30px] p-[8px_0] max-w-[150px] flex items-center justify-center gap-3 w-full"
+      >
+        <span className="">
+          <i className="text-white bi bi-file-earmark-plus"></i>
+        </span>
+        <span className="text-[18px] text-white">Add book</span>
+      </button>
+
+      {addBookFirst && (
+        <div className="fixed bottom-20 right-7 bg-white p-[10px_15px] shadow-2xl rounded-lg max-w-[250px] w-full">
+          <button className="flex items-center gap-3 p-[10px_0] cursor-pointer">
+            <span className="">
+              <i className="text-yellow-700 bi bi-journal-arrow-up"></i>
+            </span>
+            <span className="text-[18px]">Add one book</span>
+          </button>
+          <button className="flex items-center gap-3 p-[10px_0] cursor-pointer">
+            <span className="">
+              <i className="text-yellow-700 bi bi-folder"></i>
+            </span>
+            <span className="text-[18px]">Add several books</span>
+          </button>
+          <button className="flex items-center gap-3 p-[10px_0] cursor-pointer">
+            <span className="">
+              <i className="text-yellow-700 bi bi-filetype-exe"></i>
+            </span>
+            <span className="text-[18px]">load from exe file</span>
+          </button>
+        </div>
+      )}
+
       <div className="container">
         <div className="m-[40px_0]">
           <h2 className="text-[35px] font-bold mb-5">My Books</h2>

@@ -68,9 +68,12 @@ export default function PublicLibraryPage() {
                     </div>
                     <div className="mb-3 flex gap-2 items-center">
                       <i className="text-yellow-600 bi bi-telephone-inbound"></i>
-                      <p className="text-[18px] font-medium ">
+                      <a
+                        className="underline font-medium text-[18px]"
+                        href={`tel:${results?.phone}`}
+                      >
                         {results?.phone}
-                      </p>
+                      </a>
                     </div>
                     <span className="text-[18px] font-medium mb-3 flex gap-2 items-center">
                       {results?.is_active}

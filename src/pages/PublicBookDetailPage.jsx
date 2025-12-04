@@ -9,10 +9,13 @@ import PublicBooksItem from "../components/PublicBooksItem";
 import LibraryImg from "../assets/images/publicImg.jpg";
 import publicImg from "../assets/images/book-img.avif";
 import BookSkleton from "../components/BookSkleton";
+import useLikeStore from "../store/useLikeStore";
 
 export default function PublicBookDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
+
+  const { likes, toggleLike } = useLikeStore();
 
   const { data: book, isLoading: bookIsLoading } = useQuery({
     queryKey: ["book", params.bookId],
@@ -44,8 +47,6 @@ export default function PublicBookDetailPage() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [params]);
 
-  const filtred = books?.data?.filter((el) => el.id !== book?.data?.id);
-
   return (
     <section className="">
       <div className="container">
@@ -67,7 +68,24 @@ export default function PublicBookDetailPage() {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="relative">
+                <div className="cursor-pointer absolute  right-5 top-2">
+                  <button
+                    className="text-[30px]"
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      toggleLike(book?.data);
+                    }}
+                  >
+                    {likes.find((el) => el.id == book?.data?.id) ? (
+                      <i className="text-red-500 bi bi-heart-fill"></i>
+                    ) : (
+                      <i className="bi bi-heart"></i>
+                    )}
+                  </button>
+                </div>
+
                 <h3 className="text-[30px] pb-5 border-b border-b-gray-300 mb-5 font-semibold">
                   book : {book?.data.name}
                 </h3>
@@ -79,7 +97,7 @@ export default function PublicBookDetailPage() {
                   />
                   <div className="">
                     <span className="bg-yellow-600 p-[5px_10px] text-white rounded-lg">
-                      <span className=""># id:</span> {book?.data.id}
+                      <span className="">#</span> {book?.data.id}
                     </span>
                     <h3 className="text-[30px] font-semibold">
                       {book?.data.name}
@@ -113,7 +131,7 @@ export default function PublicBookDetailPage() {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
 
@@ -133,7 +151,7 @@ export default function PublicBookDetailPage() {
                       </div>
                     </div>
                   ))
-                : searchBooksLibrary.map((el) => (
+                : searchBooksLibrary?.slice(0, 3).map((el) => (
                     <li
                       onClick={() => navigate(`/library/${el.library.id}`)}
                       key={el.id}
@@ -172,15 +190,17 @@ export default function PublicBookDetailPage() {
                 ? Array.from({ length: 8 }).map((_, index) => (
                     <BookSkleton key={index} />
                   ))
-                : filtred.map((book, index) => (
-                    <PublicBooksItem
-                      book={book}
-                      index={index}
-                      library
-                      key={book.id}
-                      {...book}
-                    />
-                  ))}
+                : books?.data
+                    ?.slice(0, 8)
+                    .map((book, index) => (
+                      <PublicBooksItem
+                        book={book}
+                        index={index}
+                        library
+                        key={book.id}
+                        {...book}
+                      />
+                    ))}
             </ul>
           </div>
         </div>

@@ -1,4 +1,3 @@
-// --- Auth Store ---
 import { create } from "zustand";
 
 const useAuthStore = create((set) => ({
@@ -13,6 +12,12 @@ const useAuthStore = create((set) => ({
 
   setUser: (data) => {
     set({ user: data });
+  },
+
+  logOut: () => {
+    set({ isAuth: false });
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
   },
 
   setIsAuth: () => {
