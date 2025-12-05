@@ -58,7 +58,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Bog'lanish */}
           <div>
             <h3 className="text-sm font-semibold mb-4 dark:text-white">
               Bog'lanish
@@ -84,12 +83,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Ijimoiy tarmoqlar */}
           <div>
             <h3 className="text-sm font-semibold mb-4 dark:text-white">
               Ijimoiy tarmoqlar
             </h3>
-            <div className="flex gap-4 text-sm">
+            <div className="flex gap-4 text-sm max-[870px]:flex-col ">
               <a
                 href="#"
                 className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
@@ -112,7 +110,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom */}
         <div className="border-t border-gray-200 dark:border-slate-800 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
             <p>© 2024 EZMA. Barcha huquqlar himoyalangan</p>
