@@ -28,7 +28,7 @@ export default function MyBooks() {
         onClick={() => {
           addBookFirst == true ? setAddBookFirst(false) : setAddBookFirst(true);
         }}
-        className="fixed  bg-yellow-700 cursor-pointer active:opacity-90 transition-all duration-300 rounded-lg shadow bottom-[30px] right-[30px] p-[8px_0] max-w-[150px] flex items-center justify-center gap-3 w-full"
+        className="fixed z-1 max-[425px]:right-2 max-[425px]:bottom-2  bg-yellow-700 cursor-pointer active:opacity-90 transition-all duration-300 rounded-lg shadow bottom-[30px] right-[30px] p-[8px_0] max-w-[150px] flex items-center justify-center gap-3 w-full"
       >
         <span className="">
           <i className="text-white bi bi-file-earmark-plus"></i>
@@ -60,11 +60,9 @@ export default function MyBooks() {
       )}
 
       <div className="container">
-        <div className="m-[40px_0]">
+        <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
           <h2 className="text-[35px] font-bold mb-5">My Books</h2>
-          <ul
-            className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6`}
-          >
+          <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
             {isLoading ? (
               Array.from({ length: 12 }).map((_, index) => (
                 <li key={index} className="min-w-[250px]">

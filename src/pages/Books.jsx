@@ -15,9 +15,9 @@ export default function Books() {
   return (
     <section>
       <div className="container">
-        <div className="">
+        <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
           <h2 className="text-[35px] font-bold mb-5">All Books</h2>
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+          <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
             {isLoading
               ? Array.from({ length: 12 }).map((_, index) => (
                   <li key={index} className="min-w-[250px]">

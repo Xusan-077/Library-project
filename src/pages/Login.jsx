@@ -51,15 +51,15 @@ export default function Login() {
   return (
     <section className="bg-[#F1F3F6FF] h-screen">
       <div className="w-full h-full flex items-center justify-between">
-        <div className="bg-white w-[40%] relative h-full flex flex-col p-[20px_40px]">
+        <div className="bg-white max-[900px]:w-full max-[900px]:p-[0_20px] w-[40%] relative h-full flex flex-col p-[20px_40px]">
           <button
             onClick={() => navigate("/")}
             className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700 absolute top-5 left-5"
           >
-            Orqaga
+            Back to main
           </button>
 
-          <div className="w-full mt-20">
+          <div className="w-full mt-20 max-[900px]:mt-30">
             <div className="flex flex-col items-center gap-4">
               <Link className="flex items-center gap-2" to="/">
                 <img src={Logo} alt="" className="w-[50px] h-[50px]" />
@@ -93,7 +93,6 @@ export default function Login() {
                 )}
               </label>
 
-              {/* Password */}
               <label>
                 <span className="text-[16px] text-[#555] mb-2.5 block">
                   Password
@@ -117,13 +116,13 @@ export default function Login() {
                 type="submit"
                 className="w-full cursor-pointer p-[15px_0] bg-yellow-700 text-white rounded-lg text-[16px] mt-4"
               >
-                Tizimga kirish
+                Login
               </button>
             </form>
           </div>
         </div>
 
-        <div className="w-[60%] h-full flex justify-center items-center">
+        <div className="w-[60%] max-[900px]:hidden h-full flex justify-center items-center">
           <img src={loginImage} alt="" className="w-[700px] h-[700px]" />
         </div>
       </div>

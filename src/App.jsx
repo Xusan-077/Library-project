@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Library from "./pages/Library";
 import PublicBookDetailPage from "./pages/PublicBookDetailPage";
 import Login from "./pages/Login";
@@ -23,7 +22,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
           <Route path="library" element={<Library />} />
           <Route path="library/:libraryId" element={<PublicLibraryPage />} />
           <Route path="books" element={<Books />} />

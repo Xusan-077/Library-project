@@ -61,8 +61,8 @@ export default function Library() {
     <section className="bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-[35px] font-bold mb-5">List of libraries</h2>
-        <div className="grid grid-cols-[280px_1fr] items-start gap-[30px]">
-          <div className="sticky top-[120px] bg-white shadow-2xl rounded-lg p-[15px_15px_30px_15px] flex flex-col gap-2">
+        <div className="grid grid-cols-[280px_1fr] max-[725px]:grid-cols-1 items-start gap-[30px]">
+          <div className="sticky max-[725px]:static  top-[120px] bg-white shadow-2xl rounded-lg p-[15px_15px_30px_15px] flex flex-col gap-2">
             {[
               {
                 id: "name-asc",
@@ -104,8 +104,8 @@ export default function Library() {
 
           <div>
             <div className="mb-[30px] bg-white rounded-lg shadow-2xl">
-              <div className="flex items-center justify-between p-[10px_20px]">
-                <div className="flex items-center rounded-lg p-[0_0_0_20px] max-w-[300px] w-full gap-3 border border-gray-300">
+              <div className="flex items-center max-[800px]:gap-5 justify-between p-[10px_20px] max-[425px]:block">
+                <div className="flex items-center rounded-lg p-[0_0_0_20px] max-[425px]:mb-3 max-[425px]:max-w-full max-w-[300px] w-full gap-3 border border-gray-300">
                   <i className="text-gray-600 bi bi-search"></i>
                   <input
                     type="text"
@@ -126,7 +126,7 @@ export default function Library() {
                 <div className="flex gap-2 rounded-lg">
                   <button
                     onClick={() => setFormat("grid")}
-                    className={`px-4 py-2 rounded-md transition-colors ${
+                    className={`px-4 py-2 max-[425px]:w-full  max-[425px]:flex  max-[425px]:justify-center rounded-md transition-colors ${
                       format === "grid"
                         ? "bg-[#FD7401] text-white"
                         : "text-gray-600 hover:bg-gray-100"
@@ -149,7 +149,7 @@ export default function Library() {
                   </button>
                   <button
                     onClick={() => setFormat("list")}
-                    className={`px-4 py-2 rounded-md transition-colors ${
+                    className={`px-4 py-2  max-[425px]:w-full  max-[425px]:flex  max-[425px]:justify-center rounded-md transition-colors ${
                       format === "list"
                         ? "bg-[#FD7401] text-white"
                         : "text-gray-600 hover:bg-gray-100"
@@ -273,12 +273,12 @@ export default function Library() {
                       <li
                         onClick={() => navigate(`/library/${library.id}`)}
                         key={library.id}
-                        className="bg-white relative rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center"
+                        className="bg-white max-[450px]:block relative rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center"
                       >
                         <img
                           src={LibraryImg}
                           alt={library.name || "Library"}
-                          className="w-[250px] h-[220px] object-cover"
+                          className="w-[250px] max-[450px]:w-full max-[450px]:p-[0_20px] max-[450px]:h-[200px] max-[500px]:h-[170px] max-[500px]:w-[180px]  h-[220px] object-cover"
                         />
                         <div className="cursor-pointer absolute right-5 top-4">
                           <button
@@ -309,7 +309,9 @@ export default function Library() {
                             <span className="text-gray-800 text-[16px] mr-2 font-bold">
                               Location:
                             </span>
-                            {library.address || "Address not available"}
+                            <p className=" line-clamp-2">
+                              {library.address || "Address not available"}
+                            </p>
                           </p>
                           {library.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">

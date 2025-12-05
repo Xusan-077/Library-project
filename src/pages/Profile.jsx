@@ -177,8 +177,8 @@ export default function Profile() {
 
       <div className="container">
         <div className="">
-          <div className="flex relative items-center mb-[30px] gap-[30px] bg-white p-5 rounded-lg shadow-2xl">
-            <div className="bg-[#CCCCCCFF] rounded-lg flex justify-center items-center w-[250px] h-[250px]">
+          <div className="flex relative max-[700px]:block items-center mb-[30px] gap-[30px] bg-white p-5 rounded-lg shadow-2xl">
+            <div className="bg-[#CCCCCCFF] max-[700px]:w-full rounded-lg flex justify-center items-center w-[250px] h-[250px]">
               <i className="text-[100px] text-white bi bi-person-circle"></i>
             </div>
             <div className="">
@@ -214,7 +214,7 @@ export default function Profile() {
             </div>
             <div className="group cursor-pointer transition-all duration-300">
               <div
-                className="absolute top-[25px] right-[25px] h-10 w-[50px] 
+                className="absolute max-[700px]:top-8 max-[700px]:right-8 top-[25px] right-[25px] h-10 w-[50px] 
                 flex justify-center items-center 
                 border border-yellow-700 rounded-lg 
                 cursor-pointer transition-all duration-300 hover:text-white group-hover:bg-yellow-700"
@@ -247,13 +247,13 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="bg-white p-5 min-h-[450px] rounded-lg shadow-2xl">
+          <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
             <div>
-              <div className="flex border-b pb-2.5 border-b-gray-100">
+              <div className="w-full max-[678px]:overflow-x-auto flex flex-nowrap border-b pb-2.5 border-b-gray-100">
                 <button
                   className={`pb-2 ${
                     activeTab === "books" ? "border-b-2 border-yellow-700" : ""
-                  } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full`}
+                  } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("books")}
                 >
                   <i className="text-yellow-700 bi bi-journal-bookmark"></i>
@@ -264,7 +264,7 @@ export default function Profile() {
                     activeTab === "network"
                       ? "border-b-2 border-yellow-700"
                       : ""
-                  } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full`}
+                  } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("network")}
                 >
                   <i className="text-yellow-700 bi bi-share"></i>
@@ -273,7 +273,7 @@ export default function Profile() {
                 <button
                   className={`pb-2 ${
                     activeTab === "map" ? "border-b-2 border-yellow-700" : ""
-                  } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full`}
+                  } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("map")}
                 >
                   <i className="text-yellow-700 bi bi-geo-alt"></i>
@@ -287,7 +287,7 @@ export default function Profile() {
                     <h2 className="pb-2.5 border-b-gray-300 border-b text-[30px] font-semibold m-[20px_0_10px_20px]">
                       My Books
                     </h2>
-                    <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+                    <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
                       {isLoading
                         ? Array.from({ length: 12 }).map((_, index) => (
                             <li key={index} className="min-w-[250px]">
@@ -302,25 +302,25 @@ export default function Profile() {
                             </li>
                           ))
                         : myBooks?.data?.map((book, index) => (
-                            <PublicBooksItem
-                              index={index}
-                              book={book}
-                              library
-                              key={book.id}
-                              {...book}
-                            />
+                            <div key={book.id} className="">
+                              <PublicBooksItem
+                                index={index}
+                                book={book}
+                                library
+                                {...book}
+                              />
+                            </div>
                           ))}
                     </ul>
                   </div>
                 )}
-
                 {activeTab === "network" && (
                   <div>
                     <div className="">
                       <h2 className="pb-2.5 border-b-gray-300 border-b text-[30px] font-semibold m-[20px_0_10px_20px]">
                         My NetWorks
                       </h2>
-                      <div className="flex items-center">
+                      <div className="grid grid-cols-3 max-[425px]:grid-cols-2">
                         <button
                           onClick={() =>
                             navigate(`https://${user?.social_media?.instagram}`)

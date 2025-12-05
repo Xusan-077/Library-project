@@ -21,15 +21,15 @@ export default function HomeHeroSection() {
   });
 
   return (
-    <section className="hero py-16 md:py-24 h-full">
+    <section className="hero py-16 max-[768px]:py-0 h-full">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-8 max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-[425px]:text-[30px] font-bold text-center leading-tight">
             Discover Endless Worlds of <br className="hidden sm:block" />
             Knowledge, Stories
           </h1>
 
-          <p className="text-base md:text-lg font-medium max-w-2xl text-center text-gray-600 ">
+          <p className="text-base md:text-lg font-medium max-w-2xl max-[425px]:text-[14px] text-center text-gray-600 ">
             Welcome to a place where curiosity meets discovery. Our library is
             more than just books on shelves—it's a vibrant community hub where
             learners of all ages come together to explore, create, and grow.

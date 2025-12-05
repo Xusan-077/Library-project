@@ -9,7 +9,7 @@ export default function Layout() {
       <main className="my-[50px] min-h-[calc(100vh-24rem)]">
         <Outlet />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

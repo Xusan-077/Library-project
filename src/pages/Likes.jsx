@@ -16,13 +16,13 @@ export default function Likes() {
       <div className="container">
         <div className="">
           <h2 className="text-[35px] font-bold mb-5">My Favarites</h2>
-          <div className="bg-white shadow-2xl p-[25px] rounded-lg">
-            <div className="flex items-center mb-5 pb-5 border-b-gray-300 border-b">
+          <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
+            <div className="flex items-center mb-5 pb-5 border-b-gray-300 border-b max-[480px]:block ">
               <button
                 onClick={() => setToggle("books")}
                 className={`pb-2 ${
                   toggle === "books" ? "border-b-2 border-yellow-700" : ""
-                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full`}
+                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal"></i>
@@ -33,7 +33,7 @@ export default function Likes() {
                 onClick={() => setToggle("libraries")}
                 className={`pb-2 ${
                   toggle === "libraries" ? "border-b-2 border-yellow-700" : ""
-                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full`}
+                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal-bookmark-fill"></i>
@@ -52,11 +52,12 @@ export default function Likes() {
                       </p>
                     </div>
                   )}
-                  <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+                  <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
                     {likesBooks.map((book, index) => (
                       <PublicBooksItem
                         index={index}
                         book={book}
+                        library
                         key={book.id}
                         {...book}
                       />
@@ -73,7 +74,7 @@ export default function Likes() {
                       </p>
                     </div>
                   )}
-                  <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+                  <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
                     {likesLibraries.map((libraryItem, index) => (
                       <li
                         onClick={() => navigate(`/library/${libraryItem.id}`)}

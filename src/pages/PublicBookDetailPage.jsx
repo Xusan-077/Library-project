@@ -89,11 +89,11 @@ export default function PublicBookDetailPage() {
                 <h3 className="text-[30px] pb-5 border-b border-b-gray-300 mb-5 font-semibold">
                   book : {book?.data.name}
                 </h3>
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-5 max-[650px]:block ">
                   <img
                     src={publicImg}
                     alt=""
-                    className="w-[250px] h-[200px] rounded-lg"
+                    className="w-[250px] h-[200px] max-[650px]:mb-10 max-[650px]:w-full rounded-lg"
                   />
                   <div className="">
                     <span className="bg-yellow-600 p-[5px_10px] text-white rounded-lg">
@@ -102,7 +102,7 @@ export default function PublicBookDetailPage() {
                     <h3 className="text-[30px] font-semibold">
                       {book?.data.name}
                     </h3>
-                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-person-fill"></i>
                       <div className="flex items-center gap-1">
                         <span className="">Author:</span>
@@ -111,7 +111,7 @@ export default function PublicBookDetailPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-shop-window"></i>
                       <div className="flex items-center gap-1">
                         <span className="">Publisher:</span>
@@ -120,7 +120,7 @@ export default function PublicBookDetailPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium">
+                    <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-journal-bookmark-fill"></i>
                       <div className="flex items-center gap-1">
                         <span className="">Quantity:</span>
@@ -155,12 +155,12 @@ export default function PublicBookDetailPage() {
                     <li
                       onClick={() => navigate(`/library/${el.library.id}`)}
                       key={el.id}
-                      className="bg-white mb-2.5 gap-5 rounded-xl border border-gray-300 p-2.5 cursor-pointer overflow-hidden flex items-center"
+                      className="bg-white mb-2.5 max-[450px]:block gap-5 rounded-xl border border-gray-300 p-2.5 cursor-pointer overflow-hidden flex items-center"
                     >
                       <img
                         src={LibraryImg}
                         alt={el.library.name || "Library"}
-                        className="w-[180px] rounded-lg h-[180px] object-cover"
+                        className="w-[180px] max-[450px]:w-full max-[450px]:mb-5 rounded-lg h-[180px] object-cover"
                       />
                       <div>
                         <p className="text-gray-600 text-sm mb-5">
@@ -183,9 +183,9 @@ export default function PublicBookDetailPage() {
             </ul>
           </div>
 
-          <div className="bg-white p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
+          <div className="bg-white max-[375px]:p-2.5 p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
             <h2 className="text-[35px] font-bold mb-5">Other Books</h2>
-            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+            <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
               {booksIsLoading
                 ? Array.from({ length: 8 }).map((_, index) => (
                     <BookSkleton key={index} />
@@ -196,7 +196,6 @@ export default function PublicBookDetailPage() {
                       <PublicBooksItem
                         book={book}
                         index={index}
-                        library
                         key={book.id}
                         {...book}
                       />

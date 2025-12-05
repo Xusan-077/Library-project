@@ -45,7 +45,7 @@ export default function PublicLibraryPage() {
               </button>
             </div>
 
-            <div className="flex items-center gap-5 mt-5">
+            <div className="flex items-center gap-5 mt-5 max-[650px]:block">
               {isLoading ? (
                 <>
                   <div className="w-[300px] h-[300px] rounded-lg bg-gray-200"></div>
@@ -61,7 +61,7 @@ export default function PublicLibraryPage() {
                   <img
                     src={LibraryImg}
                     alt={libraryData?.name || "Library"}
-                    className="w-[300px] h-[300px] rounded-lg"
+                    className="w-[300px] h-[300px] rounded-lg max-[650px]:w-full max-[650px]:mb-5"
                   />
                   <div className="">
                     <h3 className="text-[18px] font-semibold mb-3">
@@ -126,13 +126,12 @@ export default function PublicLibraryPage() {
             </div>
           </div>
 
-          {/* Books Section */}
-          <div className="bg-white shadow-2xl rounded-lg p-[25px]">
+          <div className="bg-white shadow-2xl rounded-lg p-[25px] max-[375px]:bg-[#f9f9f9] max-[375px]:p-0 max-[375px]:shadow-none">
             <h2 className="text-[30px] mb-[30px] font-bold">Books</h2>
-            <div
+            <ul
               className={`${
                 results?.books?.length || isLoading
-                  ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+                  ? "grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1"
                   : ""
               }`}
             >
@@ -160,7 +159,7 @@ export default function PublicLibraryPage() {
                   </p>
                 </div>
               )}
-            </div>
+            </ul>
           </div>
         </div>
       </div>
