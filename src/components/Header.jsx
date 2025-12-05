@@ -1,36 +1,21 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../assets/icons/Logo.png";
 import useAuthStore from "../store/useUserAuth";
-// import useThemeStore from "../store/useThemeStore";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import API from "../../API/API";
+import { AuthAPI } from "../../API/API";
 
 export default function Header() {
   const [burger, setBurger] = useState(false);
 
   const { isAuth, setIsAuth, user, setUser } = useAuthStore();
-  // const { theme, toggleTheme } = useThemeStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const access = localStorage.getItem("access");
-    const refresh = localStorage.getItem("refresh");
-
-    if (access && refresh) {
-      setIsAuth();
-    }
-  }, []);
 
   const accessToken = localStorage.getItem("access");
 
   const { data: userAction } = useQuery({
     queryFn: async () => {
-      const res = await API.get("/auth/profile/", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const res = await AuthAPI.get("/auth/profile/");
 
       return res.data;
     },
@@ -46,6 +31,15 @@ export default function Header() {
   useEffect(() => {
     setUser(userAction);
   }, [userAction]);
+
+  useEffect(() => {
+    const access = localStorage.getItem("access");
+    const refresh = localStorage.getItem("refresh");
+
+    if (access && refresh) {
+      setIsAuth();
+    }
+  }, []);
 
   return (
     <header className="border-b border-b-gray-300 shadow-sm sticky top-0 z-100 w-full bg-white">

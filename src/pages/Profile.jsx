@@ -1,35 +1,66 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuthStore from "../store/useUserAuth";
 import { useState } from "react";
 import PublicBooksItem from "../components/PublicBooksItem";
-import API from "../../API/API";
+import { AuthAPI } from "../../API/API";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 export default function Profile() {
   const [logOutModal, setLogOurModal] = useState(false);
   const [edit, setEdit] = useState(false);
 
   const [activeTab, setActiveTab] = useState("books");
-  const navigate = useNavigate();
 
   const { user, logOut } = useAuthStore();
+
+  const navigate = useNavigate();
+
+  // form
+
+  // const schema = yup
+  //   .object({
+  //     address: yup.string().required(),
+  //   })
+  //   .required();
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   resolver: yupResolver(schema),
+  // });
+
+  // function onSubmit() {
+  //   mutate();
+  // }
+
+  // form
 
   const accessToken = localStorage.getItem("access");
 
   const { data: myBooks, isLoading } = useQuery({
     queryFn: async () => {
-      const res = API.get("/libraries/library/books", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const res = AuthAPI.get("/libraries/library/books");
 
       return res;
     },
     queryKey: ["myBooks"],
     enabled: !!accessToken,
   });
+
+  // const { mutate } = useMutation({
+  //   mutationFn: async (body) => {
+  //     const res = AuthAPI.patch(`/auth/profile/`, body);
+
+  //     return res;
+  //   },
+  // });
 
   return (
     <div className="">
@@ -73,12 +104,12 @@ export default function Profile() {
               </h3>
               <span
                 onClick={() => setEdit(false)}
-                className="text-[26px] cursor-pointer"
+                className="text-[35px] cursor-pointer"
               >
                 &times;
               </span>
             </div>
-
+            {/* onSubmit={handleSubmit(onSubmit)} */}
             <form className="">
               <div className="mt-10 border-b pb-5 border-b-gray-200 mb-5">
                 <p className="flex gap-3 items-center mb-5">
@@ -92,6 +123,7 @@ export default function Profile() {
                   <input
                     type="text"
                     placeholder="Enter Location"
+                    defaultValue={user.address}
                     className="w-full h-[50px] border-none outline-none border"
                   />
                 </div>
@@ -99,12 +131,12 @@ export default function Profile() {
               <div className="mt-10 border-b pb-5 border-b-gray-200 mb-5">
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-sliders"></i>
-                  <span className="text-[14px] font-medium">Location</span>
+                  <span className="text-[14px] font-medium">Can rent book</span>
                 </p>
-                <select className="border w-full shadow-sm border-gray-300 rounded p-3">
-                  <option disabled value="choose">
-                    Choose one
-                  </option>
+                <select
+                  defaultValue={user.can_rent_books ? "yes" : "no"}
+                  className="border w-full shadow-sm border-gray-300 rounded p-3"
+                >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
                 </select>
@@ -122,7 +154,8 @@ export default function Profile() {
                     <input
                       type="text"
                       placeholder="Instagram"
-                      className="outline-none"
+                      className="max-w-full w-full outline-none"
+                      defaultValue={user.social_media.instagram}
                     />
                   </span>
                   <span className="border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2">
@@ -132,7 +165,8 @@ export default function Profile() {
                     <input
                       type="text"
                       placeholder="Facebook"
-                      className="outline-none"
+                      className="max-w-full w-full outline-none"
+                      defaultValue={user.social_media.facebook}
                     />
                   </span>
                   <span className="border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2">
@@ -142,7 +176,8 @@ export default function Profile() {
                     <input
                       type="text"
                       placeholder="Telegram"
-                      className="outline-none"
+                      className="max-w-full w-full outline-none"
+                      defaultValue={user.social_media.telegram}
                     />
                   </span>
                 </div>
@@ -158,6 +193,7 @@ export default function Profile() {
 
               <div className="flex justify-end items-center gap-2 mt-10">
                 <button
+                  onClick={() => setEdit(false)}
                   type="button"
                   className="p-[8px_0] max-w-[130px] border cursor-pointer border-gray-300 rounded-lg text-gray-800 w-full text-[16px] "
                 >
