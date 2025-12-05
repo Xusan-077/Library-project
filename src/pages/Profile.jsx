@@ -11,6 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 export default function Profile() {
+  const [open, setOpen] = useState(false);
+
   const [logOutModal, setLogOurModal] = useState(false);
   const [edit, setEdit] = useState(false);
 
@@ -248,7 +250,10 @@ export default function Profile() {
                 <p className="text-[18px] font-medium">{user?.address}</p>
               </div>
             </div>
-            <div className="group cursor-pointer transition-all duration-300">
+            <div
+              onClick={() => (open ? setOpen(false) : setOpen(true))}
+              className="group cursor-pointer transition-all duration-300"
+            >
               <div
                 className="absolute max-[700px]:top-8 max-[700px]:right-8 top-[25px] right-[25px] h-10 w-[50px] 
                 flex justify-center items-center 
@@ -258,28 +263,30 @@ export default function Profile() {
                 <i className="bi bi-gear text-[20px] text-yellow-700 group-hover:text-white"></i>
               </div>
 
-              <div className="w-[200px] h-[140px] group-hover:flex items-center top-13 -right-5 absolute hidden">
-                <div
-                  className=" bg-white shadow-2xl 
+              {open && (
+                <div className="w-[200px] h-[140px] items-center top-17 right-0 absolute">
+                  <div
+                    className=" bg-white shadow-2xl 
                   p-2.5 rounded-lg max-w-[150px] w-full 
                  "
-                >
-                  <button
-                    onClick={() => setEdit(true)}
-                    className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                   >
-                    <i className="bi bi-pencil-square"></i>
-                    <span className="">Edit</span>
-                  </button>
-                  <button
-                    onClick={() => setLogOurModal(true)}
-                    className="cursor-pointer flex text-red-500 text-[18px] font-semibold items-center gap-3"
-                  >
-                    <i className="bi bi-box-arrow-left"></i>
-                    <span className="">Log out</span>
-                  </button>
+                    <button
+                      onClick={() => setEdit(true)}
+                      className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
+                    >
+                      <i className="bi bi-pencil-square"></i>
+                      <span className="">Edit</span>
+                    </button>
+                    <button
+                      onClick={() => setLogOurModal(true)}
+                      className="cursor-pointer flex text-red-500 text-[18px] font-semibold items-center gap-3"
+                    >
+                      <i className="bi bi-box-arrow-left"></i>
+                      <span className="">Log out</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
