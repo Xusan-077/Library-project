@@ -15,7 +15,7 @@ export default function PublicBookDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { likes, toggleLike } = useLikeStore();
+  const { likesBooks, toggleLike } = useLikeStore();
 
   const { data: book, isLoading: bookIsLoading } = useQuery({
     queryKey: ["book", params.bookId],
@@ -50,7 +50,7 @@ export default function PublicBookDetailPage() {
   return (
     <section className="">
       <div className="container">
-        <div className="m-[50px_0]">
+        <div className="">
           <div className="bg-white p-[25px] mb-[30px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
             {bookIsLoading ? (
               <div className="">
@@ -78,7 +78,7 @@ export default function PublicBookDetailPage() {
                       toggleLike(book?.data);
                     }}
                   >
-                    {likes.find((el) => el.id == book?.data?.id) ? (
+                    {likesBooks.find((el) => el.id == book?.data?.id) ? (
                       <i className="text-red-500 bi bi-heart-fill"></i>
                     ) : (
                       <i className="bi bi-heart"></i>

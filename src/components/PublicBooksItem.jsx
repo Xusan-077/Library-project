@@ -12,7 +12,7 @@ export default function PublicBooksItem({
   book,
   index,
 }) {
-  const { likes, toggleLike } = useLikeStore();
+  const { likesBooks, toggleLike } = useLikeStore();
 
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ export default function PublicBooksItem({
                 toggleLike(book);
               }}
             >
-              {likes.find((el) => el.id == book.id) ? (
+              {likesBooks.find((el) => el.id == book.id) ? (
                 <i className="text-red-500 bi bi-heart-fill"></i>
               ) : (
                 <i className="bi bi-heart"></i>

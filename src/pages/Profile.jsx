@@ -176,7 +176,7 @@ export default function Profile() {
       )}
 
       <div className="container">
-        <div className="m-[50px_0]">
+        <div className="">
           <div className="flex relative items-center mb-[30px] gap-[30px] bg-white p-5 rounded-lg shadow-2xl">
             <div className="bg-[#CCCCCCFF] rounded-lg flex justify-center items-center w-[250px] h-[250px]">
               <i className="text-[100px] text-white bi bi-person-circle"></i>
@@ -199,27 +199,27 @@ export default function Profile() {
               </div>
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-bookmarks"></i>
-                <button
+                <span
                   className={`${
                     user?.can_rent_books ? "bg-green-600" : "bg-red-600"
                   } text-white text-[16px] rounded-lg  p-[5px_20px]`}
                 >
                   {user?.can_rent_books ? "can rent" : "cannot rent"}
-                </button>
+                </span>
               </div>
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-house-door"></i>
                 <p className="text-[18px] font-medium">{user?.address}</p>
               </div>
             </div>
-            <div className="group transition-all duration-300">
+            <div className="group cursor-pointer transition-all duration-300">
               <div
                 className="absolute top-[25px] right-[25px] h-10 w-[50px] 
                 flex justify-center items-center 
                 border border-yellow-700 rounded-lg 
-                cursor-pointer transition-all duration-300 hover:bg-yellow-700"
+                cursor-pointer transition-all duration-300 hover:text-white group-hover:bg-yellow-700"
               >
-                <i className="bi bi-gear text-[20px] text-yellow-700 hover:text-white"></i>
+                <i className="bi bi-gear text-[20px] text-yellow-700 group-hover:text-white"></i>
               </div>
 
               <div className="w-[200px] h-[140px] group-hover:flex items-center top-13 -right-5 absolute hidden">

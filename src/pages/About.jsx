@@ -58,8 +58,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* History Section */}
-      <section className="py-16 bg-gray-50 dark:bg-slate-800">
+      <section className=" bg-gray-50 dark:bg-slate-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
@@ -192,8 +191,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-16 bg-gray-50 dark:bg-slate-800">
+      <section className=" bg-gray-50 dark:bg-slate-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold mb-12 text-center text-gray-900 dark:text-white">

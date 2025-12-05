@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import API from "../../API/API";
 
 import LibraryImg from "../assets/images/publicImg.jpg";
+import uselikeStore from "../store/useLikeStore";
 
 export default function Library() {
   const [format, setFormat] = useState("grid");
   const [sort, setSort] = useState("name-asc");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { toggleLibraryLike, likesLibraries } = uselikeStore();
 
   const navigate = useNavigate();
 
@@ -55,7 +58,7 @@ export default function Library() {
   }, [libraries?.data, sort, searchQuery]);
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-[35px] font-bold mb-5">List of libraries</h2>
         <div className="grid grid-cols-[280px_1fr] items-start gap-[30px]">
@@ -195,16 +198,34 @@ export default function Library() {
                   ))
                 : isLoading && format == "list"
                 ? ""
-                : filteredAndSortedLibraries.map((el) =>
+                : filteredAndSortedLibraries.map((library) =>
                     format === "grid" ? (
                       <li
-                        onClick={() => navigate(`/library/${el.id}`)}
-                        key={el.id}
-                        className="bg-white cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden"
+                        onClick={() => navigate(`/library/${library.id}`)}
+                        key={library.id}
+                        className="bg-white relative cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden"
                       >
+                        <div className="cursor-pointer absolute right-5 bottom-4">
+                          <button
+                            className="text-[20px] text-white"
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              toggleLibraryLike(library);
+                            }}
+                          >
+                            {likesLibraries.find(
+                              (el) => el.id === library.id
+                            ) ? (
+                              <i className="text-red-500 bi bi-heart-fill"></i>
+                            ) : (
+                              <i className="text-black bi bi-heart"></i>
+                            )}
+                          </button>
+                        </div>
                         <img
                           src={LibraryImg}
-                          alt={el.name || "Library"}
+                          alt={library.name || "Library"}
                           className="w-full h-48 object-cover"
                         />
                         <div className="p-4">
@@ -213,30 +234,30 @@ export default function Library() {
                               Library name:
                             </span>
                             <br />
-                            {el.name || "Library Name"}
+                            {library.name || "Library Name"}
                           </h3>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
                             <span className="text-gray-800 text-[16px] mr-2 font-bold">
                               Location:
                             </span>
-                            {el.address || "Address not available"}
+                            {library.address || "Address not available"}
                           </p>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
                             <span className="text-gray-800 text-[16px] mr-2 font-bold">
                               Location:
                             </span>
-                            {el.total_books || "books not yet"}
+                            {library.total_books || "books not yet"}
                           </p>
-                          {el.books_count !== undefined && (
+                          {library.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">
                               <span className="text-gray-800 text-[16px] mr-2 font-bold">
                                 Books:
                               </span>
-                              {el.books_count}
+                              {library.books_count}
                             </p>
                           )}
                           <span className="text-gray-600 text-sm">
-                            {el.is_active ? (
+                            {library.is_active ? (
                               <div className="bg-green-500 text-center p-[5px_0] rounded-lg text-white w-[100px]">
                                 Active
                               </div>
@@ -250,38 +271,56 @@ export default function Library() {
                       </li>
                     ) : (
                       <li
-                        onClick={() => navigate(`/library/${el.id}`)}
-                        key={el.id}
-                        className="bg-white rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center"
+                        onClick={() => navigate(`/library/${library.id}`)}
+                        key={library.id}
+                        className="bg-white relative rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center"
                       >
                         <img
                           src={LibraryImg}
-                          alt={el.name || "Library"}
+                          alt={library.name || "Library"}
                           className="w-[250px] h-[220px] object-cover"
                         />
+                        <div className="cursor-pointer absolute right-5 top-4">
+                          <button
+                            className="text-[20px] text-white"
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              toggleLibraryLike(library);
+                            }}
+                          >
+                            {likesLibraries.find(
+                              (el) => el.id === library.id
+                            ) ? (
+                              <i className="text-red-500 bi bi-heart-fill"></i>
+                            ) : (
+                              <i className="text-black bi bi-heart"></i>
+                            )}
+                          </button>
+                        </div>
                         <div className="p-4 flex-1">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2">
                             <span className="text-gray-800 text-[16px] mr-2 font-bold">
                               Library name:
                             </span>
-                            {el.name || "Library Name"}
+                            {library.name || "Library Name"}
                           </h3>
                           <p className="text-gray-600 text-sm mb-3">
                             <span className="text-gray-800 text-[16px] mr-2 font-bold">
                               Location:
                             </span>
-                            {el.address || "Address not available"}
+                            {library.address || "Address not available"}
                           </p>
-                          {el.books_count !== undefined && (
+                          {library.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">
                               <span className="text-gray-800 text-[16px] mr-2 font-bold">
                                 Books:
                               </span>
-                              {el.books_count}
+                              {library.books_count}
                             </p>
                           )}
                           <span className="text-gray-600 text-sm">
-                            {el.is_active ? (
+                            {library.is_active ? (
                               <div className="bg-green-500 text-center p-[5px_0] rounded-lg text-white w-[100px]">
                                 Active
                               </div>

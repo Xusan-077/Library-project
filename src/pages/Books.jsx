@@ -15,7 +15,7 @@ export default function Books() {
   return (
     <section>
       <div className="container">
-        <div className="m-[50px_0]">
+        <div className="">
           <h2 className="text-[35px] font-bold mb-5">All Books</h2>
           <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
             {isLoading

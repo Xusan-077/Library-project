@@ -56,7 +56,7 @@ export default function Header() {
             </span>
           </Link>
 
-          <nav className="flex items-center">
+          <nav className="flex items-center ">
             {[
               {
                 text: "Home",
@@ -71,8 +71,8 @@ export default function Header() {
                 path: "/library",
               },
               {
-                text: "Likes",
-                path: "/likes",
+                text: "Favorites",
+                path: "/favorites",
               },
             ].map((el, index) => (
               <li key={index} className="p-[10px_20px]">
@@ -80,8 +80,10 @@ export default function Header() {
                   to={el.path}
                   className={({ isActive }) =>
                     `${
-                      isActive ? "border-b-2 border-b-gray-900" : ""
-                    } text-[18px] text-gray-800 pb-2.5 font-medium`
+                      isActive
+                        ? "border-b-2 border-b-yellow-700 text-yellow-700 "
+                        : ""
+                    } text-[18px] text-gray-800 pb-2.5 font-medium  transition-all duration-300 ease hover:text-yellow-700`
                   }
                 >
                   {el.text}
@@ -94,8 +96,10 @@ export default function Header() {
                   to="my-books"
                   className={({ isActive }) =>
                     `${
-                      isActive ? "border-b-2 border-b-gray-900" : ""
-                    } text-[18px] text-gray-800 pb-2.5 font-medium`
+                      isActive
+                        ? "border-b-2 border-b-yellow-700 text-yellow-700"
+                        : ""
+                    } text-[18px] text-gray-800 pb-2.5 font-medium  transition-all duration-300 ease hover:text-yellow-700`
                   }
                 >
                   My books

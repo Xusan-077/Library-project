@@ -27,7 +27,7 @@ export default function App() {
           <Route path="library" element={<Library />} />
           <Route path="library/:libraryId" element={<PublicLibraryPage />} />
           <Route path="books" element={<Books />} />
-          <Route path="likes" element={<Likes />} />
+          <Route path="favorites" element={<Likes />} />
           {isAuth && <Route path="my-books" element={<MyBooks />} />}
           {isAuth && <Route path="profile" element={<Profile />} />}
           <Route path="book/:bookId" element={<PublicBookDetailPage />} />
