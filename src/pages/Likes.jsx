@@ -43,7 +43,7 @@ export default function Likes() {
                   toggle === "books" ? " border-yellow-700" : ""
                 } ${
                   theme == "light" ? "" : "text-white"
-                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal"></i>
@@ -56,7 +56,7 @@ export default function Likes() {
                   toggle === "libraries" ? " border-yellow-700" : ""
                 } ${
                   theme == "light" ? "" : "text-white"
-                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal-bookmark-fill"></i>

@@ -44,9 +44,6 @@ export default function Header() {
     }
   }, []);
 
-
-  // bg #030712FF
-  // card #101828FF
   return (
     <header
       className={`sticky top-0 w-full z-100 border-b ${
@@ -68,12 +65,13 @@ export default function Header() {
             </span>
           </Link>
 
-          <nav className="flex items-center max-[850px]:hidden">
+          <nav className="flex items-center max-[1040px]:hidden">
             {[
               {
                 text: "Home",
                 path: "/",
               },
+
               {
                 text: "Books",
                 path: "/books",
@@ -86,6 +84,7 @@ export default function Header() {
                 text: "Favorites",
                 path: "/favorites",
               },
+              { text: "Settings", path: "/settings" },
             ].map((el, index) => (
               <li key={index} className="p-[10px_20px]">
                 <NavLink
@@ -137,23 +136,7 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-5">
-            <div className="max-[850px]:hidden gap-3 flex items-center">
-              <div className="">
-                <div
-                  onClick={() => (theme ? toggleTheme() : "")}
-                  className={`${
-                    theme == "light" ? "bg-gray-200" : "bg-yellow-700"
-                  }  w-18 flex items-center px-1 rounded-2xl h-8`}
-                >
-                  <div
-                    className={`${
-                      theme == "light"
-                        ? "bg-gray-300"
-                        : "translate-x-7 bg-white"
-                    }  transition-all duration-300 w-9 h-6 rounded-2xl`}
-                  ></div>
-                </div>
-              </div>
+            <div className="max-[1040px]:hidden gap-3 flex items-center">
               <div className="">
                 {isAuth ? (
                   <div
@@ -191,7 +174,7 @@ export default function Header() {
 
             <div
               onClick={() => setBurger(true)}
-              className="hidden max-[850px]:block"
+              className="hidden max-[1040px]:block"
             >
               <button className="">
                 <i
@@ -203,7 +186,7 @@ export default function Header() {
             </div>
 
             {burger && (
-              <div className="fixed max-[850px]:flex hidden inset-0 bg-[#0009] z-200 ">
+              <div className="fixed max-[1040px]:flex hidden inset-0 bg-[#0009] z-200 ">
                 <div
                   className={`${
                     theme == "light"
@@ -213,49 +196,23 @@ export default function Header() {
                 >
                   <Link className="flex items-center gap-2 mb-3" to="/">
                     <img src={Logo} alt="" className="w-10 h-10" />
-                    <span className="text-[25px] font-bold text-gray-900">
+                    <span
+                      className={`${
+                        theme == "light" ? "text-gray-900" : "text-white"
+                      } text-[25px] font-bold `}
+                    >
                       LibraSpace
                     </span>
                   </Link>
-                  {isAuth ? (
-                    <div
-                      onClick={() => {
-                        navigate("/profile");
-                        setBurger(false);
-                      }}
-                      className="mb-5 flex gap-5 cursor-pointer justify-between p-[0_5px] border-b border-b-gray-300 pb-5 items-center "
-                    >
-                      <p className="text-[26px] font-bold">
-                        <span className={`font-semibold text-yellow-700`}>
-                          Hi ,
-                        </span>
-                        <span
-                          className={
-                            theme === "light" ? "text-black" : "text-white pl-2"
-                          }
-                        >
-                          {capitalizedName || "User"}!
-                        </span>
-                      </p>
 
-                      <button className="cursor-pointer">
-                        <i
-                          className={`${
-                            theme == "light" ? "text-gray-600" : "text-white"
-                          }  text-[40px] bi bi-person-circle`}
-                        ></i>
-                      </button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <nav>
+                  <nav className="border-b border-b-gray-800 pb-5 mb-5">
                     <ul className="flex flex-col">
                       {[
                         { text: "Home", path: "/" },
                         { text: "Books", path: "/books" },
                         { text: "Libraries", path: "/library" },
                         { text: "Favorites", path: "/favorites" },
+                        { text: "Settings", path: "/settings" },
                       ].map((el) => (
                         <NavLink
                           key={el.text}
@@ -276,21 +233,39 @@ export default function Header() {
                       ))}
 
                       {isAuth && (
-                        <NavLink
-                          onClick={() => setBurger(false)}
-                          to="/my-books"
-                          className={({ isActive }) =>
-                            `${
-                              isActive
-                                ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
-                                : ""
-                            } ${
-                              theme == "light" ? "" : "text-white"
-                            } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
-                          }
-                        >
-                          My books
-                        </NavLink>
+                        <>
+                          <NavLink
+                            onClick={() => setBurger(false)}
+                            to="/my-books"
+                            className={({ isActive }) =>
+                              `${
+                                isActive
+                                  ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
+                                  : ""
+                              } ${
+                                theme == "light" ? "" : "text-white"
+                              } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
+                            }
+                          >
+                            My books
+                          </NavLink>
+
+                          <NavLink
+                            onClick={() => setBurger(false)}
+                            to="/profile"
+                            className={({ isActive }) =>
+                              `${
+                                isActive
+                                  ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
+                                  : ""
+                              } ${
+                                theme == "light" ? "" : "text-white"
+                              } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
+                            }
+                          >
+                            Profile
+                          </NavLink>
+                        </>
                       )}
 
                       {!isAuth && (

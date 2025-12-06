@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import PublicBooksItem from "../components/PublicBooksItem";
 import { AuthAPI } from "../../API/API";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 import { useForm } from "react-hook-form";
@@ -20,6 +20,14 @@ export default function MyBooks() {
   const [OneBook, setOneBook] = useState({});
 
   const [addSeveralBookMain, setAddSeveralBookMain] = useState(true);
+
+  const [addBooksWithFile, setAddBooksWithFile] = useState(false);
+  const [addBookWithFileMani, setAddBookWithFileMani] = useState("first");
+
+  const [fileData, setFileData] = useState([]);
+  const [fileAction, setFileAction] = useState(null);
+
+  const fileInputRef = useRef();
 
   const accessToken = localStorage.getItem("access");
 
@@ -91,6 +99,21 @@ export default function MyBooks() {
     },
   });
 
+  const { mutate: BookFileMutate } = useMutation({
+    mutationFn: async (body) => {
+      const res = await AuthAPI.post("/books/upload-excel/", body);
+      return res?.data;
+    },
+    onSuccess: (data) => {
+      setFileData(data);
+
+      queryClient.invalidateQueries();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to upload file");
+    },
+  });
+
   function handleSaveOneBook(e) {
     setOneBook({ ...OneBook, [e.target.name]: e.target.value });
   }
@@ -133,6 +156,32 @@ export default function MyBooks() {
 
   function giveManyBooks() {
     setAddSeveralBookMain(false);
+  }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setFileAction(file.name);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    BookFileMutate(formData);
+  };
+
+  function handleAddFileToBooks() {
+    if (fileData?.length > 0) {
+      addBookMutation(fileData);
+
+      setAddBooksWithFile(false);
+
+      setFileData([]);
+      setFileAction(null);
+      setAddBookWithFileMani("first");
+    } else {
+      toast.error("No file data to add");
+    }
   }
 
   return (
@@ -190,6 +239,7 @@ export default function MyBooks() {
               </span>
             </button>
             <button
+              onClick={() => setAddBooksWithFile(true)}
               className={`${
                 theme == "light" ? "hover:bg-gray-100" : "hover:bg-gray-800"
               } flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer w-full rounded-lg transition-all duration-300`}
@@ -567,6 +617,111 @@ export default function MyBooks() {
                 </form>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {addBooksWithFile && (
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-100 bg-[#0009]  h-screen">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+          >
+            {/* dinamic */}
+            <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
+              <span className="text-[22px] font-semibold  text-yellow-700">
+                Load books from file
+              </span>
+              <button className="cursor-pointer">
+                <span
+                  onClick={() => {
+                    setAddBooksWithFile(false);
+                  }}
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[35px]`}
+                >
+                  &times;
+                </span>
+              </button>
+            </div>
+
+            <div className="">
+              {addBookWithFileMani == "first" ? (
+                <div className="">
+                  <div className="">
+                    <input
+                      type="file"
+                      accept=".xlsx,.xls"
+                      style={{ display: "none" }}
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                    />
+                    <span
+                      onClick={() => fileInputRef.current.click()}
+                      className="cursor-pointer border-gray-400 rounded-lg p-[30px_0] w-full bg-gray-200 flex flex-col items-center"
+                    >
+                      <i className="mb-4 text-yellow-700 text-[50px] bi bi-filetype-exe"></i>
+                      <p className="text-[16px] font-medium text-[#0009]">
+                        select an Excel file here
+                      </p>
+                      <p className="text-[16px] font-semibold text-black">
+                        Only files in .xlsx or .xls format are supported
+                      </p>
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-end mt-3 gap-2 ">
+                    <div
+                      onClick={() => {
+                        setAddBooksWithFile(false);
+
+                        setFileData([]);
+                        setAddBookWithFileMani("first");
+                      }}
+                      className="p-[10px_20px] cursor-pointer bg-gray-100 border border-gray-300 rounded-lg"
+                    >
+                      cancle
+                    </div>
+                    <button
+                      onClick={handleAddFileToBooks}
+                      type="button"
+                      disabled={fileData.length == 0}
+                      className="p-[10px_20px] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex gap-2 items-center bg-yellow-700 text-white border rounded-lg"
+                    >
+                      <i className="bi bi-download"></i>
+                      <span className="">Uploading</span>
+                    </button>
+                  </div>
+                  <div className="">
+                    {fileAction ? (
+                      <div className="mt-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <i className="text-[30px] bi bi-file-earmark-arrow-up"></i>
+                            <p className="text-[16px] font-semibold text-[#0009]">
+                              {fileAction}
+                            </p>
+                          </div>
+                          <i className="text-[30px] bi bi-eye"></i>
+                          <i className="text-[30px] bi bi-x"></i>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+              ) : addBookWithFileMani == "second" ? (
+                ""
+              ) : addBookWithFileMani == "third" ? (
+                ""
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         </div>
       )}
