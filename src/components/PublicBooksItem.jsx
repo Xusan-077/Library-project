@@ -104,20 +104,30 @@ export default function PublicBooksItem({
     <>
       {deleteBookModal && (
         <div className="fixed bg-[#0009] flex justify-center items-center w-full h-screen top-0 left-0 z-100">
-          <div className="bg-white max-w-[500px] m-[0_20px] rounded-lg w-full p-[15px_20px]">
+          <div
+            className={`${
+              theme == "light" ? "bg-white " : "bg-[#030712FF]"
+            }  max-w-[500px] m-[0_20px] rounded-lg w-full p-[15px_20px]`}
+          >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[24px] font-semibold text-yellow-700">
                 Delete Book
               </span>
               <button
                 onClick={() => setDeleteBookModal(false)}
-                className="text-[35px]"
+                className={`${
+                  theme == "light" ? "" : "text-white"
+                }  text-[35px]`}
               >
                 &times;
               </button>
             </div>
             <div className="">
-              <p className="text-[18px] text-center mb-7">
+              <p
+                className={`${
+                  theme == "light" ? "" : "text-white"
+                } text-[18px] text-center mb-7`}
+              >
                 realy want to delate
                 <span className="text-red-600 underline">{book.name}</span>
               </p>
@@ -149,7 +159,13 @@ export default function PublicBooksItem({
 
       {editBookModal && (
         <div className="fixed top-0 flex justify-center w-full items-center left-0 z-100 bg-[#0009]  h-screen">
-          <div className="bg-white m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+          >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[22px] font-semibold  text-yellow-700">
                 Add one book
@@ -157,7 +173,9 @@ export default function PublicBooksItem({
               <button className="cursor-pointer">
                 <span
                   onClick={() => setEditBookModal(false)}
-                  className="text-[35px]"
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  }  text-[35px]`}
                 >
                   &times;
                 </span>
@@ -173,7 +191,11 @@ export default function PublicBooksItem({
                   name="name"
                   onChange={handleSaveOneBook}
                   placeholder="Book name"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.name?.message}
@@ -188,7 +210,11 @@ export default function PublicBooksItem({
                   name="author"
                   onChange={handleSaveOneBook}
                   placeholder="Author"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.author?.message}
@@ -203,7 +229,11 @@ export default function PublicBooksItem({
                   name="publisher"
                   onChange={handleSaveOneBook}
                   placeholder="Publisher"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.publisher?.message}
@@ -220,7 +250,11 @@ export default function PublicBooksItem({
                   name="quantity_in_library"
                   onChange={handleSaveOneBook}
                   placeholder="Book count"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.quantity_in_library?.message}
@@ -230,7 +264,9 @@ export default function PublicBooksItem({
               <div className="flex gap-3 items-center justify-end mt-5">
                 <button
                   onClick={() => setEditBookModal(false)}
-                  className="cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg"
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                   type="button"
                 >
                   cancle
@@ -247,12 +283,12 @@ export default function PublicBooksItem({
         </div>
       )}
 
-      react
-
       <li
         onClick={() => navigate(`/book/${book.id}`)}
         className={`${!library ? "min-w-[280px]" : ""} ${
-          theme == "light" ? "border-white" : "bg-[#1D202AFF] border-gray-800 border"
+          theme == "light"
+            ? "border-white"
+            : "bg-[#1D202AFF] border-gray-800 border"
         }  cursor-pointer border  shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
       >
         <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100">

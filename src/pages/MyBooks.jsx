@@ -379,7 +379,9 @@ export default function MyBooks() {
                     reset();
                     resetCount({ manyBook: 1 });
                   }}
-                  className="text-[35px]"
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[35px]`}
                 >
                   &times;
                 </span>
