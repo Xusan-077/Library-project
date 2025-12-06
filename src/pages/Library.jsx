@@ -6,6 +6,7 @@ import API from "../../API/API";
 
 import LibraryImg from "../assets/images/publicImg.jpg";
 import uselikeStore from "../store/useLikeStore";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Library() {
   const [format, setFormat] = useState("grid");
@@ -13,6 +14,7 @@ export default function Library() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { toggleLibraryLike, likesLibraries } = uselikeStore();
+  const { theme } = useThemeStore();
 
   const navigate = useNavigate();
 
@@ -58,11 +60,21 @@ export default function Library() {
   }, [libraries?.data, sort, searchQuery]);
 
   return (
-    <section className="bg-gray-50">
+    <section className={`${theme == "light" ? "bg-gray-50" : "bg-[#0A0F18]"}`}>
       <div className="container mx-auto px-4">
-        <h2 className="text-[35px] font-bold mb-5">List of libraries</h2>
+        <h2
+          className={`${
+            theme == "light" ? "" : "text-white"
+          } text-[35px] font-bold mb-5`}
+        >
+          List of libraries
+        </h2>
         <div className="grid grid-cols-[280px_1fr] max-[725px]:grid-cols-1 items-start gap-[30px]">
-          <div className="sticky max-[725px]:static  top-[120px] bg-white shadow-2xl rounded-lg p-[15px_15px_30px_15px] flex flex-col gap-2">
+          <div
+            className={`${
+              theme == "light" ? "bg-white" : "bg-[#131A28]"
+            } sticky max-[725px]:static  top-[120px] shadow-2xl rounded-lg p-[15px_15px_30px_15px] flex flex-col gap-2`}
+          >
             {[
               {
                 id: "name-asc",

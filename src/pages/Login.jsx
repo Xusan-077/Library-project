@@ -11,6 +11,7 @@ import useAuthStore from "../store/useUserAuth";
 import loginImage from "../assets/images/login-img.png";
 import Logo from "../assets/icons/Logo.png";
 import API from "../../API/API";
+import { useEffect } from "react";
 
 export default function Login() {
   const schema = yup.object({
@@ -45,8 +46,22 @@ export default function Login() {
   });
 
   const onSubmit = (data) => {
+    localStorage.clear();
+
     mutation.mutate(data);
   };
+
+  useEffect(() => {
+    const handleUnload = () => {
+      localStorage.clear();
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
 
   return (
     <section className="bg-[#F1F3F6FF] h-screen">

@@ -7,7 +7,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import useThemeStore from "../store/useThemeStore";
+
 export default function HomePublicBooksSection() {
+  const { theme } = useThemeStore();
+
   const { data: books, isLoading } = useQuery({
     queryKey: ["books"],
     queryFn: async () => {
@@ -17,10 +21,14 @@ export default function HomePublicBooksSection() {
   });
 
   return (
-    <section>
+    <section className={``}>
       <div className="container">
-        <div className="mb-10">
-          <h2 className="text-[30px] text-gray-700 font-semibold mb-5 ml-2">
+        <div className="">
+          <h2
+            className={`${
+              theme == "light" ? "text-black" : "text-white"
+            } text-[35px] font-semibold mb-5 ml-2`}
+          >
             most read books
           </h2>
           <Swiper
@@ -51,7 +59,7 @@ export default function HomePublicBooksSection() {
                   <SwiperSlide
                     key={book.id}
                     className="py-4 rounded-lg"
-                    style={{ minWidth: "280px" }} // ✅ min width 280px
+                    style={{ minWidth: "280px" }}
                   >
                     <PublicBooksItem book={book} {...book} index={index} />
                   </SwiperSlide>

@@ -3,8 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import API from "../../API/API";
+import useThemeStore from "../store/useThemeStore";
 
 export default function HomeHeroSection() {
+  const { theme } = useThemeStore();
+
   const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
@@ -21,15 +24,23 @@ export default function HomeHeroSection() {
   });
 
   return (
-    <section className="hero py-16 max-[768px]:py-0 h-full">
+    <section className={`py-16 max-[768px]:py-0 h-full`}>
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-8 max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-[425px]:text-[30px] font-bold text-center leading-tight">
+          <h1
+            className={`${
+              theme == "light" ? "" : "text-white"
+            } text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-[425px]:text-[30px] font-bold text-center leading-tight`}
+          >
             Discover Endless Worlds of <br className="hidden sm:block" />
             Knowledge, Stories
           </h1>
 
-          <p className="text-base md:text-lg font-medium max-w-2xl max-[425px]:text-[14px] text-center text-gray-600 ">
+          <p
+            className={`${
+              theme == "light" ? "text-gray-600" : "text-gray-400"
+            } text-base md:text-lg font-medium max-w-2xl max-[425px]:text-[14px] text-center`}
+          >
             Welcome to a place where curiosity meets discovery. Our library is
             more than just books on shelves—it's a vibrant community hub where
             learners of all ages come together to explore, create, and grow.
@@ -44,9 +55,13 @@ export default function HomeHeroSection() {
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 placeholder="Search your book here..."
-                className="w-full h-14 pl-6 pr-14 border-2 border-gray-300 rounded-full 
+                className={`${
+                  theme == "light"
+                    ? "border-gray-300 placeholder:text-gray-400"
+                    : "border-gray-400 placeholder:text-gray-500"
+                } w-full h-14 pl-6 pr-14 border rounded-full 
                      focus:border-yellow-600 focus:outline-none transition-colors
-                     text-base placeholder:text-gray-400"
+                     text-base `}
               />
               <button
                 className="absolute right-2 top-1/2 -translate-y-1/2 

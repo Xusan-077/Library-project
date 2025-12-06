@@ -32,6 +32,8 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
 
+        {isAuth && <Route path="/switch" element={<Login />} />}
+
         {!isAuth && <Route path="/login" element={<Login />} />}
         {!isAuth && <Route path="/register" element={<Register />} />}
       </Routes>

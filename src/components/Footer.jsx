@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 import Logo from "../assets/icons/Logo.png";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Footer() {
+  const { theme } = useThemeStore();
+
   return (
-    <footer className="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-12">
+    <footer
+      className={`${
+        theme == "light"
+          ? "bg-white border-gray-200"
+          : "bg-[#030712] border-t-gray-800"
+      }  border-t  py-12`}
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -23,38 +32,30 @@ export default function Footer() {
               Tezkor havolalar
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  Bosh sahifa
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  Kutubxonalar
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  Kitoblar
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  Tadbirlar
-                </a>
-              </li>
+              {[
+                {
+                  text: "Home",
+                  path: "/",
+                },
+                {
+                  text: "Books",
+                  path: "/books",
+                },
+                {
+                  text: "libraries",
+                  path: "/library",
+                },
+                {
+                  text: "Favorites",
+                  path: "/favorites",
+                },
+              ].map((el, index) => (
+                <li key={index} className="p-2.5">
+                  <Link to={el.path} className="text-gray-400 text-[16px]">
+                    {el.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -68,7 +69,7 @@ export default function Footer() {
                   href="tel:+998901234567"
                   className="hover:text-black dark:hover:text-white transition-colors"
                 >
-                  +998 90 123 45 67
+                  +998 93 164 03 49
                 </a>
               </li>
               <li>
@@ -76,10 +77,10 @@ export default function Footer() {
                   href="mailto:info@ezma.uz"
                   className="hover:text-black dark:hover:text-white transition-colors"
                 >
-                  info@ezma.uz
+                  xusanyarashvo1@gmail.com
                 </a>
               </li>
-              <li>Toshkent shahri, Yunusobod tumani</li>
+              <li>Toshkent shahri, Sergeli tumani</li>
             </ul>
           </div>
 

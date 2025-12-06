@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import API from "../../API/API";
 import PublicBooksItem from "../components/PublicBooksItem";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Books() {
+  const { theme } = useThemeStore();
+
   const { data: books, isLoading } = useQuery({
     queryKey: ["books"],
     queryFn: async () => {
@@ -15,8 +18,20 @@ export default function Books() {
   return (
     <section>
       <div className="container">
-        <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
-          <h2 className="text-[35px] font-bold mb-5">All Books</h2>
+        <div
+          className={`${
+            theme == "light"
+              ? "bg-white"
+              : "bg-[#131A28] border border-gray-800"
+          }  max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg`}
+        >
+          <h2
+            className={`${
+              theme == "light" ? "" : "text-white"
+            } text-[35px] font-bold mb-5`}
+          >
+            All Books
+          </h2>
           <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
             {isLoading
               ? Array.from({ length: 12 }).map((_, index) => (

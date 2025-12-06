@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useThemeStore from "../store/useThemeStore";
 
 export default function PublicBooksItem({
   name,
@@ -34,6 +35,8 @@ export default function PublicBooksItem({
     quantity_in_library: book?.quantity_in_library || 0,
   });
 
+  const { theme } = useThemeStore();
+
   const navigate = useNavigate();
 
   const schema = yup
@@ -53,8 +56,6 @@ export default function PublicBooksItem({
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const accessToken = localStorage.getItem("access");
 
   const { mutate: deleteBookMutation } = useMutation({
     mutationFn: async (Id) => {
@@ -248,9 +249,9 @@ export default function PublicBooksItem({
 
       <li
         onClick={() => navigate(`/book/${book.id}`)}
-        className={`${
-          !library ? "min-w-[280px]" : ""
-        } cursor-pointer shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
+        className={`${!library ? "min-w-[280px]" : ""} ${
+          theme == "light" ? "" : "bg-[#1D202AFF] border-gray-800 border"
+        }  cursor-pointer shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
       >
         <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100">
           <div className="w-full h-[220px] bg-gray-200">
@@ -296,15 +297,29 @@ export default function PublicBooksItem({
         </div>
 
         <div>
-          <h3 className="font-semibold text-sm line-clamp-2 text-gray-900 border-b border-b-gray-200 pb-2.5 transition-colors">
+          <h3
+            className={`${
+              theme == "light"
+                ? "text-gray-900 border-b-gray-200"
+                : "text-white"
+            } font-semibold text-sm line-clamp-2  border-b  pb-2.5`}
+          >
             {name}
           </h3>
           <div className="flex justify-between mt-3">
             <div className="pt-2">
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p
+                className={`${
+                  theme == "light" ? "text-gray-600" : "text-gray-400"
+                } text-xs`}
+              >
                 {author}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-500">
+              <p
+                className={`${
+                  theme == "light" ? "text-gray-500" : "text-gray-400"
+                } text-xs`}
+              >
                 {publisher}
               </p>
             </div>

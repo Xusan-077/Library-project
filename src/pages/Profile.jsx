@@ -267,7 +267,7 @@ export default function Profile() {
                 <div className="w-[200px] h-[140px] items-center top-17 right-0 absolute">
                   <div
                     className=" bg-white shadow-2xl 
-                  p-2.5 rounded-lg max-w-[150px] w-full 
+                  p-2.5 rounded-lg max-w-[120px] w-full 
                  "
                   >
                     <button
@@ -277,6 +277,15 @@ export default function Profile() {
                       <i className="bi bi-pencil-square"></i>
                       <span className="">Edit</span>
                     </button>
+
+                    <button
+                      onClick={() => navigate("/switch")}
+                      className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
+                    >
+                      <i class="text-[20px] bi bi-toggle-off"></i>
+                      <span className="">switch</span>
+                    </button>
+
                     <button
                       onClick={() => setLogOurModal(true)}
                       className="cursor-pointer flex text-red-500 text-[18px] font-semibold items-center gap-3"

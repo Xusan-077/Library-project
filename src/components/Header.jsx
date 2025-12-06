@@ -4,11 +4,14 @@ import useAuthStore from "../store/useUserAuth";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthAPI } from "../../API/API";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Header() {
   const [burger, setBurger] = useState(false);
 
   const { isAuth, setIsAuth, user, setUser } = useAuthStore();
+  const { theme, toggleTheme } = useThemeStore();
+
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("access");
@@ -41,13 +44,27 @@ export default function Header() {
     }
   }, []);
 
+  // ${theme == "light" ? "" : ""}
+
+  // bg #030712FF
+  // card #101828FF
   return (
-    <header className="border-b border-b-gray-300 shadow-sm sticky top-0 z-100 w-full bg-white">
+    <header
+      className={`sticky top-0 w-full z-100 border-b ${
+        theme === "light"
+          ? "bg-white border-b-gray-300 shadow-sm"
+          : "bg-[#0A0F18] border-b-gray-800 shadow-md"
+      }`}
+    >
       <div className="container">
         <div className="flex p-[20px_0] items-center justify-between">
           <Link className="flex items-center gap-2" to="/">
             <img src={Logo} alt="" className="w-10 h-10" />
-            <span className="text-[25px] font-bold text-gray-900">
+            <span
+              className={` ${
+                theme == "light" ? "text-gray-900" : "text-white"
+              } text-[25px] font-bold`}
+            >
               LibraSpace
             </span>
           </Link>
@@ -77,9 +94,17 @@ export default function Header() {
                   className={({ isActive }) =>
                     `${
                       isActive
-                        ? "border-b-2 border-b-yellow-700 text-yellow-700 "
+                        ? `${
+                            theme == "light"
+                              ? "border-b-yellow-700 text-yellow-700"
+                              : "border-b-white text-white"
+                          } border-b-2 `
                         : ""
-                    } text-[18px] text-gray-800 pb-2.5 font-medium  transition-all duration-300 ease hover:text-yellow-700`
+                    } ${
+                      theme == "light"
+                        ? "text-gray-800  hover:text-yellow-700"
+                        : "text-gray-400 hover:text-white"
+                    } text-[18px] pb-2.5 font-medium  transition-all duration-300 ease`
                   }
                 >
                   {el.text}
@@ -93,9 +118,17 @@ export default function Header() {
                   className={({ isActive }) =>
                     `${
                       isActive
-                        ? "border-b-2 border-b-yellow-700 text-yellow-700"
+                        ? `${
+                            theme == "light"
+                              ? "border-b-yellow-700 text-yellow-700"
+                              : "border-b-white text-white"
+                          } border-b-2 `
                         : ""
-                    } text-[18px] text-gray-800 pb-2.5 font-medium  transition-all duration-300 ease hover:text-yellow-700`
+                    } ${
+                      theme == "light"
+                        ? "text-gray-800  hover:text-yellow-700"
+                        : "text-gray-400 hover:text-white"
+                    } text-[18px] pb-2.5 font-medium  transition-all duration-300 ease`
                   }
                 >
                   My books
@@ -105,29 +138,49 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-5">
-            <div className="max-[850px]:hidden">
-              {isAuth ? (
+            <div className="max-[850px]:hidden gap-3 flex items-center">
+              <div className="">
                 <div
-                  onClick={() => navigate("/profile")}
-                  className="flex gap-5 cursor-pointer items-center "
+                  onClick={() => (theme ? toggleTheme() : "")}
+                  className={`${
+                    theme == "light" ? "bg-gray-200" : "bg-yellow-700"
+                  }  w-18 flex items-center px-1 rounded-2xl h-8`}
                 >
-                  <p className="text-[26px] font-bold">
-                    <span className="text-yellow-700 font-semibold">Hi ,</span>
-                    {capitalizedName ? capitalizedName : "User"}!
-                  </p>
-
-                  <button className="cursor-pointer">
-                    <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
-                  </button>
+                  <div
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-300"
+                        : "translate-x-7 bg-white"
+                    }  transition-all duration-300 w-9 h-6 rounded-2xl`}
+                  ></div>
                 </div>
-              ) : (
-                <button
-                  onClick={() => navigate("/login")}
-                  className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
-                >
-                  Login
-                </button>
-              )}
+              </div>
+              <div className="">
+                {isAuth ? (
+                  <div
+                    onClick={() => navigate("/profile")}
+                    className="flex gap-5 cursor-pointer items-center "
+                  >
+                    <p className="text-[26px] font-bold">
+                      <span className="text-yellow-700 font-semibold">
+                        Hi ,
+                      </span>
+                      {capitalizedName ? capitalizedName : "User"}!
+                    </p>
+
+                    <button className="cursor-pointer">
+                      <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
             </div>
 
             <div
@@ -157,10 +210,20 @@ export default function Header() {
                       className="mb-5 flex gap-5 cursor-pointer justify-between p-[0_5px] border-b border-b-gray-300 pb-5 items-center "
                     >
                       <p className="text-[26px] font-bold">
-                        <span className="text-yellow-700 font-semibold">
+                        <span
+                          className={`font-semibold ${
+                            theme === "light" ? "text-yellow-700" : "text-white"
+                          }`}
+                        >
                           Hi ,
+                        </span>{" "}
+                        <span
+                          className={
+                            theme === "light" ? "text-black" : "text-white"
+                          }
+                        >
+                          {capitalizedName || "User"}!
                         </span>
-                        {capitalizedName ? capitalizedName : "User"}!
                       </p>
 
                       <button className="cursor-pointer">
@@ -238,43 +301,3 @@ export default function Header() {
     </header>
   );
 }
-
-/* <button
-              onClick={toggleTheme}
-              className={`relative rounded-full w-18 h-8 transition-all duration-300 shadow-inner ${
-                theme === "light"
-                  ? "bg-linear-to-r from-yellow-400 to-orange-400"
-                  : "bg-linear-to-r from-slate-700 to-slate-900"
-              }`}
-              aria-label="Toggle theme"
-            >
-              <span
-                className={`absolute top-1 flex items-center justify-center w-6 h-6 rounded-full shadow-lg transition-all duration-300 ${
-                  theme === "light"
-                    ? "translate-x-1 bg-white"
-                    : "translate-x-11 bg-slate-300"
-                }`}
-              >
-                {theme === "light" ? (
-                  <svg
-                    className="w-4 h-4 text-yellow-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-4 h-4 text-slate-700"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                  </svg>
-                )}
-              </span>
-            </button> */
