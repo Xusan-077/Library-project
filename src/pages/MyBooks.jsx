@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { queryClient } from "../main";
+import useThemeStore from "../store/useThemeStore";
 
 export default function MyBooks() {
   const [addBookFirst, setAddBookFirst] = useState(false);
@@ -21,6 +22,8 @@ export default function MyBooks() {
   const [addSeveralBookMain, setAddSeveralBookMain] = useState(true);
 
   const accessToken = localStorage.getItem("access");
+
+  const { theme } = useThemeStore();
 
   const countSchema = yup.object({
     manyBook: yup.number().positive().integer().required(),
@@ -446,10 +449,26 @@ export default function MyBooks() {
       )}
 
       <div className="container">
-        <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
+        <div
+          className={`${
+            theme == "light"
+              ? "bg-white"
+              : "bg-transparent shadow-none border border-gray-800"
+          }  max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg`}
+        >
           <div className="flex items-center justify-between  mb-5">
-            <h2 className="text-[35px] font-bold">My Books</h2>
-            <div className="text-[30px] font-semibold">
+            <h2
+              className={`${
+                theme == "light" ? "" : "text-white"
+              } text-[35px] font-bold`}
+            >
+              My Books
+            </h2>
+            <div
+              className={`${
+                theme == "light" ? "" : "text-white"
+              } text-[30px] font-semibold`}
+            >
               Books : ({myBooks?.data?.length ? myBooks?.data?.length : 0} )
             </div>
           </div>
@@ -484,7 +503,11 @@ export default function MyBooks() {
               ))
             ) : (
               <div className="flex flex-col justify-center items-center">
-                <i className="bi bi-book text-gray-400 text-[100px]"></i>
+                <i
+                  className={`${
+                    theme == "light" ? "text-gray-400" : "text-white"
+                  } bi bi-book  text-[100px]`}
+                ></i>
                 <p className="text-center font-semibold justify-center text-red-600 text-[40px]">
                   In your library no Books Yet
                 </p>

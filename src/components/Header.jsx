@@ -165,11 +165,21 @@ export default function Header() {
                       <span className="text-yellow-700 font-semibold">
                         Hi ,
                       </span>
-                      {capitalizedName ? capitalizedName : "User"}!
+                      <span
+                        className={`${
+                          theme == "light" ? "" : "text-white"
+                        } pl-2`}
+                      >
+                        {capitalizedName ? capitalizedName : "User"}!
+                      </span>
                     </p>
 
                     <button className="cursor-pointer">
-                      <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
+                      <i
+                        className={`${
+                          theme == "light" ? "text-gray-600" : "text-white"
+                        }  text-[40px] bi bi-person-circle`}
+                      ></i>
                     </button>
                   </div>
                 ) : (

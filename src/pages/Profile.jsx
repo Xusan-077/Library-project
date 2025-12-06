@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("books");
 
   const { user, logOut } = useAuthStore();
+  const { theme } = useThemeStore();
 
   const navigate = useNavigate();
 
@@ -215,21 +217,33 @@ export default function Profile() {
 
       <div className="container">
         <div className="">
-          <div className="flex relative max-[700px]:block items-center mb-[30px] gap-[30px] bg-white p-5 rounded-lg shadow-2xl">
-            <div className="bg-[#CCCCCCFF] max-[700px]:w-full rounded-lg flex justify-center items-center w-[250px] h-[250px]">
+          <div
+            className={`${
+              theme == "light" ? "bg-white" : "border border-gray-800"
+            }  flex relative max-[700px]:block items-center mb-[30px] gap-[30px]  p-5 rounded-lg shadow-2xl`}
+          >
+            <div
+              className={`bg-[#CCCCCCFF] max-[700px]:w-full rounded-lg flex justify-center items-center w-[250px] h-[250px]`}
+            >
               <i className="text-[100px] text-white bi bi-person-circle"></i>
             </div>
             <div className="">
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-person"></i>
-                <h2 className="text-[30px] font-semibold">
+                <h2
+                  className={`${
+                    theme == "light" ? "" : "text-gray-100"
+                  } text-[30px] font-semibold`}
+                >
                   {user?.user?.name}
                 </h2>
               </div>
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-telephone"></i>
                 <a
-                  className="underline text-[18px]"
+                  className={`${
+                    theme == "light" ? "" : "text-gray-100"
+                  }  underline text-[18px]`}
                   href={`tel:${user?.user?.phone}`}
                 >
                   {user?.user?.phone}
@@ -247,7 +261,13 @@ export default function Profile() {
               </div>
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-house-door"></i>
-                <p className="text-[18px] font-medium">{user?.address}</p>
+                <p
+                  className={` ${
+                    theme == "light" ? "" : "text-gray-100"
+                  }   text-[18px] font-medium`}
+                >
+                  {user?.address}
+                </p>
               </div>
             </div>
             <div
@@ -282,7 +302,7 @@ export default function Profile() {
                       onClick={() => navigate("/switch")}
                       className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                     >
-                      <i class="text-[20px] bi bi-toggle-off"></i>
+                      <i className="text-[20px] bi bi-toggle-off"></i>
                       <span className="">switch</span>
                     </button>
 
@@ -299,13 +319,25 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "border-gray-800 shadow-none border"
+            }  max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg`}
+          >
             <div>
-              <div className="w-full max-[678px]:overflow-x-auto flex flex-nowrap border-b pb-2.5 border-b-gray-100">
+              <div
+                className={`${
+                  theme == "light" ? "border-b-gray-100" : "border-gray-800"
+                } w-full max-[678px]:overflow-x-auto flex flex-nowrap border-b pb-5`}
+              >
                 <button
                   className={`pb-2 ${
                     activeTab === "books" ? "border-b-2 border-yellow-700" : ""
-                  } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
+                  } ${
+                    theme == "light" ? "" : "text-white"
+                  }  flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("books")}
                 >
                   <i className="text-yellow-700 bi bi-journal-bookmark"></i>
@@ -316,7 +348,9 @@ export default function Profile() {
                     activeTab === "network"
                       ? "border-b-2 border-yellow-700"
                       : ""
-                  } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
+                  }  ${
+                    theme == "light" ? "" : "text-white"
+                  }  flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("network")}
                 >
                   <i className="text-yellow-700 bi bi-share"></i>
@@ -325,6 +359,8 @@ export default function Profile() {
                 <button
                   className={`pb-2 ${
                     activeTab === "map" ? "border-b-2 border-yellow-700" : ""
+                  }  ${
+                    theme == "light" ? "" : "text-white"
                   } flex gap-5 p-[10px_0] max-w-[200px] min-w-[150px] justify-center w-full whitespace-nowrap`}
                   onClick={() => setActiveTab("map")}
                 >
@@ -336,7 +372,13 @@ export default function Profile() {
               <div className="mt-4">
                 {activeTab === "books" && (
                   <div>
-                    <h2 className="pb-2.5 border-b-gray-300 border-b text-[30px] font-semibold m-[20px_0_10px_20px]">
+                    <h2
+                      className={`${
+                        theme == "light"
+                          ? "border-b-gray-300"
+                          : "border-b-gray-800 text-white"
+                      } pb-5 border-b text-[30px] font-semibold my-5`}
+                    >
                       My Books
                     </h2>
                     <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">

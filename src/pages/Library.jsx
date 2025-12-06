@@ -101,12 +101,23 @@ export default function Library() {
                 <i className={`text-yellow-600 bi ${option.icon}`}></i>
                 <button
                   onClick={() => setSort(option.id)}
-                  className={`bg-gray-200 border cursor-pointer border-gray-300 text-[#000000d9] rounded-lg p-[5px_10px_5px_15px] text-[16px] w-full text-left transition-all
-                    ${
-                      sort === option.id
-                        ? "bg-yellow-600 font-medium text-[#f9f9f9]"
-                        : "hover:bg-gray-300"
-                    }`}
+                  className={`
+    w-full text-left rounded-lg p-[5px_10px_5px_15px] text-[16px] border cursor-pointer transition-all
+    ${
+      theme === "light"
+        ? "border-gray-300 text-[#000000d9]"
+        : "border-gray-600 text-white"
+    }
+    ${
+      sort === option.id
+        ? theme === "light"
+          ? "bg-yellow-600 font-medium text-[#f9f9f9]"
+          : "bg-[#334378] font-medium text-[#f9f9f9]"
+        : theme === "light"
+        ? "bg-gray-200 hover:bg-gray-300"
+        : "bg-[#131A28] hover:bg-gray-700"
+    }
+  `}
                 >
                   {option.label}
                 </button>
@@ -115,15 +126,27 @@ export default function Library() {
           </div>
 
           <div>
-            <div className="mb-[30px] bg-white rounded-lg shadow-2xl">
+            <div
+              className={`${
+                theme == "light" ? "bg-white" : "bg-[#131A28]"
+              } mb-[30px]  rounded-lg shadow-2xl`}
+            >
               <div className="flex items-center max-[800px]:gap-5 justify-between p-[10px_20px] max-[425px]:block">
-                <div className="flex items-center rounded-lg p-[0_0_0_20px] max-[425px]:mb-3 max-[425px]:max-w-full max-w-[300px] w-full gap-3 border border-gray-300">
+                <div
+                  className={`${
+                    theme == "light" ? "border-gray-300" : "border-gray-400"
+                  } flex items-center rounded-lg p-[0_0_0_20px] max-[425px]:mb-3 max-[425px]:max-w-full max-w-[300px] w-full gap-3 border`}
+                >
                   <i className="text-gray-600 bi bi-search"></i>
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="outline-none rounded-lg text-gray-600 h-10 w-full"
+                    className={`${
+                      theme == "light"
+                        ? "text-gray-600"
+                        : "placeholder:text-gray-300 text-gray-300"
+                    } outline-none rounded-lg  h-10 w-full`}
                     placeholder="Search your library"
                   />
                   {searchQuery && (
@@ -215,7 +238,11 @@ export default function Library() {
                       <li
                         onClick={() => navigate(`/library/${library.id}`)}
                         key={library.id}
-                        className="bg-white relative cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden"
+                        className={`${
+                          theme == "light"
+                            ? "bg-white"
+                            : "bg-[#1D202AFF] border-gray-800"
+                        }  relative cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden`}
                       >
                         <div className="cursor-pointer absolute right-5 bottom-4">
                           <button
@@ -231,7 +258,13 @@ export default function Library() {
                             ) ? (
                               <i className="text-red-500 bi bi-heart-fill"></i>
                             ) : (
-                              <i className="text-black bi bi-heart"></i>
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-black"
+                                    : "text-white "
+                                }  bi bi-heart`}
+                              ></i>
                             )}
                           </button>
                         </div>
@@ -242,23 +275,65 @@ export default function Library() {
                         />
                         <div className="p-4">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Library name:
                             </span>
                             <br />
-                            {library.name || "Library Name"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-white"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {library.name || "Library Name"}
+                            </span>
                           </h3>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Location:
                             </span>
-                            {library.address || "Address not available"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {library.address || "Address not available"}
+                            </span>
                           </p>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Location:
                             </span>
-                            {library.total_books || "books not yet"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {library.total_books || "books not yet"}
+                            </span>
                           </p>
                           {library.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">
@@ -270,7 +345,9 @@ export default function Library() {
                           )}
                           <span className="text-gray-600 text-sm">
                             {library.is_active ? (
-                              <div className="bg-green-500 text-center p-[5px_0] rounded-lg text-white w-[100px]">
+                              <div
+                                className={` bg-green-500 text-white text-center p-[5px_0] rounded-lg w-[100px]`}
+                              >
                                 Active
                               </div>
                             ) : (
@@ -285,7 +362,11 @@ export default function Library() {
                       <li
                         onClick={() => navigate(`/library/${library.id}`)}
                         key={library.id}
-                        className="bg-white max-[450px]:block relative rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center"
+                        className={`${
+                          theme == "light"
+                            ? "bg-white"
+                            : "bg-[#1D202AFF] border-gray-800"
+                        }  max-[450px]:block relative rounded-xl cursor-pointer shadow-md hover:shadow-xl transition-shadow overflow-hidden flex items-center`}
                       >
                         <img
                           src={LibraryImg}
@@ -304,33 +385,71 @@ export default function Library() {
                             {likesLibraries.find(
                               (el) => el.id === library.id
                             ) ? (
-                              <i className="text-red-500 bi bi-heart-fill"></i>
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-red-500"
+                                    : "text-red-500 "
+                                } bi bi-heart-fill`}
+                              ></i>
                             ) : (
-                              <i className="text-black bi bi-heart"></i>
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-black"
+                                    : "text-white "
+                                }  bi bi-heart`}
+                              ></i>
                             )}
                           </button>
                         </div>
                         <div className="p-4 flex-1">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Library name:
                             </span>
-                            {library.name || "Library Name"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {library.name || "Library Name"}
+                            </span>
                           </h3>
-                          <p className="text-gray-600 text-sm mb-3">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                          <div className="text-gray-600 flex text-sm mb-3">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Location:
                             </span>
-                            <p className=" line-clamp-2">
+                            <p
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold line-clamp-2`}
+                            >
                               {library.address || "Address not available"}
                             </p>
-                          </p>
+                          </div>
                           {library.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">
                               <span className="text-gray-800 text-[16px] mr-2 font-bold">
                                 Books:
                               </span>
-                              {library.books_count}
+                              <span className="">{library.books_count}</span>
                             </p>
                           )}
                           <span className="text-gray-600 text-sm">

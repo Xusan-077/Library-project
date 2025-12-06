@@ -4,9 +4,12 @@ import useLikeStore from "../store/useLikeStore";
 
 import LibraryImg from "../assets/images/publicImg.jpg";
 import { useNavigate } from "react-router-dom";
+import useThemeStore from "../store/useThemeStore";
 
 export default function Likes() {
   const [toggle, setToggle] = useState("books");
+
+  const { theme } = useThemeStore();
 
   const { likesBooks, likesLibraries, toggleLibraryLike } = useLikeStore();
   const navigate = useNavigate();
@@ -15,14 +18,32 @@ export default function Likes() {
     <section className="">
       <div className="container">
         <div className="">
-          <h2 className="text-[35px] font-bold mb-5">My Favarites</h2>
-          <div className="bg-white max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg">
-            <div className="flex items-center mb-5 pb-5 border-b-gray-300 border-b max-[480px]:block ">
+          <h2
+            className={`${
+              theme == "light" ? "" : "text-white"
+            } text-[35px] font-bold mb-5`}
+          >
+            My Favarites
+          </h2>
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "border-gray-800 border shadow-none"
+            } max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg`}
+          >
+            <div
+              className={`${
+                theme == "light" ? "border-b-gray-300" : "border-b-gray-800"
+              } flex items-center mb-5 pb-5 border-b max-[480px]:block`}
+            >
               <button
                 onClick={() => setToggle("books")}
                 className={`pb-2 ${
-                  toggle === "books" ? "border-b-2 border-yellow-700" : ""
-                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
+                  toggle === "books" ? " border-yellow-700" : ""
+                } ${
+                  theme == "light" ? "" : "text-white"
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal"></i>
@@ -32,8 +53,10 @@ export default function Likes() {
               <button
                 onClick={() => setToggle("libraries")}
                 className={`pb-2 ${
-                  toggle === "libraries" ? "border-b-2 border-yellow-700" : ""
-                } flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
+                  toggle === "libraries" ? " border-yellow-700" : ""
+                } ${
+                  theme == "light" ? "" : "text-white"
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px_10px_50px] max-[375px]:p-[10px_20px] max-[480px]:justify-start  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal-bookmark-fill"></i>
@@ -78,8 +101,12 @@ export default function Likes() {
                     {likesLibraries.map((libraryItem, index) => (
                       <li
                         onClick={() => navigate(`/library/${libraryItem.id}`)}
-                        key={index}
-                        className="bg-white relative cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden"
+                        key={libraryItem.id}
+                        className={`${
+                          theme == "light"
+                            ? "bg-white"
+                            : "bg-[#1D202AFF] border-gray-800"
+                        }  relative cursor-pointer rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden`}
                       >
                         <div className="cursor-pointer absolute right-5 bottom-4">
                           <button
@@ -95,7 +122,13 @@ export default function Likes() {
                             ) ? (
                               <i className="text-red-500 bi bi-heart-fill"></i>
                             ) : (
-                              <i className="text-black bi bi-heart"></i>
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-black"
+                                    : "text-white "
+                                }  bi bi-heart`}
+                              ></i>
                             )}
                           </button>
                         </div>
@@ -106,23 +139,65 @@ export default function Likes() {
                         />
                         <div className="p-4">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Library name:
                             </span>
                             <br />
-                            {libraryItem.name || "Library Name"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-white"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {libraryItem.name || "Library Name"}
+                            </span>
                           </h3>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Location:
                             </span>
-                            {libraryItem.address || "Address not available"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {libraryItem.address || "Address not available"}
+                            </span>
                           </p>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-400"
+                              } text-[16px] mr-2 font-bold`}
+                            >
                               Location:
                             </span>
-                            {libraryItem.total_books || "books not yet"}
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800 "
+                                  : "text-gray-200"
+                              } text-[16px] mr-2 font-bold`}
+                            >
+                              {libraryItem.total_books || "books not yet"}
+                            </span>
                           </p>
                           {libraryItem.books_count !== undefined && (
                             <p className="text-gray-600 text-sm mb-3">
@@ -134,11 +209,13 @@ export default function Likes() {
                           )}
                           <span className="text-gray-600 text-sm">
                             {libraryItem.is_active ? (
-                              <div className="bg-green-500 text-center p-[5px_0] rounded-lg text-white w-[100px]">
+                              <div
+                                className={` bg-green-500 text-white text-center p-[5px_0] rounded-lg w-[100px]`}
+                              >
                                 Active
                               </div>
                             ) : (
-                              <div className="bg-red-500 text-center p-[5px_0] rounded-lg text-white w-[130px]">
+                              <div className="bg-red-500 text-center p-[5px_0] rounded-lg text-white w-[100px]">
                                 Not active
                               </div>
                             )}

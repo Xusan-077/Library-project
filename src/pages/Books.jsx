@@ -22,7 +22,7 @@ export default function Books() {
           className={`${
             theme == "light"
               ? "bg-white"
-              : "bg-[#131A28] border border-gray-800"
+              : "bg-transparent border border-gray-800"
           }  max-[600px]:p-3 shadow-2xl p-[25px] rounded-lg`}
         >
           <h2
