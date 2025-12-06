@@ -10,8 +10,11 @@ import LibraryImg from "../assets/images/publicImg.jpg";
 import publicImg from "../assets/images/book-img.avif";
 import BookSkleton from "../components/BookSkleton";
 import useLikeStore from "../store/useLikeStore";
+import useThemeStore from "../store/useThemeStore";
 
 export default function PublicBookDetailPage() {
+  const { theme } = useThemeStore();
+
   const navigate = useNavigate();
   const params = useParams();
 
@@ -51,7 +54,13 @@ export default function PublicBookDetailPage() {
     <section className="">
       <div className="container">
         <div className="">
-          <div className="bg-white p-[25px] mb-[30px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "shadow-none border border-gray-800"
+            }  p-[25px] mb-[30px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg`}
+          >
             {bookIsLoading ? (
               <div className="">
                 <div className="w-[300px] bg-gray-200 h-10 rounded-lg mb-10"></div>
@@ -86,8 +95,14 @@ export default function PublicBookDetailPage() {
                   </button>
                 </div>
 
-                <h3 className="text-[30px] pb-5 border-b border-b-gray-300 mb-5 font-semibold">
-                  book : {book?.data.name}
+                <h3
+                  className={`${
+                    theme == "light"
+                      ? "border-b-gray-300"
+                      : "border-b-gray-800 text-white"
+                  } text-[30px] pb-5 border-b  mb-5 font-semibold`}
+                >
+                  <span className="">book :</span> {book?.data.name}
                 </h3>
                 <div className="flex items-center gap-5 max-[650px]:block ">
                   <img
@@ -99,14 +114,28 @@ export default function PublicBookDetailPage() {
                     <span className="bg-yellow-600 p-[5px_10px] text-white rounded-lg">
                       <span className="">#</span> {book?.data.id}
                     </span>
-                    <h3 className="text-[30px] font-semibold">
+                    <h3
+                      className={`${
+                        theme == "light" ? "" : "text-gray-300"
+                      } text-[30px] font-semibold`}
+                    >
                       {book?.data.name}
                     </h3>
                     <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-person-fill"></i>
-                      <div className="flex items-center gap-1">
-                        <span className="">Author:</span>
-                        <span className="text-[18px] font-semibold">
+                      <div className={`flex items-center gap-1`}>
+                        <span
+                          className={`
+                          ${theme == "light" ? "" : "text-gray-300"}`}
+                        >
+                          Author:
+                        </span>
+                        <span
+                          className={`
+                          ${
+                            theme == "light" ? "" : "text-gray-300"
+                          } text-[18px] font-semibold`}
+                        >
                           {book?.data.author}
                         </span>
                       </div>
@@ -114,8 +143,19 @@ export default function PublicBookDetailPage() {
                     <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-shop-window"></i>
                       <div className="flex items-center gap-1">
-                        <span className="">Publisher:</span>
-                        <span className="text-[18px] font-semibold">
+                        <span
+                          className={`
+                          ${
+                            theme == "light" ? "" : "text-gray-300"
+                          } text-[18px] font-semibold`}
+                        >
+                          Publisher:
+                        </span>
+                        <span
+                          className={` ${
+                            theme == "light" ? "" : "text-gray-300"
+                          } text-[18px] font-semibold`}
+                        >
                           {book?.data.publisher}
                         </span>
                       </div>
@@ -123,8 +163,19 @@ export default function PublicBookDetailPage() {
                     <div className="flex gap-2 items-center mb-2 text-[16px] font-medium max-[450px]:block mt-3">
                       <i className="text-yellow-600 bi bi-journal-bookmark-fill"></i>
                       <div className="flex items-center gap-1">
-                        <span className="">Quantity:</span>
-                        <span className="text-[18px] font-semibold">
+                        <span
+                          className={`
+                          ${
+                            theme == "light" ? "" : "text-gray-300"
+                          } text-[18px] font-semibold`}
+                        >
+                          <span>Quantity:</span>
+                        </span>
+                        <span
+                          className={` ${
+                            theme == "light" ? "" : "text-gray-300"
+                          }  text-[18px] font-semibold`}
+                        >
                           {book?.data.quantity_in_library}
                         </span>
                       </div>
@@ -135,8 +186,20 @@ export default function PublicBookDetailPage() {
             )}
           </div>
 
-          <div className="bg-white shadow-2xl rounded-lg p-5 mb-[30px]">
-            <h2 className="text-[35px] font-bold mb-5">In Libraries</h2>
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "shadow-none border border-gray-800"
+            }  shadow-2xl rounded-lg p-5 mb-[30px]`}
+          >
+            <h2
+              className={`${
+                theme == "light" ? "" : "text-white border-b-gray-800"
+              } border-b border-gray-300 text-[35px] font-bold mb-5`}
+            >
+              In Libraries
+            </h2>
             <ul className="">
               {searchBooksLoading
                 ? Array.from({ length: 2 }).map((_, index) => (
@@ -155,7 +218,9 @@ export default function PublicBookDetailPage() {
                     <li
                       onClick={() => navigate(`/library/${el.library.id}`)}
                       key={el.id}
-                      className="bg-white mb-2.5 max-[450px]:block gap-5 rounded-xl border border-gray-300 p-2.5 cursor-pointer overflow-hidden flex items-center"
+                      className={`${
+                        theme == "light" ? "bg-white" : "bg-[#131A28]"
+                      }  mb-2.5 max-[450px]:block gap-5 rounded-xl border-gray-300 p-2.5 cursor-pointer overflow-hidden flex items-center`}
                     >
                       <img
                         src={LibraryImg}
@@ -163,18 +228,48 @@ export default function PublicBookDetailPage() {
                         className="w-[180px] max-[450px]:w-full max-[450px]:mb-5 rounded-lg h-[180px] object-cover"
                       />
                       <div>
-                        <p className="text-gray-600 text-sm mb-5">
-                          <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                        <p
+                          className={`${
+                            theme == "light" ? "" : ""
+                          } text-gray-600 text-sm mb-5`}
+                        >
+                          <span
+                            className={`text-gray-800 text-[16px] mr-2 font-bold`}
+                          >
                             <i className="text-yellow-700 bi bi-geo-alt"></i>
                           </span>
-                          {el.library.address || "Address not available"}
+                          <span
+                            className={`${
+                              theme == "light" ? "" : "text-gray-2x`00"
+                            }`}
+                          >
+                            <span
+                              className={`${
+                                theme == "light" ? "" : "text-white"
+                              }`}
+                            >
+                              {el.library.address || "Address not available"}
+                            </span>
+                          </span>
                         </p>
                         {el.quantity_in_library !== undefined && (
                           <p className="text-gray-600 text-sm">
-                            <span className="text-gray-800 text-[16px] mr-2 font-bold">
+                            <span
+                              className={`${
+                                theme == "light"
+                                  ? "text-gray-800"
+                                  : "text-gray-400"
+                              }  text-[16px] mr-2 font-bold`}
+                            >
                               Book quantity:
                             </span>
-                            {el.quantity_in_library}
+                            <span
+                              className={`${
+                                theme == "light" ? "" : "text-white"
+                              }`}
+                            >
+                              {el.quantity_in_library}
+                            </span>
                           </p>
                         )}
                       </div>
@@ -183,8 +278,20 @@ export default function PublicBookDetailPage() {
             </ul>
           </div>
 
-          <div className="bg-white max-[375px]:p-2.5 p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg">
-            <h2 className="text-[35px] font-bold mb-5">Other Books</h2>
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "shadow-none border-gray-800 border"
+            }  max-[375px]:p-2.5 p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg`}
+          >
+            <h2
+              className={`${
+                theme == "light" ? "" : "text-white"
+              } text-[35px] font-bold mb-5`}
+            >
+              Other Books
+            </h2>
             <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
               {booksIsLoading
                 ? Array.from({ length: 8 }).map((_, index) => (

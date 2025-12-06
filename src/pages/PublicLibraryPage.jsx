@@ -7,8 +7,11 @@ import API from "../../API/API";
 import LibraryImg from "../assets/images/publicImg.jpg";
 import BookSkleton from "../components/BookSkleton";
 import uselikeStore from "../store/useLikeStore";
+import useThemeStore from "../store/useThemeStore";
 
 export default function PublicLibraryPage() {
+  const { theme } = useThemeStore();
+
   const { toggleLibraryLike, likesLibraries } = uselikeStore();
   const params = useParams();
 
@@ -27,9 +30,21 @@ export default function PublicLibraryPage() {
     <section className="">
       <div className="container">
         <div className="">
-          <div className="bg-white shadow-2xl rounded-lg p-[25px] mb-[30px] ">
+          <div
+            className={` ${
+              theme == "light"
+                ? "bg-white"
+                : "shadow-none border border-gray-800"
+            } shadow-2xl rounded-lg p-[25px] mb-[30px]`}
+          >
             <div className="flex items-center justify-between mb-5 pb-5 border-b border-b-gray-300">
-              <h2 className="text-[35px] font-bold">Library</h2>
+              <h2
+                className={`${
+                  theme == "light" ? "" : "text-white"
+                } text-[35px] font-bold`}
+              >
+                Library
+              </h2>
               <button
                 className="text-[20px] cursor-pointer text-white"
                 onClick={(e) => {
@@ -64,21 +79,39 @@ export default function PublicLibraryPage() {
                     className="w-[300px] h-[300px] rounded-lg max-[650px]:w-full max-[650px]:mb-5"
                   />
                   <div className="">
-                    <h3 className="text-[18px] font-semibold mb-3">
+                    <h3
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      }  text-[18px] font-semibold mb-3`}
+                    >
                       #{libraryData?.user || "Unknown User"}
                     </h3>
 
                     <div className="mb-3 flex gap-2 items-center">
                       <i className="text-yellow-600 bi bi-book"></i>
-                      <span>Total Books:</span>
-                      <p className="text-[18px] font-medium ">
+                      <span
+                        className={`${
+                          theme == "light" ? "" : "text-gray-400"
+                        } `}
+                      >
+                        Total Books:
+                      </span>
+                      <p
+                        className={`${
+                          theme == "light" ? "" : "text-white"
+                        }  text-[18px] font-medium`}
+                      >
                         {results?.total_books ?? 0}
                       </p>
                     </div>
 
                     <div className="flex gap-2 items-center mb-3">
                       <i className="text-yellow-600 bi bi-geo-alt"></i>
-                      <p className="text-[16px] font-normal max-w-[300px]">
+                      <p
+                        className={`${
+                          theme == "light" ? "" : "text-white"
+                        }  text-[16px] font-normal max-w-[300px]`}
+                      >
                         {libraryData?.address || "Address not available"}
                       </p>
                     </div>
@@ -87,7 +120,9 @@ export default function PublicLibraryPage() {
                       <i className="text-yellow-600 bi bi-telephone-inbound"></i>
                       {results?.phone ? (
                         <a
-                          className="underline font-medium text-[18px]"
+                          className={`${
+                            theme == "light" ? "" : "text-white"
+                          }  underline font-medium text-[18px]`}
                           href={`tel:${results.phone}`}
                         >
                           {results.phone}
@@ -126,8 +161,20 @@ export default function PublicLibraryPage() {
             </div>
           </div>
 
-          <div className="bg-white shadow-2xl rounded-lg p-[25px] max-[375px]:bg-[#f9f9f9] max-[375px]:p-0 max-[375px]:shadow-none">
-            <h2 className="text-[30px] mb-[30px] font-bold">Books</h2>
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "shadow-none border-gray-800 border"
+            }  max-[375px]:p-2.5 p-[25px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-lg`}
+          >
+            <h2
+              className={`${
+                theme == "light" ? "" : "text-white"
+              } text-[30px] mb-[30px] font-bold`}
+            >
+              Books
+            </h2>
             <ul
               className={`${
                 results?.books?.length || isLoading

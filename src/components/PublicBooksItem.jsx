@@ -247,11 +247,13 @@ export default function PublicBooksItem({
         </div>
       )}
 
+      react
+
       <li
         onClick={() => navigate(`/book/${book.id}`)}
         className={`${!library ? "min-w-[280px]" : ""} ${
-          theme == "light" ? "" : "bg-[#1D202AFF] border-gray-800 border"
-        }  cursor-pointer shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
+          theme == "light" ? "border-white" : "bg-[#1D202AFF] border-gray-800 border"
+        }  cursor-pointer border  shadow-lg rounded-lg p-4 hover:translate-y-[-5px] hover:shadow-xl transition-all duration-500`}
       >
         <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100">
           <div className="w-full h-[220px] bg-gray-200">

@@ -44,7 +44,6 @@ export default function Header() {
     }
   }, []);
 
-  // ${theme == "light" ? "" : ""}
 
   // bg #030712FF
   // card #101828FF
@@ -162,15 +161,12 @@ export default function Header() {
                     className="flex gap-5 cursor-pointer items-center "
                   >
                     <p className="text-[26px] font-bold">
-                      <span className="text-yellow-700 font-semibold">
-                        Hi ,
-                      </span>
                       <span
                         className={`${
-                          theme == "light" ? "" : "text-white"
-                        } pl-2`}
+                          theme == "light" ? "text-black" : "text-white"
+                        } font-semibold`}
                       >
-                        {capitalizedName ? capitalizedName : "User"}!
+                        welcome user
                       </span>
                     </p>
 
@@ -198,13 +194,23 @@ export default function Header() {
               className="hidden max-[850px]:block"
             >
               <button className="">
-                <i className="text-[30px] bi bi-list"></i>
+                <i
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[30px] bi bi-list`}
+                ></i>
               </button>
             </div>
 
             {burger && (
               <div className="fixed max-[850px]:flex hidden inset-0 bg-[#0009] z-200 ">
-                <div className="w-[230px] bg-white p-5 shadow-2xl h-screen">
+                <div
+                  className={`${
+                    theme == "light"
+                      ? "bg-white"
+                      : "bg-[#131A28] border-r border-gray-800"
+                  } w-[250px]  p-5 shadow-2xl h-screen`}
+                >
                   <Link className="flex items-center gap-2 mb-3" to="/">
                     <img src={Logo} alt="" className="w-10 h-10" />
                     <span className="text-[25px] font-bold text-gray-900">
@@ -220,16 +226,12 @@ export default function Header() {
                       className="mb-5 flex gap-5 cursor-pointer justify-between p-[0_5px] border-b border-b-gray-300 pb-5 items-center "
                     >
                       <p className="text-[26px] font-bold">
-                        <span
-                          className={`font-semibold ${
-                            theme === "light" ? "text-yellow-700" : "text-white"
-                          }`}
-                        >
+                        <span className={`font-semibold text-yellow-700`}>
                           Hi ,
-                        </span>{" "}
+                        </span>
                         <span
                           className={
-                            theme === "light" ? "text-black" : "text-white"
+                            theme === "light" ? "text-black" : "text-white pl-2"
                           }
                         >
                           {capitalizedName || "User"}!
@@ -237,7 +239,11 @@ export default function Header() {
                       </p>
 
                       <button className="cursor-pointer">
-                        <i className="text-gray-600 text-[40px] bi bi-person-circle"></i>
+                        <i
+                          className={`${
+                            theme == "light" ? "text-gray-600" : "text-white"
+                          }  text-[40px] bi bi-person-circle`}
+                        ></i>
                       </button>
                     </div>
                   ) : (
@@ -260,6 +266,8 @@ export default function Header() {
                               isActive
                                 ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
                                 : ""
+                            } ${
+                              theme == "light" ? "" : "text-white"
                             } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
                           }
                         >
@@ -276,6 +284,8 @@ export default function Header() {
                               isActive
                                 ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
                                 : ""
+                            } ${
+                              theme == "light" ? "" : "text-white"
                             } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
                           }
                         >

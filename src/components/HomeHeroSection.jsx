@@ -58,7 +58,7 @@ export default function HomeHeroSection() {
                 className={`${
                   theme == "light"
                     ? "border-gray-300 placeholder:text-gray-400"
-                    : "border-gray-400 placeholder:text-gray-500"
+                    : "border-gray-400 placeholder:text-gray-500 text-white"
                 } w-full h-14 pl-6 pr-14 border rounded-full 
                      focus:border-yellow-600 focus:outline-none transition-colors
                      text-base `}

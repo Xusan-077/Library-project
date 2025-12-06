@@ -154,30 +154,54 @@ export default function MyBooks() {
           onClick={() => setAddBookFirst(false)}
           className="fixed top-0 lef-0 z-100 w-screen h-screen cursor-pointer"
         >
-          <div className="fixed z-99 bottom-20 right-7 bg-white p-[10px_15px] shadow-2xl rounded-lg max-w-[250px] w-full">
+          <div
+            className={`${
+              theme == "light" ? "bg-white" : "bg-[#1D202AFF]"
+            } fixed z-99 bottom-20 right-7 p-[10px_15px] shadow-2xl rounded-lg max-w-[250px] w-full`}
+          >
             <button
               onClick={() => setAddBookModal(true)}
-              className="flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer hover:bg-gray-100 w-full rounded-lg transition-all duration-300"
+              className={`${
+                theme == "light" ? "hover:bg-gray-100" : "hover:bg-gray-800"
+              } flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer w-full rounded-lg transition-all duration-300`}
             >
               <span className="">
                 <i className="text-yellow-700 bi bi-journal-arrow-up"></i>
               </span>
-              <span className="text-[18px]">Add one book</span>
+              <span
+                className={`${theme == "light" ? "" : "text-white"} text-18px`}
+              >
+                Add one book
+              </span>
             </button>
             <button
               onClick={() => setAddLotBookModadl(true)}
-              className="flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer hover:bg-gray-100 w-full rounded-lg transition-all duration-300"
+              className={`${
+                theme == "light" ? "hover:bg-gray-100" : "hover:bg-gray-800"
+              } flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer w-full rounded-lg transition-all duration-300`}
             >
               <span className="">
                 <i className="text-yellow-700 bi bi-folder"></i>
               </span>
-              <span className="text-[18px]">Add several books</span>
+              <span
+                className={`${theme == "light" ? "" : "text-white"} text-18px`}
+              >
+                Add several books
+              </span>
             </button>
-            <button className="flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer hover:bg-gray-100 w-full rounded-lg transition-all duration-300">
+            <button
+              className={`${
+                theme == "light" ? "hover:bg-gray-100" : "hover:bg-gray-800"
+              } flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer w-full rounded-lg transition-all duration-300`}
+            >
               <span className="">
                 <i className="text-yellow-700 bi bi-filetype-exe"></i>
               </span>
-              <span className="text-[18px]">load from exe file</span>
+              <span
+                className={`${theme == "light" ? "" : "text-white"} text-18px`}
+              >
+                load from exe file
+              </span>
             </button>
           </div>
         </div>
@@ -185,7 +209,13 @@ export default function MyBooks() {
 
       {addBookModal && (
         <div className="fixed top-0 flex justify-center w-full items-center left-0 z-100 bg-[#0009]  h-screen">
-          <div className="bg-white m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }  m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+          >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[22px] font-semibold  text-yellow-700">
                 Add one book
@@ -196,7 +226,9 @@ export default function MyBooks() {
                     reset();
                     setAddBookModal(false);
                   }}
-                  className="text-[35px]"
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[35px]`}
                 >
                   &times;
                 </span>
@@ -204,49 +236,83 @@ export default function MyBooks() {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="">
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Book name</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  Book name
+                </span>
                 <input
                   type="text"
                   {...register("name")}
                   name="name"
                   onChange={handleSaveOneBook}
                   placeholder="Book name"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_0_0_10px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.name?.message}
                 </span>
               </label>
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Author</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  Author
+                </span>
                 <input
                   type="text"
                   {...register("author")}
                   name="author"
                   onChange={handleSaveOneBook}
                   placeholder="Author"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_0_0_10px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.author?.message}
                 </span>
               </label>
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Publisher</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  Publisher
+                </span>
                 <input
                   type="text"
                   {...register("publisher")}
                   name="publisher"
                   onChange={handleSaveOneBook}
                   placeholder="Publisher"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_0_0_10px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.publisher?.message}
                 </span>
               </label>
               <label className="">
-                <span className="flex pl-2.5 items-center mb-1">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
                   Book count
                 </span>
                 <input
@@ -255,7 +321,11 @@ export default function MyBooks() {
                   name="quantity_in_library"
                   onChange={handleSaveOneBook}
                   placeholder="Book count"
-                  className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_0_0_10px] mt-1 h-10 rounded-lg outline-none w-full`}
                 />
                 <span className="text-red-500 text-[14px] ml-4">
                   {errors?.quantity_in_library?.message}
@@ -268,7 +338,9 @@ export default function MyBooks() {
                     reset();
                     setAddBookModal(false);
                   }}
-                  className="cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg"
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                   type="button"
                 >
                   cancle
@@ -287,7 +359,13 @@ export default function MyBooks() {
 
       {addLotBookModadl && (
         <div className="fixed top-0 flex justify-center w-full items-center left-0 z-100 bg-[#0009]  h-screen">
-          <div className="bg-white m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+          >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
               <span className="text-[22px] font-semibold  text-yellow-700">
                 Add several book
@@ -311,7 +389,11 @@ export default function MyBooks() {
             {addSeveralBookMain ? (
               <form onSubmit={handleSubmitCount(giveManyBooks)} className="">
                 <label>
-                  <span className="text-[16px] text-gray-700 mb-2 block">
+                  <span
+                    className={`${
+                      theme == "light" ? "text-gray-700" : "text-white"
+                    } text-[16px]  mb-2 block`}
+                  >
                     How many book do you want to add ?
                   </span>
                   <input
@@ -319,7 +401,11 @@ export default function MyBooks() {
                     type="number"
                     {...registerCount("manyBook")}
                     defaultValue={1}
-                    className="bg-gray-200 outline-none border border-gray-300 h-10 p-[0_20px] max-w-full w-full rounded-lg"
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-100"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                   />
                   <span className="text-[14px] text-red-500 ml-2">
                     {countErrors?.manyBook?.message}
@@ -352,7 +438,11 @@ export default function MyBooks() {
                   className=""
                 >
                   <label className="block mb-2">
-                    <span className="flex pl-2.5 items-center mb-1">
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } flex pl-2.5 items-center mb-1`}
+                    >
                       Book name
                     </span>
                     <input
@@ -361,14 +451,22 @@ export default function MyBooks() {
                       name="name"
                       onChange={handleSaveOneBook}
                       placeholder="Book name"
-                      className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                     />
                     <span className="text-red-500 text-[14px] ml-4">
                       {errors?.name?.message}
                     </span>
                   </label>
                   <label className="block mb-2">
-                    <span className="flex pl-2.5 items-center mb-1">
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } flex pl-2.5 items-center mb-1`}
+                    >
                       Author
                     </span>
                     <input
@@ -377,14 +475,22 @@ export default function MyBooks() {
                       name="author"
                       onChange={handleSaveOneBook}
                       placeholder="Author"
-                      className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                     />
                     <span className="text-red-500 text-[14px] ml-4">
                       {errors?.author?.message}
                     </span>
                   </label>
                   <label className="block mb-2">
-                    <span className="flex pl-2.5 items-center mb-1">
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } flex pl-2.5 items-center mb-1`}
+                    >
                       Publisher
                     </span>
                     <input
@@ -393,14 +499,22 @@ export default function MyBooks() {
                       name="publisher"
                       onChange={handleSaveOneBook}
                       placeholder="Publisher"
-                      className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                     />
                     <span className="text-red-500 text-[14px] ml-4">
                       {errors?.publisher?.message}
                     </span>
                   </label>
                   <label className="">
-                    <span className="flex pl-2.5 items-center mb-1">
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } flex pl-2.5 items-center mb-1`}
+                    >
                       Book count
                     </span>
                     <input
@@ -409,7 +523,11 @@ export default function MyBooks() {
                       name="quantity_in_library"
                       onChange={handleSaveOneBook}
                       placeholder="Book count"
-                      className="border border-gray-300 bg-gray-100 p-[0_0_0_10px] h-10 rounded-lg outline-none w-full"
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
                     />
                     <span className="text-red-500 text-[14px] ml-4">
                       {errors?.quantity_in_library?.message}
@@ -422,15 +540,18 @@ export default function MyBooks() {
                         reset();
                         setAddSeveralBookMain(true);
                       }}
-                      className="cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg"
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                       type="button"
                     >
                       cancle
                     </button>
                     <button
                       type="button"
-                      className="cursor-pointer p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg"
+                      className={`cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg`}
                       onClick={handleAddOnly}
+                      disabled={addOneBook.length == 0}
                     >
                       add
                     </button>
@@ -467,9 +588,9 @@ export default function MyBooks() {
             <div
               className={`${
                 theme == "light" ? "" : "text-white"
-              } text-[30px] font-semibold`}
+              } text-[30px] max-[425px]:text-[20px] font-semibold`}
             >
-              Books : ({myBooks?.data?.length ? myBooks?.data?.length : 0} )
+              Books : ({myBooks?.data?.length ? myBooks?.data?.length : 0})
             </div>
           </div>
           <ul
