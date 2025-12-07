@@ -2,9 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import API from "../../API/API";
 import PublicBooksItem from "../components/PublicBooksItem";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function Books() {
   const { theme } = useThemeStore();
+
+  const { t } = useTranslation();
 
   const { data: books, isLoading } = useQuery({
     queryKey: ["books"],
@@ -30,7 +33,7 @@ export default function Books() {
               theme == "light" ? "" : "text-white"
             } text-[35px] font-bold mb-5`}
           >
-            All Books
+            {t("books.title")}
           </h2>
           <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
             {isLoading

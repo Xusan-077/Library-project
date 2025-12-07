@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import PublicBooksItem from "../components/PublicBooksItem";
 import { AuthAPI } from "../../API/API";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 import { useForm } from "react-hook-form";
@@ -10,8 +10,12 @@ import * as yup from "yup";
 
 import { queryClient } from "../main";
 import useThemeStore from "../store/useThemeStore";
+import ExeItem from "../components/ExeItem";
+import { useTranslation } from "react-i18next";
 
 export default function MyBooks() {
+  const { t } = useTranslation();
+
   const [addBookFirst, setAddBookFirst] = useState(false);
   const [addBookModal, setAddBookModal] = useState(false);
   const [addLotBookModadl, setAddLotBookModadl] = useState(false);
@@ -22,16 +26,27 @@ export default function MyBooks() {
   const [addSeveralBookMain, setAddSeveralBookMain] = useState(true);
 
   const [addBooksWithFile, setAddBooksWithFile] = useState(false);
-  const [addBookWithFileMani, setAddBookWithFileMani] = useState("first");
 
   const [fileData, setFileData] = useState([]);
   const [fileAction, setFileAction] = useState(null);
 
-  const fileInputRef = useRef();
+  const [deleteExeModal, setDeleteExeModal] = useState(false);
+
+  const [seeExeModal, setSeeExeModal] = useState(false);
+
+  const [exeDataDelete, setExeDataDelete] = useState(false);
+  const [deleteBook, setDeleteBook] = useState(null);
+
+  const [editExeBook, setEditExeBook] = useState(false);
+
+  const [exeEditBook, setExeEditBook] = useState(null);
+  const [exeOneBook, setExeOneBook] = useState({});
 
   const accessToken = localStorage.getItem("access");
-
+  const fileInputRef = useRef();
   const { theme } = useThemeStore();
+
+  // many
 
   const countSchema = yup.object({
     manyBook: yup.number().positive().integer().required(),
@@ -48,6 +63,38 @@ export default function MyBooks() {
   });
 
   const manyBookValue = watch("manyBook");
+
+  // exe
+
+  const EditExe = yup.object({
+    name: yup.string().required(),
+    author: yup.string().required(),
+    publisher: yup.string().required(),
+    quantity_in_library: yup.number().positive().integer().required(),
+  });
+
+  const {
+    register: registerExe,
+    handleSubmit: handleSubmitExe,
+    reset: resetExe,
+    formState: { errors: ExeError },
+  } = useForm({
+    resolver: yupResolver(EditExe),
+  });
+
+  useEffect(() => {
+    if (editExeBook && exeEditBook) {
+      resetExe({
+        name: exeEditBook.name ?? "",
+        author: exeEditBook.author ?? "",
+        publisher: exeEditBook.publisher ?? "",
+        quantity_in_library: exeEditBook.quantity_in_library ?? "",
+      });
+      setExeOneBook(exeEditBook);
+    }
+  }, [editExeBook, exeEditBook, resetExe]);
+
+  // add
 
   const schema = yup
     .object({
@@ -178,10 +225,35 @@ export default function MyBooks() {
 
       setFileData([]);
       setFileAction(null);
-      setAddBookWithFileMani("first");
     } else {
       toast.error("No file data to add");
     }
+  }
+
+  function handleSaveEditExeBook(e) {
+    setExeOneBook({ ...exeOneBook, [e.target.name]: e.target.value });
+  }
+
+  function handleEditExe() {
+    if (exeEditBook === null) return;
+
+    const index = fileData.findIndex(
+      (el) =>
+        el.name === exeEditBook.name &&
+        el.author === exeEditBook.author &&
+        el.publisher === exeEditBook.publisher &&
+        el.quantity_in_library === exeEditBook.quantity_in_library
+    );
+
+    if (index === -1) return;
+
+    const updated = [...fileData];
+    updated[index] = { ...exeEditBook, ...exeOneBook };
+
+    setFileData(updated);
+    setEditExeBook(false);
+    setExeOneBook({});
+    setExeEditBook(null);
   }
 
   return (
@@ -190,23 +262,24 @@ export default function MyBooks() {
         onClick={() => {
           addBookFirst == true ? setAddBookFirst(false) : setAddBookFirst(true);
         }}
-        className="fixed z-1 max-[425px]:right-2 max-[425px]:bottom-2  bg-yellow-700 cursor-pointer active:opacity-90 transition-all duration-300 rounded-lg shadow bottom-[30px] right-[30px] p-[8px_0] max-w-[150px] flex items-center justify-center gap-3 w-full"
+        className="fixed z-1 max-[425px]:right-2 max-[425px]:bottom-2  bg-yellow-700 cursor-pointer active:opacity-90 transition-all duration-300 rounded-lg shadow bottom-[30px] right-[30px] p-[8px_0] max-w-[200px] flex items-center justify-center gap-3 w-full"
       >
         <span className="">
           <i className="text-white bi bi-file-earmark-plus"></i>
         </span>
-        <span className="text-[18px] text-white">Add book</span>
+        <span className="text-[18px] text-white">{t("MyBooks.AddBook")}</span>
       </button>
 
+      {/* add other style */}
       {addBookFirst && (
         <div
           onClick={() => setAddBookFirst(false)}
-          className="fixed top-0 lef-0 z-100 w-screen h-screen cursor-pointer"
+          className="fixed top-0 left-0 z-100 w-screen h-screen cursor-pointer"
         >
           <div
             className={`${
               theme == "light" ? "bg-white" : "bg-[#1D202AFF]"
-            } fixed z-99 bottom-20 right-7 p-[10px_15px] shadow-2xl rounded-lg max-w-[250px] w-full`}
+            } fixed z-99 bottom-20 right-7 p-[10px_15px] shadow-2xl rounded-lg max-w-[280px] w-full`}
           >
             <button
               onClick={() => setAddBookModal(true)}
@@ -220,7 +293,7 @@ export default function MyBooks() {
               <span
                 className={`${theme == "light" ? "" : "text-white"} text-18px`}
               >
-                Add one book
+                {t("MyBooks.addOneBook")}
               </span>
             </button>
             <button
@@ -235,11 +308,15 @@ export default function MyBooks() {
               <span
                 className={`${theme == "light" ? "" : "text-white"} text-18px`}
               >
-                Add several books
+                {t("MyBooks.addSeveralBook")}
               </span>
             </button>
             <button
-              onClick={() => setAddBooksWithFile(true)}
+              onClick={() => {
+                setAddBooksWithFile(true);
+                setFileAction(null);
+                setFileData([]);
+              }}
               className={`${
                 theme == "light" ? "hover:bg-gray-100" : "hover:bg-gray-800"
               } flex items-center gap-3 p-[10px_0_10px_30px] cursor-pointer w-full rounded-lg transition-all duration-300`}
@@ -250,7 +327,7 @@ export default function MyBooks() {
               <span
                 className={`${theme == "light" ? "" : "text-white"} text-18px`}
               >
-                load from exe file
+                {t("MyBooks.loadFromExeFile")}
               </span>
             </button>
           </div>
@@ -268,7 +345,7 @@ export default function MyBooks() {
           >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[22px] font-semibold  text-yellow-700">
-                Add one book
+                {t("MyBooks.addOneBook")}
               </span>
               <button className="cursor-pointer">
                 <span
@@ -291,14 +368,14 @@ export default function MyBooks() {
                     theme == "light" ? "" : "text-white"
                   } flex pl-2.5 items-center mb-1`}
                 >
-                  Book name
+                  {t("MyBooks.Name")}
                 </span>
                 <input
                   type="text"
                   {...register("name")}
                   name="name"
                   onChange={handleSaveOneBook}
-                  placeholder="Book name"
+                  placeholder={`${t("MyBooks.Name")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -315,14 +392,14 @@ export default function MyBooks() {
                     theme == "light" ? "" : "text-white"
                   } flex pl-2.5 items-center mb-1`}
                 >
-                  Author
+                  {t("MyBooks.Author")}
                 </span>
                 <input
                   type="text"
                   {...register("author")}
                   name="author"
                   onChange={handleSaveOneBook}
-                  placeholder="Author"
+                  placeholder={`${t("MyBooks.Author")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -339,14 +416,14 @@ export default function MyBooks() {
                     theme == "light" ? "" : "text-white"
                   } flex pl-2.5 items-center mb-1`}
                 >
-                  Publisher
+                  {t("MyBooks.Publisher")}
                 </span>
                 <input
                   type="text"
                   {...register("publisher")}
                   name="publisher"
                   onChange={handleSaveOneBook}
-                  placeholder="Publisher"
+                  placeholder={`${t("MyBooks.Publisher")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -363,14 +440,14 @@ export default function MyBooks() {
                     theme == "light" ? "" : "text-white"
                   } flex pl-2.5 items-center mb-1`}
                 >
-                  Book count
+                  {t("MyBooks.Quality")}
                 </span>
                 <input
                   type="number"
                   {...register("quantity_in_library")}
                   name="quantity_in_library"
                   onChange={handleSaveOneBook}
-                  placeholder="Book count"
+                  placeholder={`${t("MyBooks.Quality")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -393,13 +470,13 @@ export default function MyBooks() {
                   } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                   type="button"
                 >
-                  cancle
+                  {t("cancel")}
                 </button>
                 <button
                   className="cursor-pointer p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg"
                   type="submit"
                 >
-                  Add
+                  {t("add")}
                 </button>
               </div>
             </form>
@@ -418,7 +495,7 @@ export default function MyBooks() {
           >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
               <span className="text-[22px] font-semibold  text-yellow-700">
-                Add several book
+                {t("MyBooks.addSeveralBook")}
               </span>
               <button className="cursor-pointer">
                 <span
@@ -446,7 +523,7 @@ export default function MyBooks() {
                       theme == "light" ? "text-gray-700" : "text-white"
                     } text-[16px]  mb-2 block`}
                   >
-                    How many book do you want to add ?
+                    {t("MyBooks.howMany")}
                   </span>
                   <input
                     placeholder="number of book"
@@ -465,13 +542,17 @@ export default function MyBooks() {
                 </label>
                 <div className="flex justify-end">
                   <button className="bg-yellow-700 p-[10px_20px] mt-1.5 rounded-lg text-white">
-                    confirm
+                    {t("MyBooks.confirm")}
                   </button>
                 </div>
               </form>
             ) : (
               <div className="">
-                <h3 className="text-[18px] font-semibold mb-2">
+                <h3
+                  className={`${
+                    theme == "light" ? "" : "text-gray-300"
+                  } text-[18px] font-semibold mb-2`}
+                >
                   book {addOneBook.length + 1}/{manyBookValue}
                 </h3>
                 <form
@@ -495,14 +576,14 @@ export default function MyBooks() {
                         theme == "light" ? "" : "text-white"
                       } flex pl-2.5 items-center mb-1`}
                     >
-                      Book name
+                      {t("MyBooks.Name")}
                     </span>
                     <input
                       type="text"
                       {...register("name")}
                       name="name"
                       onChange={handleSaveOneBook}
-                      placeholder="Book name"
+                      placeholder={`${t("MyBooks.Name")}`}
                       className={`${
                         theme == "light"
                           ? "bg-gray-100"
@@ -519,14 +600,14 @@ export default function MyBooks() {
                         theme == "light" ? "" : "text-white"
                       } flex pl-2.5 items-center mb-1`}
                     >
-                      Author
+                      {t("MyBooks.Author")}
                     </span>
                     <input
                       type="text"
                       {...register("author")}
                       name="author"
                       onChange={handleSaveOneBook}
-                      placeholder="Author"
+                      placeholder={`${t("MyBooks.Author")}`}
                       className={`${
                         theme == "light"
                           ? "bg-gray-100"
@@ -543,14 +624,14 @@ export default function MyBooks() {
                         theme == "light" ? "" : "text-white"
                       } flex pl-2.5 items-center mb-1`}
                     >
-                      Publisher
+                      {t("MyBooks.Publisher")}
                     </span>
                     <input
                       type="text"
                       {...register("publisher")}
                       name="publisher"
                       onChange={handleSaveOneBook}
-                      placeholder="Publisher"
+                      placeholder={`${t("MyBooks.Publisher")}`}
                       className={`${
                         theme == "light"
                           ? "bg-gray-100"
@@ -567,14 +648,14 @@ export default function MyBooks() {
                         theme == "light" ? "" : "text-white"
                       } flex pl-2.5 items-center mb-1`}
                     >
-                      Book count
+                      {t("MyBooks.Quality")}
                     </span>
                     <input
                       type="number"
                       {...register("quantity_in_library")}
                       name="quantity_in_library"
                       onChange={handleSaveOneBook}
-                      placeholder="Book count"
+                      placeholder={`${t("MyBooks.Quality")}`}
                       className={`${
                         theme == "light"
                           ? "bg-gray-100"
@@ -597,7 +678,7 @@ export default function MyBooks() {
                       } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                       type="button"
                     >
-                      cancle
+                      {t("cancel")}
                     </button>
                     <button
                       type="button"
@@ -605,13 +686,13 @@ export default function MyBooks() {
                       onClick={handleAddOnly}
                       disabled={addOneBook.length == 0}
                     >
-                      add
+                      {t("add")}
                     </button>
                     <button
                       className="cursor-pointer p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg"
                       type="submit"
                     >
-                      Next
+                      {t("next")}
                     </button>
                   </div>
                 </form>
@@ -621,24 +702,27 @@ export default function MyBooks() {
         </div>
       )}
 
+      {/* add other style */}
+
       {addBooksWithFile && (
-        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-100 bg-[#0009]  h-screen">
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-120 bg-[#0009]  h-screen">
           <div
             className={`${
               theme == "light"
                 ? "bg-white"
                 : "bg-[#030712FF] border-gray-700 border"
-            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[550px] w-full`}
           >
-            {/* dinamic */}
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
               <span className="text-[22px] font-semibold  text-yellow-700">
-                Load books from file
+                {t("MyBooks.loadFromExeFile")}
               </span>
               <button className="cursor-pointer">
                 <span
                   onClick={() => {
                     setAddBooksWithFile(false);
+                    setFileAction(null);
+                    setFileData([]);
                   }}
                   className={`${
                     theme == "light" ? "" : "text-white"
@@ -650,78 +734,517 @@ export default function MyBooks() {
             </div>
 
             <div className="">
-              {addBookWithFileMani == "first" ? (
+              <div className="">
                 <div className="">
-                  <div className="">
-                    <input
-                      type="file"
-                      accept=".xlsx,.xls"
-                      style={{ display: "none" }}
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                    />
-                    <span
-                      onClick={() => fileInputRef.current.click()}
-                      className="cursor-pointer border-gray-400 rounded-lg p-[30px_0] w-full bg-gray-200 flex flex-col items-center"
+                  <input
+                    type="file"
+                    accept=".xlsx,.xls"
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                  />
+                  <span
+                    onClick={() => fileInputRef.current.click()}
+                    className={`${
+                      theme == "light"
+                        ? "border-gray-400 bg-gray-200 "
+                        : "bg-[#1D202AFF] border-gray-800"
+                    } cursor-pointer  rounded-lg p-[30px_0] w-full flex flex-col items-center`}
+                  >
+                    <i className="mb-4 text-yellow-700 text-[50px] bi bi-filetype-exe"></i>
+                    <p
+                      className={`${
+                        theme == "light" ? "text-[#0009]" : "text-gray-300"
+                      } text-[16px] font-medium `}
                     >
-                      <i className="mb-4 text-yellow-700 text-[50px] bi bi-filetype-exe"></i>
-                      <p className="text-[16px] font-medium text-[#0009]">
-                        select an Excel file here
-                      </p>
-                      <p className="text-[16px] font-semibold text-black">
-                        Only files in .xlsx or .xls format are supported
-                      </p>
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-end mt-3 gap-2 ">
-                    <div
-                      onClick={() => {
-                        setAddBooksWithFile(false);
+                      {t("MyBooks.selectExe")}
+                    </p>
+                    <p
+                      className={`${
+                        theme == "light" ? "text-black" : "text-white"
+                      } text-center text-[16px] font-semibold `}
+                    >
+                      {t("MyBooks.exe")}
+                    </p>
+                  </span>
+                </div>
+                <div className="flex items-center justify-end mt-3 gap-2 ">
+                  <div
+                    onClick={() => {
+                      setAddBooksWithFile(false);
 
-                        setFileData([]);
-                        setAddBookWithFileMani("first");
-                      }}
-                      className="p-[10px_20px] cursor-pointer bg-gray-100 border border-gray-300 rounded-lg"
-                    >
-                      cancle
-                    </div>
-                    <button
-                      onClick={handleAddFileToBooks}
-                      type="button"
-                      disabled={fileData.length == 0}
-                      className="p-[10px_20px] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex gap-2 items-center bg-yellow-700 text-white border rounded-lg"
-                    >
-                      <i className="bi bi-download"></i>
-                      <span className="">Uploading</span>
-                    </button>
+                      setFileAction(null);
+                      setFileData([]);
+                    }}
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-100 border border-gray-300"
+                        : "border-gray-300 text-gray-300"
+                    } p-[10px_20px] cursor-pointer border  rounded-lg`}
+                  >
+                    {t("cancel")}
                   </div>
-                  <div className="">
-                    {fileAction ? (
-                      <div className="mt-4">
+                  <button
+                    onClick={handleAddFileToBooks}
+                    type="button"
+                    disabled={fileData.length == 0}
+                    className={`${
+                      theme == "light" ? "border" : "border-none"
+                    } p-[10px_20px] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex gap-2 items-center bg-yellow-700 text-white  rounded-lg`}
+                  >
+                    <i className="bi bi-download"></i>
+                    <span className="">{t("MyBooks.uploading")}</span>
+                  </button>
+                </div>
+                <div className="">
+                  {fileAction ? (
+                    <div className="">
+                      <div className="mt-4 border border-gray-400 rounded-lg p-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <i className="text-[30px] bi bi-file-earmark-arrow-up"></i>
-                            <p className="text-[16px] font-semibold text-[#0009]">
+                            <i
+                              className={`${
+                                theme == "light"
+                                  ? "text-[#0009]"
+                                  : "text-gray-300"
+                              } text-[30px] bi bi-file-earmark-arrow-up`}
+                            ></i>
+                            <p
+                              className={`${
+                                theme == "light"
+                                  ? "text-[#0009]"
+                                  : "text-gray-300"
+                              } text-[16px] font-semibold `}
+                            >
                               {fileAction}
                             </p>
                           </div>
-                          <i className="text-[30px] bi bi-eye"></i>
-                          <i className="text-[30px] bi bi-x"></i>
+                          <div className="flex items-center gap-2 w-100px">
+                            <button
+                              onClick={() => {
+                                setSeeExeModal(true);
+                                setDeleteExeModal(false);
+                              }}
+                            >
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-[#0009]"
+                                    : "text-gray-300"
+                                } text-[30px] bi bi-eye`}
+                              ></i>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setDeleteExeModal(true);
+                                setSeeExeModal(false);
+                              }}
+                            >
+                              <i
+                                className={`${
+                                  theme == "light"
+                                    ? "text-[#0009]"
+                                    : "text-red-500"
+                                } text-[30px] bi bi-x`}
+                              ></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                      <div className="">
+                        <span
+                          className={`${
+                            theme == "light" ? "text-[#0009]" : "text-white"
+                          } mt-2 flex justify-end text-[18px] font-medium`}
+                        >
+                          {t("numberOfBook")} {fileData.length}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              ) : addBookWithFileMani == "second" ? (
-                ""
-              ) : addBookWithFileMani == "third" ? (
-                ""
-              ) : (
-                ""
-              )}
+              </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {deleteExeModal && (
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-130 bg-[#0009]  h-screen">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[350px] w-full`}
+          >
+            <p
+              className={`${
+                theme == "light" ? "text-gray-700" : "text-gray-300"
+              } text-[17px] mb-4 text-center font-semibold `}
+            >
+              {t("MyBooks.ExeDeleteConfirm")}
+            </p>
+
+            <div className="flex items-center justify-end gap-2">
+              <button
+                onClick={() => {
+                  setFileAction(null);
+                  setFileData([]);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                  setDeleteExeModal(false);
+                }}
+                className="px-4 py-1.5 text-[14px] bg-red-500 hover:bg-red-600 transition rounded-lg text-white"
+              >
+                {t("delete")}
+              </button>
+              <button
+                onClick={() => {
+                  setDeleteExeModal(false);
+                }}
+                className={`${
+                  theme == "light"
+                    ? "border-gray-400 hover:bg-gray-100 text-gray-600"
+                    : "border-gray-300 text-gray-300"
+                } px-4 py-1.5 text-[14px] border  transition rounded-lg `}
+              >
+                {t("cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {exeDataDelete && deleteBook && (
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-130 bg-[#0002]  h-screen">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[350px] w-full`}
+          >
+            <p className="text-[17px] mb-4 text-center font-semibold ">
+              <span
+                className={`${
+                  theme == "light" ? "text-gray-700" : "text-gray-300"
+                }`}
+              >
+                {t("MyBooks.ExeDeleteItemConfirm")} -
+              </span>
+              <span className="text-red-500 font-semibold pl-1">
+                {deleteBook.name}
+              </span>
+            </p>
+
+            <div className="flex items-center justify-end gap-2">
+              <button
+                onClick={() => {
+                  const updated = fileData.filter(
+                    (el) =>
+                      !(
+                        el.name === deleteBook.name &&
+                        el.author === deleteBook.author &&
+                        el.publisher === deleteBook.publisher &&
+                        el.quantity_in_library ===
+                          deleteBook.quantity_in_library
+                      )
+                  );
+
+                  setFileData(updated);
+                  setExeDataDelete(false);
+                  setDeleteBook(null);
+                }}
+                className="px-4 py-1.5 text-[14px] bg-red-500 hover:bg-red-600 transition rounded-lg text-white"
+              >
+                {t("delete")}
+              </button>
+              <button
+                onClick={() => {
+                  setExeDataDelete(false);
+                  setDeleteBook(null);
+                }}
+                className={`${
+                  theme == "light"
+                    ? "border-gray-400 hover:bg-gray-100 "
+                    : "border-gray-300 text-gray-300"
+                } px-4 py-1.5 text-[14px] border  transition rounded-lg `}
+              >
+                {t("cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {seeExeModal && (
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-121 bg-[#00000060]  h-screen">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] min-h-[600px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[800px] w-full`}
+          >
+            {/* top */}
+            <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
+              <span className="text-[22px] font-semibold  text-yellow-700">
+                {t("MyBooks.exeTitle")}
+              </span>
+              <button className="cursor-pointer">
+                <span
+                  onClick={() => {
+                    setSeeExeModal(false);
+                  }}
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[35px]`}
+                >
+                  &times;
+                </span>
+              </button>
+            </div>
+
+            {/* bottom */}
+            <div className="min-h-[500px] flex flex-col justify-between">
+              <div
+                className="overflow-x-scroll"
+                style={{ scrollbarWidth: "none" }}
+              >
+                <div className="min-w-[700px]">
+                  <div
+                    className={`${
+                      theme == "light"
+                        ? "border-b-gray-300"
+                        : "border-b-gray-800"
+                    } grid grid-cols-[1fr_1fr_1fr_100px_100px] items-center border-b `}
+                  >
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } p-4 text-[16px] font-semibold`}
+                    >
+                      {t("MyBooks.Name")}
+                    </span>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } p-4 text-[16px] font-semibold`}
+                    >
+                      {t("MyBooks.Author")}
+                    </span>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } p-4 text-[16px] font-semibold`}
+                    >
+                      {t("MyBooks.Publisher")}
+                    </span>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } p-4 text-[16px] font-semibold`}
+                    >
+                      {t("MyBooks.Quality")}
+                    </span>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-white"
+                      } p-4 text-[16px] font-semibold`}
+                    >
+                      {t("MyBooks.Action")}
+                    </span>
+                  </div>
+                  <ul className="">
+                    {fileData?.map((book) => (
+                      <ExeItem
+                        key={`${book.name}-${book.author}-${book.publisher}-${book.quantity_in_library}`}
+                        books={fileData}
+                        book={book}
+                        exeDataDelete={exeDataDelete}
+                        setExeDataDelete={setExeDataDelete}
+                        setDeleteBook={setDeleteBook}
+                        setExeEditBook={setExeEditBook}
+                        setEditExeBook={setEditExeBook}
+                        setExeOneBook={setExeOneBook}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="border-t flex items-center justify-between border-t-gray-300 pt-2.5 mt-2.5">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } text-[18px] font-medium`}
+                >
+                  {t("numberOfBook")} {fileData.length}
+                </span>
+                <button
+                  onClick={() => {
+                    setSeeExeModal(false);
+                  }}
+                  className="text-yellow-700 cursor-pointer border border-yellow-700 rounded-lg text-[16px] p-[5px_15px]"
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editExeBook && (
+        <div className="fixed top-0 flex justify-center w-full items-center left-0 z-150 bg-[#0002]  h-screen">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border-gray-700 border"
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[500px] w-full`}
+          >
+            <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
+              <span className="text-[22px] font-semibold  text-yellow-700">
+                Add one book
+              </span>
+              <button className="cursor-pointer">
+                <span
+                  onClick={() => setEditExeBook(false)}
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  }  text-[35px]`}
+                >
+                  &times;
+                </span>
+              </button>
+            </div>
+            <form onSubmit={handleSubmitExe(handleEditExe)} className="">
+              <label className="block mb-2">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-gray-300"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Name")}
+                </span>
+                <input
+                  type="text"
+                  defaultValue={exeOneBook.name}
+                  {...registerExe("name")}
+                  name="name"
+                  onChange={handleSaveEditExeBook}
+                  placeholder={`${t("MyBooks.Name")}`}
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
+                />
+                <span className="text-red-500 text-[14px] ml-4">
+                  {ExeError?.name?.message}
+                </span>
+              </label>
+              <label className="block mb-2">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-gray-300"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Author")}
+                </span>
+                <input
+                  type="text"
+                  defaultValue={exeOneBook.author}
+                  {...registerExe("author")}
+                  name="author"
+                  onChange={handleSaveEditExeBook}
+                  placeholder={`${t("MyBooks.Author")}`}
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
+                />
+                <span className="text-red-500 text-[14px] ml-4">
+                  {ExeError?.author?.message}
+                </span>
+              </label>
+              <label className="block mb-2">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-gray-300"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Publisher")}
+                </span>
+                <input
+                  type="text"
+                  {...registerExe("publisher")}
+                  defaultValue={exeOneBook.publisher}
+                  name="publisher"
+                  onChange={handleSaveEditExeBook}
+                  placeholder={`${t("MyBooks.Publisher")}`}
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
+                />
+                <span className="text-red-500 text-[14px] ml-4">
+                  {ExeError?.publisher?.message}
+                </span>
+              </label>
+              <label className="">
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-gray-300"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Quality")}
+                </span>
+                <input
+                  type="number"
+                  {...registerExe("quantity_in_library")}
+                  defaultValue={exeOneBook.quantity_in_library}
+                  name="quantity_in_library"
+                  onChange={handleSaveEditExeBook}
+                  placeholder={`${t("MyBooks.Quality")}`}
+                  className={`${
+                    theme == "light"
+                      ? "bg-gray-100"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border border-gray-300  p-[0_20px] mt-1 h-10 rounded-lg outline-none w-full`}
+                />
+                <span className="text-red-500 text-[14px] ml-4">
+                  {ExeError?.quantity_in_library?.message}
+                </span>
+              </label>
+
+              <div className="flex gap-3 items-center justify-end mt-5">
+                <button
+                  onClick={() => {
+                    setEditExeBook(false);
+                    setExeEditBook(null);
+                    setExeOneBook({});
+                  }}
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
+                  type="button"
+                >
+                  {t("cancel")}
+                </button>
+                <button
+                  className="cursor-pointer p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg"
+                  type="submit"
+                >
+                  {t("edit")}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -740,14 +1263,15 @@ export default function MyBooks() {
                 theme == "light" ? "" : "text-white"
               } text-[35px] font-bold`}
             >
-              My Books
+              {t("MyBooks.MyBooks")}
             </h2>
             <div
               className={`${
                 theme == "light" ? "" : "text-white"
               } text-[30px] max-[425px]:text-[20px] font-semibold`}
             >
-              Books : ({myBooks?.data?.length ? myBooks?.data?.length : 0})
+              {t("MyBooks.books")} : (
+              {myBooks?.data?.length ? myBooks?.data?.length : 0})
             </div>
           </div>
           <ul

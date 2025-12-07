@@ -7,11 +7,14 @@ import API from "../../API/API";
 import LibraryImg from "../assets/images/publicImg.jpg";
 import uselikeStore from "../store/useLikeStore";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function Library() {
   const [format, setFormat] = useState("grid");
   const [sort, setSort] = useState("name-asc");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { t } = useTranslation();
 
   const { toggleLibraryLike, likesLibraries } = uselikeStore();
   const { theme } = useThemeStore();
@@ -67,7 +70,7 @@ export default function Library() {
             theme == "light" ? "" : "text-white"
           } text-[35px] font-bold mb-5`}
         >
-          List of libraries
+          {t("libraries.title")}
         </h2>
         <div className="grid grid-cols-[280px_1fr] max-[725px]:grid-cols-1 items-start gap-[30px]">
           <div
@@ -147,7 +150,7 @@ export default function Library() {
                         ? "text-gray-600"
                         : "placeholder:text-gray-300 text-gray-300"
                     } outline-none rounded-lg  h-10 w-full`}
-                    placeholder="Search your library"
+                    placeholder={t("libraries.search")}
                   />
                   {searchQuery && (
                     <button
@@ -282,7 +285,7 @@ export default function Library() {
                                   : "text-gray-400"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              Library name:
+                              {t("libraries.cardName")}:
                             </span>
                             <br />
                             <span
@@ -292,7 +295,7 @@ export default function Library() {
                                   : "text-white"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              {library.name || "Library Name"}
+                              {library.name}
                             </span>
                           </h3>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-1">
@@ -303,7 +306,7 @@ export default function Library() {
                                   : "text-gray-400"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              Location:
+                              {t("libraries.location")}:
                             </span>
                             <span
                               className={`${
@@ -323,7 +326,7 @@ export default function Library() {
                                   : "text-gray-400"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              Location:
+                              {t("libraries.quality")}:
                             </span>
                             <span
                               className={`${
@@ -412,7 +415,7 @@ export default function Library() {
                                   : "text-gray-400"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              Library name:
+                              {t("libraries.cardName")}:
                             </span>
                             <span
                               className={`${
@@ -421,7 +424,7 @@ export default function Library() {
                                   : "text-gray-200"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              {library.name || "Library Name"}
+                              {library.name}
                             </span>
                           </h3>
                           <div className="text-gray-600 flex text-sm mb-3">
@@ -432,7 +435,7 @@ export default function Library() {
                                   : "text-gray-400"
                               } text-[16px] mr-2 font-bold`}
                             >
-                              Location:
+                              {t("libraries.location")}:
                             </span>
                             <p
                               className={`${

@@ -10,8 +10,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
 
   const [logOutModal, setLogOurModal] = useState(false);
@@ -70,12 +73,26 @@ export default function Profile() {
     <div className="">
       {logOutModal && (
         <div className="fixed p-[0_20px] w-screen h-screen inset-0 bg-[#0009] flex items-center justify-center z-100">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-[400px] w-full">
-            <h2 className="text-[18px] font-bold mb-4 text-yellow-700">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border border-gray-800"
+            } rounded-lg shadow-lg p-6 max-w-[400px] w-full`}
+          >
+            <h2
+              className={`${
+                theme == "light" ? "border-b-gray-300" : "border-b-gray-800"
+              } text-[18px] font-bold border-b mb-5 pb-5 text-yellow-700`}
+            >
               Confirm Log out
             </h2>
-            <p className="mb-6 text-center text-[20px] font-semibold">
-              Are you sure you want to log out?
+            <p
+              className={`${
+                theme == "light" ? "" : "text-gray-300"
+              } mb-6 text-center text-[20px] font-semibold`}
+            >
+              Are you sure to to log out?
             </p>
             <div className="flex justify-end gap-4">
               <button
@@ -101,26 +118,46 @@ export default function Profile() {
 
       {edit && (
         <div className="fixed p-[0_20px] w-screen h-screen inset-0 bg-[#0009] flex items-center justify-center z-100">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-[600px] w-full">
+          <div
+            className={`${
+              theme == "light"
+                ? "bg-white"
+                : "bg-[#030712FF] border border-gray-800"
+            }  rounded-lg shadow-lg p-6 max-w-[600px] w-full`}
+          >
             <div className="flex pb-1 mb-1 border-b border-b-gray-300 justify-between">
               <h3 className="text-[20px] font-semibold text-yellow-700">
                 Edit Profile
               </h3>
               <span
                 onClick={() => setEdit(false)}
-                className="text-[35px] cursor-pointer"
+                className={`${
+                  theme == "light" ? "" : "text-gray-300"
+                } text-[35px] cursor-pointer`}
               >
                 &times;
               </span>
             </div>
             {/* onSubmit={handleSubmit(onSubmit)} */}
             <form className="">
-              <div className="mt-10 border-b pb-5 border-b-gray-200 mb-5">
+              <div className={` mt-10 border-b pb-5  mb-5`}>
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-map"></i>
-                  <span className="text-[14px] font-medium">Location</span>
+                  <span
+                    className={`${
+                      theme == "light" ? "" : "text-gray-300"
+                    } text-[14px] font-medium`}
+                  >
+                    Location
+                  </span>
                 </p>
-                <div className="flex items-center gap-3 border-gray-300 border  p-[0_0_0_20px] rounded-lg">
+                <div
+                  className={`${
+                    theme == "light"
+                      ? "border-gray-300"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } flex items-center gap-3  border  p-[0_0_0_20px] rounded-lg`}
+                >
                   <span className="">
                     <i className="text-yellow-700 bi bi-geo-alt"></i>
                   </span>
@@ -132,26 +169,48 @@ export default function Profile() {
                   />
                 </div>
               </div>
-              <div className="mt-10 border-b pb-5 border-b-gray-200 mb-5">
+              <div className={`mt-10 border-b pb-5 border-b-gray-200 mb-5`}>
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-sliders"></i>
-                  <span className="text-[14px] font-medium">Can rent book</span>
+                  <span
+                    className={`${
+                      theme == "light" ? "" : "text-gray-300"
+                    } text-[14px] font-medium`}
+                  >
+                    Can rent book
+                  </span>
                 </p>
                 <select
                   defaultValue={user.can_rent_books ? "yes" : "no"}
-                  className="border w-full shadow-sm border-gray-300 rounded p-3"
+                  className={`${
+                    theme == "light"
+                      ? "border-gray-300"
+                      : "text-white border-gray-800 bg-[#131A28]"
+                  } border w-full shadow-sm border-gray-300 rounded p-3`}
                 >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
                 </select>
               </div>
-              <div className="mt-10 border-b pb-5 border-b-gray-200 mb-5">
+              <div className={`mt-10 border-b pb-5 border-b-gray-200 mb-5`}>
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-server"></i>
-                  <span className="text-[14px] font-medium">Networks</span>
+                  <span
+                    className={`${
+                      theme == "light" ? "" : "text-gray-300"
+                    } text-[14px] font-medium`}
+                  >
+                    Networks
+                  </span>
                 </p>
                 <div className="">
-                  <span className="border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2">
+                  <span
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-100"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                  >
                     <span className="">
                       <i className="text-yellow-700 bi bi-instagram"></i>
                     </span>
@@ -162,7 +221,13 @@ export default function Profile() {
                       defaultValue={user.social_media.instagram}
                     />
                   </span>
-                  <span className="border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2">
+                  <span
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-100"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                  >
                     <span className="">
                       <i className="text-yellow-700 bi bi-facebook"></i>
                     </span>
@@ -173,7 +238,13 @@ export default function Profile() {
                       defaultValue={user.social_media.facebook}
                     />
                   </span>
-                  <span className="border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2">
+                  <span
+                    className={`${
+                      theme == "light"
+                        ? "bg-gray-100"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                  >
                     <span className="">
                       <i className="text-yellow-700 bi bi-telegram"></i>
                     </span>
@@ -199,13 +270,17 @@ export default function Profile() {
                 <button
                   onClick={() => setEdit(false)}
                   type="button"
-                  className="p-[8px_0] max-w-[130px] border cursor-pointer border-gray-300 rounded-lg text-gray-800 w-full text-[16px] "
+                  className={`${
+                    theme == "light"
+                      ? "border-gray-300 text-gray-800"
+                      : "text-gray-300"
+                  } p-[8px_0] max-w-[130px] border cursor-pointer rounded-lg  w-full text-[16px]`}
                 >
                   Cancle
                 </button>
                 <button
                   type="submit"
-                  className="p-[8px_0] max-w-[100px] w-full text-[16px] cursor-pointer bg-yellow-700 rounded-lg text-white"
+                  className="p-[8px_0] max-w-[100px] w-full text-[16px] cursor-pointer border border-yellow-700 bg-yellow-700 rounded-lg text-white"
                 >
                   Save
                 </button>
@@ -223,10 +298,15 @@ export default function Profile() {
             }  flex relative max-[700px]:block items-center mb-[30px] gap-[30px]  p-5 rounded-lg shadow-2xl`}
           >
             <div
-              className={`bg-[#CCCCCCFF] max-[700px]:w-full rounded-lg flex justify-center items-center w-[250px] h-[250px]`}
+              className={`${
+                theme == "light"
+                  ? "bg-[#CCCCCCFF] "
+                  : "bg-[#030712FF] border border-gray-800"
+              } max-[700px]:w-full rounded-lg  flex justify-center items-center w-[250px] h-[250px]`}
             >
               <i className="text-[100px] text-white bi bi-person-circle"></i>
             </div>
+
             <div className="">
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-person"></i>
@@ -286,16 +366,17 @@ export default function Profile() {
               {open && (
                 <div className="w-[200px] h-[140px] items-center top-17 right-0 absolute">
                   <div
-                    className=" bg-white shadow-2xl 
-                  p-2.5 rounded-lg max-w-[120px] w-full 
-                 "
+                    className={`${
+                      theme == "light" ? "bg-white" : "bg-[#030712FF]"
+                    }  shadow-2xl 
+                  p-2.5 rounded-lg max-w-[200px] w-full `}
                   >
                     <button
                       onClick={() => setEdit(true)}
                       className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="bi bi-pencil-square"></i>
-                      <span className="">Edit</span>
+                      <span className="">{t("edit")}</span>
                     </button>
 
                     <button
@@ -303,7 +384,7 @@ export default function Profile() {
                       className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="text-[20px] bi bi-toggle-off"></i>
-                      <span className="">switch</span>
+                      <span className="">{t("switch")}</span>
                     </button>
 
                     <button
@@ -311,7 +392,7 @@ export default function Profile() {
                       className="cursor-pointer flex text-red-500 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="bi bi-box-arrow-left"></i>
-                      <span className="">Log out</span>
+                      <span className="">{t("logout")}</span>
                     </button>
                   </div>
                 </div>
@@ -341,7 +422,7 @@ export default function Profile() {
                   onClick={() => setActiveTab("books")}
                 >
                   <i className="text-yellow-700 bi bi-journal-bookmark"></i>
-                  <span className="">My Books</span>
+                  <span className="">{t("profile.Books")}</span>
                 </button>
                 <button
                   className={`pb-2 ${
@@ -354,7 +435,7 @@ export default function Profile() {
                   onClick={() => setActiveTab("network")}
                 >
                   <i className="text-yellow-700 bi bi-share"></i>
-                  <span className="">My networks</span>
+                  <span className="">{t("profile.newWorks")}</span>
                 </button>
                 <button
                   className={`pb-2 ${
@@ -365,7 +446,7 @@ export default function Profile() {
                   onClick={() => setActiveTab("map")}
                 >
                   <i className="text-yellow-700 bi bi-geo-alt"></i>
-                  <span className="">My Location</span>
+                  <span className="">{t("profile.location")}</span>
                 </button>
               </div>
 
@@ -379,7 +460,7 @@ export default function Profile() {
                           : "border-b-gray-800 text-white"
                       } pb-5 border-b text-[30px] font-semibold my-5`}
                     >
-                      My Books
+                      {t("profile.Books")}
                     </h2>
                     <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
                       {isLoading
@@ -411,15 +492,23 @@ export default function Profile() {
                 {activeTab === "network" && (
                   <div>
                     <div className="">
-                      <h2 className="pb-2.5 border-b-gray-300 border-b text-[30px] font-semibold m-[20px_0_10px_20px]">
-                        My NetWorks
+                      <h2
+                        className={`${
+                          theme == "light"
+                            ? "border-b-gray-300"
+                            : "border-b-gray-800 text-white"
+                        } pb-5 border-b text-[30px] font-semibold my-5`}
+                      >
+                        {t("profile.newWorks")}
                       </h2>
                       <div className="grid grid-cols-3 max-[425px]:grid-cols-2">
                         <button
                           onClick={() =>
                             navigate(`https://${user?.social_media?.instagram}`)
                           }
-                          className="flex gap-2 p-[10px_20px]"
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          } flex gap-2 p-[10px_20px]`}
                         >
                           <i className="text-yellow-700 bi bi-instagram"></i>
                           <span>instagram</span>
@@ -428,7 +517,9 @@ export default function Profile() {
                           onClick={() =>
                             navigate(`https://${user?.social_media?.facebook}`)
                           }
-                          className="flex gap-2 p-[10px_20px]"
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          } flex gap-2 p-[10px_20px]`}
                         >
                           <i className="text-yellow-700 bi bi-facebook"></i>
                           <span>facebook</span>
@@ -437,7 +528,9 @@ export default function Profile() {
                           onClick={() =>
                             navigate(`https://${user?.social_media?.telegram}`)
                           }
-                          className="flex gap-2 p-[10px_20px]"
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          } flex gap-2 p-[10px_20px]`}
                         >
                           <i className="text-yellow-700 bi bi-telegram"></i>
                           <span>telegram</span>
@@ -448,13 +541,23 @@ export default function Profile() {
                 )}
                 {activeTab === "map" && (
                   <div className="">
-                    <h2 className="pb-2.5 border-b-gray-300 border-b text-[30px] font-semibold m-[20px_0_10px_20px]">
-                      My Location
+                    <h2
+                      className={`${
+                        theme == "light"
+                          ? "border-b-gray-300"
+                          : "border-b-gray-800 text-white"
+                      } pb-5 border-b text-[30px] font-semibold my-5`}
+                    >
+                      {t("profile.location")}
                     </h2>
 
-                    <div className="flex gap-5 items-center p-5">
-                      <i className="text-yellow-700 bi bi-geo-alt"></i>
-                      <span className="">{user?.address}</span>
+                    <div className="flex gap-5 items-center p-2.5">
+                      <i className={` text-yellow-700 bi bi-geo-alt`}></i>
+                      <span
+                        className={`${theme == "light" ? "" : "text-gray-300"}`}
+                      >
+                        {user?.address}
+                      </span>
                     </div>
                   </div>
                 )}

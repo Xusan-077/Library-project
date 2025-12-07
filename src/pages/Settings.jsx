@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 
 import useThemeStore from "../store/useThemeStore";
 
+import { useTranslation } from "react-i18next";
+
 import FlagUz from "../assets/icons/flag.png";
 import FlagRu from "../assets/icons/russia.png";
 import FlagEn from "../assets/icons/usa.png";
-import Arrow from "../assets/icons/down-arrow.png";
-
-import i18next from "i18next";
 
 export default function Settings() {
+  const { t, i18n } = useTranslation();
+
   const { theme, toggleTheme } = useThemeStore();
 
   const [lang, setLang] = useState(localStorage.getItem("lang") || "en");
@@ -17,8 +18,7 @@ export default function Settings() {
   const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
-    i18next.changeLanguage(lang);
-
+    i18n.changeLanguage(lang);
     localStorage.setItem("lang", lang);
   }, [lang]);
 
@@ -39,7 +39,7 @@ export default function Settings() {
                 : "text-white border-b-gray-800"
             } text-[35px] border-b font-bold mb-5 pb-5`}
           >
-            Settings
+            {t("settings.title")}
           </h2>
           <ul className="">
             <li
@@ -54,7 +54,7 @@ export default function Settings() {
                   theme == "light" ? "" : "text-white"
                 } text-[22px]`}
               >
-                Theme
+                {t("settings.theme")}
               </span>
 
               <div
@@ -82,7 +82,7 @@ export default function Settings() {
                   theme == "light" ? "" : "text-white"
                 } text-[22px]`}
               >
-                Language
+                {t("settings.language")}
               </span>
 
               <div className="relative">
@@ -141,7 +141,7 @@ export default function Settings() {
                     <button
                       onClick={() => {
                         setLang("en");
-                        i18next.changeLanguage("en");
+                        i18n.changeLanguage("en");
                         setLangOpen(false);
                       }}
                       className={`flex items-center gap-6 justify-center p-3 w-full `}
@@ -158,7 +158,7 @@ export default function Settings() {
                     <button
                       onClick={() => {
                         setLang("uz");
-                        i18next.changeLanguage("uz");
+                        i18n.changeLanguage("uz");
                         setLangOpen(false);
                       }}
                       className={`flex items-center gap-6 justify-center p-3 w-full`}
@@ -175,7 +175,7 @@ export default function Settings() {
                     <button
                       onClick={() => {
                         setLang("ru");
-                        i18next.changeLanguage("ru");
+                        i18n.changeLanguage("ru");
                         setLangOpen(false);
                       }}
                       className={`flex items-center gap-6 justify-center p-3 w-full`}

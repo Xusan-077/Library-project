@@ -6,14 +6,21 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import useThemeStore from "../store/useThemeStore";
 import useAuthStore from "../store/useUserAuth";
 
-import loginImage from "../assets/images/login-img.png";
 import Logo from "../assets/icons/Logo.png";
 import API from "../../API/API";
 import { useEffect } from "react";
 
+import bg from "../assets/images/bg.png";
+
 export default function Login() {
+  const { theme } = useThemeStore();
+
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
+
   const schema = yup.object({
     phone: yup.string().min(6, "Phone number is required.").required(),
     password: yup.string().min(6).required(),
@@ -26,9 +33,6 @@ export default function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const { login } = useAuthStore();
-  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: async (body) => {
@@ -64,17 +68,39 @@ export default function Login() {
   }, []);
 
   return (
-    <section className="bg-[#F1F3F6FF] h-screen">
-      <div className="w-full h-full flex items-center justify-between">
-        <div className="bg-white max-[900px]:w-full max-[900px]:p-[0_20px] w-[40%] relative h-full flex flex-col p-[20px_40px]">
+    <section
+      style={{
+        backgroundImage: theme === "light" ? "none" : `url(${bg})`,
+      }}
+      className={`${
+        theme == "light" ? "" : ""
+      } relative h-screen w-full bg-cover bg-center bg-no-repeat`}
+    >
+      {theme !== "light" && (
+        <div className="absolute inset-0 bg-black/80"></div>
+      )}
+
+      <div className="relative z-10 flex items-center justify-center h-full">
+        <div
+          className={`
+        ${
+          theme === "light"
+            ? "bg-white"
+            : "bg-white/10 backdrop-blur-xl border border-white/20"
+        }
+        max-[900px]:w-full max-[900px]:rounded-none max-[900px]:p-[0_20px]
+        min-w-[40%] p-[70px_50px]
+        rounded-2xl shadow-2xl
+      `}
+        >
           <button
             onClick={() => navigate("/")}
-            className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700 absolute top-5 left-5"
+            className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700"
           >
             Back to main
           </button>
 
-          <div className="w-full mt-20 max-[900px]:mt-30">
+          <div className="w-full mt-20">
             <div className="flex flex-col items-center gap-4">
               <Link className="flex items-center gap-2" to="/">
                 <img src={Logo} alt="" className="w-[50px] h-[50px]" />
@@ -83,24 +109,40 @@ export default function Login() {
                 </span>
               </Link>
 
-              <h2 className="text-[18px] mb-[50px] text-center">
+              <h2
+                className={`
+              ${theme === "light" ? "text-gray-700" : "text-white"}
+              text-[18px] mb-[50px] text-center
+            `}
+              >
                 Login into your account
               </h2>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+              {/* PHONE */}
               <label className="mb-[30px]">
-                <span className="text-[16px] text-[#555] mb-2.5 block">
+                <span
+                  className={`
+                ${theme === "light" ? "text-gray-700" : "text-white"}
+                mb-2.5 block
+              `}
+                >
                   Phone number
                 </span>
-
                 <input
                   type="text"
                   {...register("phone")}
                   placeholder="Enter your phone number"
-                  className="text-[14px] text-[#555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
+                  className={`
+                ${
+                  theme === "light"
+                    ? "bg-gray-100 border-gray-300"
+                    : "bg-white/10 text-white border-white/20 backdrop-blur-sm"
+                }
+                border p-[0_20px] mt-1 h-15 rounded-lg outline-none w-full
+              `}
                 />
-
                 {errors.phone && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.phone.message}
@@ -108,8 +150,14 @@ export default function Login() {
                 )}
               </label>
 
+              {/* PASSWORD */}
               <label>
-                <span className="text-[16px] text-[#555] mb-2.5 block">
+                <span
+                  className={`
+                ${theme === "light" ? "text-gray-700" : "text-white"}
+                mb-2.5 block
+              `}
+                >
                   Password
                 </span>
 
@@ -117,7 +165,14 @@ export default function Login() {
                   type="password"
                   {...register("password")}
                   placeholder="Enter your password"
-                  className="text-[14px] text-[#555] outline-none h-[50px] p-[0_0_0_20px] bg-[#F1F3F6FF] w-full rounded-lg"
+                  className={`
+                ${
+                  theme === "light"
+                    ? "bg-gray-100 border-gray-300"
+                    : "bg-white/10 text-white border-white/20 backdrop-blur-sm"
+                }
+                border p-[0_20px] mt-1 h-15 rounded-lg outline-none w-full
+              `}
                 />
 
                 {errors.password && (
@@ -129,16 +184,12 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full cursor-pointer p-[15px_0] bg-yellow-700 text-white rounded-lg text-[16px] mt-4"
+                className="w-full cursor-pointer p-[15px_0] bg-yellow-700 hover:bg-yellow-800 transition text-white rounded-lg text-[16px] mt-4"
               >
                 Login
               </button>
             </form>
           </div>
-        </div>
-
-        <div className="w-[60%] max-[900px]:hidden h-full flex justify-center items-center">
-          <img src={loginImage} alt="" className="w-[700px] h-[700px]" />
         </div>
       </div>
     </section>

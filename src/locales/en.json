@@ -1,3 +1,118 @@
 {
-    
+  "header": {
+    "welcome": "Welcome",
+    "nav": {
+      "home": "Home",
+      "books": "Books",
+      "libraries": "Libraries",
+      "Favoirtes": "Favoirtes",
+      "setting": "Setting",
+      "MyBooks": "My books"
+    }
+  },
+  "hero": {
+    "title": "Discover Endless Worlds of Knowledge, Stories",
+    "text": "   Welcome to a place where curiosity meets discovery. Our library is more than just books on shelves—it's a vibrant community hub where learners of all ages come together to explore, create, and grow. Whether you're diving into the latest bestseller, researching for your next big project, or simply finding a quiet corner to escape into another world, we're here to support your journey.",
+    "search": "Search your book here...",
+    "home": "Most read books"
+  },
+  "books": {
+    "title": "All Books"
+  },
+  "libraries": {
+    "title": "List of libraries",
+    "search": "Search your library",
+    "cardName": "library name",
+    "location": "location",
+    "quality": "book quantity"
+  },
+  "favorutes": {
+    "title": "My Favarites",
+    "favoruteBooks": "My favarite books",
+    "favariteLibraries": "My favarite libraries",
+    "notBooks": "Your Favarite Books Not Yet",
+    "notLibaries": "Your Favarite libraries Not Yet"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "theme": "theme",
+    "language": "Language"
+  },
+
+  "MyBooks": {
+    "AddBook": "Add book",
+    "MyBooks": "My Books",
+    "books": "books",
+    "addOneBook": "Add one book",
+    "addSeveralBook": "Add several books",
+    "loadFromExeFile": "load from exe file",
+    "Name": "Name",
+    "Author": "Author",
+    "Publisher": "Publisher",
+    "Quality": "Quantity",
+    "howMany": "How many book do you want to add ?",
+    "confirm": "confirm",
+    "selectExe": "select an Excel file here",
+    "exe": "Only files in .xlsx or .xls format are supported",
+    "uploading": "uploading",
+    "exeTitle": "Exe data",
+    "Action": "Action",
+    "ExeDeleteConfirm": "Are you sure you want to delete the exe file?",
+    "ExeDeleteItemConfirm": "Are you sure to delete"
+  },
+
+  "profile": {
+    "Books": "My books",
+    "newWorks": "My networks",
+    "location": "My location"
+  },
+
+  "BookItem": {
+    "Quality": "Quantity",
+    "BookEdit": "Edit book",
+    "BookDelete": "Delete book",
+    "deleteBookConfirm": "realy want to delate"
+  },
+
+  "footer": {
+    "brand": {
+      "slogan": "The largest library network in Uzbekistan"
+    },
+    "links": {
+      "title": "Quick links",
+      "home": "Home",
+      "books": "Books",
+      "libraries": "Libraries",
+      "favorites": "Favorites"
+    },
+    "contact": {
+      "title": "Contact",
+      "phone": "+998 93 164 03 49",
+      "email": "xusanyarashvo1@gmail.com",
+      "address": "Tashkent city, Sergeli district"
+    },
+    "social": {
+      "title": "Social networks",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "YouTube"
+    },
+    "bottom": {
+      "copyright": "© 2024 EZMA. All rights reserved",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use"
+    }
+  },
+
+  "Add": "add",
+  "delete": "delete",
+  "edit": "edit",
+  "cancel": "cancel",
+  "switch": "switch",
+  "next": "next",
+  "book": "book",
+  "Books": "books",
+  "logout": "log out",
+  "numberOfBook": "number of books"
 }

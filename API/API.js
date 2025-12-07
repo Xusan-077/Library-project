@@ -19,3 +19,18 @@ AuthAPI.interceptors.request.use((config) => {
 
   return config;
 });
+
+AuthAPI.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.clear();
+
+      window.location.href = "/login";
+    }
+    return Promise.reject(err);
+  }
+);

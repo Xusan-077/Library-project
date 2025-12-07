@@ -1,3 +1,118 @@
 {
-    
+  "header": {
+    "welcome": "Xush kelibsiz",
+    "nav": {
+      "home": "Bosh sahifa",
+      "books": "Kitoblar",
+      "libraries": "Kutubxonalar",
+      "Favoirtes": "Sevimlilar",
+      "setting": "Sozlamalar",
+      "MyBooks": "Mening kitoblarim"
+    }
+  },
+  "hero": {
+    "title": "Cheksiz bilim va hikoyalar olamini kashf qiling",
+    "text": "Bizning kutubxonamizga xush kelibsiz! Bu yer — qiziquvchanlik va izlanish birlashadigan maskan. Kutubxona nafaqat kitoblar to‘plami, balki barcha yoshdagi o‘rganuvchilar bir joyga jamlanadigan, ijod qiladigan va rivojlanadigan jamoaviy makondir. Eng so‘nggi bestsellerga sho‘ng‘imoqchimisiz, navbatdagi loyihangiz uchun izlanmoqchimisiz yoki shunchaki tinch joy izlayapsizmi — biz sizning safaringizni qo‘llab-quvvatlaymiz.",
+    "search": "Kitoblarni qidiring...",
+    "home": "Eng ko‘p o‘qilgan kitoblar"
+  },
+  "books": {
+    "title": "Barcha kitoblar"
+  },
+  "libraries": {
+    "title": "Kutubxonalar ro‘yxati",
+    "search": "Kutubxonani qidiring",
+    "cardName": "kutubxona nomi",
+    "location": "joylashuv",
+    "quality": "kitob soni"
+  },
+  "favorutes": {
+    "title": "Sevimlilarim",
+    "favoruteBooks": "Sevimli kitoblarim",
+    "favariteLibraries": "Sevimli kutubxonalarim",
+    "notBooks": "Sevimli kitoblaringiz mavjud emas",
+    "notLibaries": "Sevimli kutubxonalar hali mavjud emas"
+  },
+
+  "settings": {
+    "title": "Sozlamalar",
+    "theme": "mavzu",
+    "language": "Til"
+  },
+
+  "MyBooks": {
+    "AddBook": "Kitob qo‘shish",
+    "MyBooks": "Kitoblarim",
+    "books": "kitoblar",
+    "addOneBook": "Bitta kitob qo‘shish",
+    "addSeveralBook": "Bir nechta kitob qo‘shish",
+    "loadFromExeFile": "Excel fayldan yuklash",
+    "Name": "Nomi",
+    "Author": "Muallif",
+    "Publisher": "Nashriyot",
+    "Quality": "Soni",
+    "howMany": "Nechta kitob qo‘shmoqchisiz?",
+    "confirm": "tasdiqlash",
+    "selectExe": "Excel faylni shu yerga yuklang",
+    "exe": "Faqat .xlsx yoki .xls formatdagi fayllar qo‘llab-quvvatlanadi",
+    "uploading": "yuklanmoqda",
+    "exeTitle": "Excel ma'lumotlari",
+    "Action": "Amal",
+    "ExeDeleteConfirm": "Excel faylni o‘chirmoqchimisiz?",
+    "ExeDeleteItemConfirm": "Rostdan o‘chirmoqchimisiz"
+  },
+
+  "profile": {
+    "Books": "Kitoblarim",
+    "newWorks": "Tarmoqlarim",
+    "location": "Mening manzilim"
+  },
+
+  "BookItem": {
+    "Quality": "Soni",
+    "BookEdit": "Kitobni tahrirlash",
+    "BookDelete": "Kitobni o‘chirish",
+    "deleteBookConfirm": "Rostdan o‘chirmoqchimisiz"
+  },
+
+  "footer": {
+    "brand": {
+      "slogan": "O‘zbekistonning eng yirik kutubxona tarmog‘i"
+    },
+    "links": {
+      "title": "Tezkor havolalar",
+      "home": "Bosh sahifa",
+      "books": "Kitoblar",
+      "libraries": "Kutubxonalar",
+      "favorites": "Sevimlilar"
+    },
+    "contact": {
+      "title": "Bog‘lanish",
+      "phone": "+998 93 164 03 49",
+      "email": "xusanyarashvo1@gmail.com",
+      "address": "Toshkent shahri, Sergeli tumani"
+    },
+    "social": {
+      "title": "Ijtimoiy tarmoqlar",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "YouTube"
+    },
+    "bottom": {
+      "copyright": "© 2024 EZMA. Barcha huquqlar himoyalangan",
+      "privacy": "Maxfiylik siyosati",
+      "terms": "Foydalanish shartlari"
+    }
+  },
+
+  "Add": "qo‘shish",
+  "delete": "o‘chirish",
+  "edit": "tahrirlash",
+  "cancel": "bekor qilish",
+  "switch": "o‘zgartirish",
+  "next": "keyingi",
+  "book": "kitob",
+  "Books": "kitoblar",
+  "logout": "chiqish",
+  "numberOfBook": "kitoblar soni"
 }

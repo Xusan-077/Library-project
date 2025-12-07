@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthAPI } from "../../API/API";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
+  const { t } = useTranslation();
+
   const [burger, setBurger] = useState(false);
 
   const { isAuth, setIsAuth, user, setUser } = useAuthStore();
-  const { theme, toggleTheme } = useThemeStore();
+  const { theme } = useThemeStore();
 
   const navigate = useNavigate();
 
@@ -68,23 +71,29 @@ export default function Header() {
           <nav className="flex items-center max-[1040px]:hidden">
             {[
               {
-                text: "Home",
+                text: t("header.nav.home"),
                 path: "/",
               },
 
               {
-                text: "Books",
+                text: t("header.nav.books"),
+
                 path: "/books",
               },
               {
-                text: "libraries",
+                text: t("header.nav.libraries"),
+
                 path: "/library",
               },
               {
-                text: "Favorites",
+                text: t("header.nav.Favoirtes"),
+
                 path: "/favorites",
               },
-              { text: "Settings", path: "/settings" },
+              {
+                text: t("header.nav.setting"),
+                path: "/settings",
+              },
             ].map((el, index) => (
               <li key={index} className="p-[10px_20px]">
                 <NavLink
@@ -117,7 +126,7 @@ export default function Header() {
                     `${
                       isActive
                         ? `${
-                            theme == "light"
+                              theme == "light"
                               ? "border-b-yellow-700 text-yellow-700"
                               : "border-b-white text-white"
                           } border-b-2 `
@@ -129,7 +138,7 @@ export default function Header() {
                     } text-[18px] pb-2.5 font-medium  transition-all duration-300 ease`
                   }
                 >
-                  My books
+                  {t("header.nav.MyBooks")}
                 </NavLink>
               </li>
             )}
@@ -143,13 +152,13 @@ export default function Header() {
                     onClick={() => navigate("/profile")}
                     className="flex gap-5 cursor-pointer items-center "
                   >
-                    <p className="text-[26px] font-bold">
+                    <p className="text-[20px] font-bold">
                       <span
                         className={`${
                           theme == "light" ? "text-black" : "text-white"
                         } font-semibold`}
                       >
-                        welcome user
+                        {t("header.welcome")}
                       </span>
                     </p>
 
@@ -205,7 +214,7 @@ export default function Header() {
                     </span>
                   </Link>
 
-                  <nav className="border-b border-b-gray-800 pb-5 mb-5">
+                  <nav className="">
                     <ul className="flex flex-col">
                       {[
                         { text: "Home", path: "/" },

@@ -10,13 +10,14 @@ import PublicLibraryPage from "./pages/PublicLibraryPage";
 import { ToastContainer } from "react-toastify";
 import MyBooks from "./pages/MyBooks";
 import useAuthStore from "./store/useUserAuth";
-import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Likes from "./pages/Likes";
 import Settings from "./pages/Settings";
+import useThemeStore from "./store/useThemeStore";
 
 export default function App() {
   const { isAuth } = useAuthStore();
+  const { theme } = useThemeStore();
 
   return (
     <>
@@ -49,7 +50,7 @@ export default function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored"
+        theme={theme}
       />
     </>
   );

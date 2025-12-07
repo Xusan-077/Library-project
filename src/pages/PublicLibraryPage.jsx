@@ -55,7 +55,11 @@ export default function PublicLibraryPage() {
                 {likesLibraries.find((el) => el.id === libraryData?.id) ? (
                   <i className="text-red-500 text-[30px] bi bi-heart-fill"></i>
                 ) : (
-                  <i className="text-black text-[30px] bi bi-heart"></i>
+                  <i
+                    className={`${
+                      theme == "light" ? "text-black" : "text-white"
+                    }  text-[30px] bi bi-heart`}
+                  ></i>
                 )}
               </button>
             </div>

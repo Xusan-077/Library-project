@@ -5,8 +5,11 @@ import useLikeStore from "../store/useLikeStore";
 import LibraryImg from "../assets/images/publicImg.jpg";
 import { useNavigate } from "react-router-dom";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function Likes() {
+  const { t } = useTranslation();
+
   const [toggle, setToggle] = useState("books");
 
   const { theme } = useThemeStore();
@@ -23,7 +26,7 @@ export default function Likes() {
               theme == "light" ? "" : "text-white"
             } text-[35px] font-bold mb-5`}
           >
-            My Favarites
+            {t("favorutes.title")}
           </h2>
           <div
             className={`${
@@ -43,12 +46,12 @@ export default function Likes() {
                   toggle === "books" ? " border-yellow-700" : ""
                 } ${
                   theme == "light" ? "" : "text-white"
-                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[300px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal"></i>
                 </span>
-                My favarite books
+                {t("favorutes.favoruteBooks")}
               </button>
               <button
                 onClick={() => setToggle("libraries")}
@@ -56,12 +59,12 @@ export default function Likes() {
                   toggle === "libraries" ? " border-yellow-700" : ""
                 } ${
                   theme == "light" ? "" : "text-white"
-                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[200px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
+                } border-b-2 border-transparent flex gap-5 p-[10px_0] max-w-[300px] justify-center w-full max-[480px]:max-w-full max-[480px]:mb-5 max-[480px]:p-[10px_20px] max-[480px]:justify-center  `}
               >
                 <span className="">
                   <i className="text-yellow-700 bi bi-journal-bookmark-fill"></i>
                 </span>
-                My favarite libraries
+                {t("favorutes.favariteLibraries")}
               </button>
             </div>
             <div className="">
@@ -71,7 +74,7 @@ export default function Likes() {
                     <div className="text-center py-10">
                       <i className="bi bi-book text-gray-400 text-[100px] mb-4"></i>
                       <p className="text-[30px] font-semibold text-red-500">
-                        Your Favarite Books Not Yet
+                        {t("favorutes.notBooks")}
                       </p>
                     </div>
                   )}
@@ -93,7 +96,7 @@ export default function Likes() {
                     <div className="text-center py-10">
                       <i className="bi bi-book text-gray-400 text-[100px] mb-4"></i>
                       <p className="text-[30px] font-semibold text-red-500">
-                        Your Favarite libraries Not Yet
+                        {t("favorutes.notLibaries")}
                       </p>
                     </div>
                   )}

@@ -8,8 +8,11 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function HomePublicBooksSection() {
+  const { t } = useTranslation();
+
   const { theme } = useThemeStore();
 
   const { data: books, isLoading } = useQuery({
@@ -29,7 +32,7 @@ export default function HomePublicBooksSection() {
               theme == "light" ? "text-black" : "text-white"
             } text-[35px] font-semibold mb-5 ml-2`}
           >
-            most read books
+            {t("hero.home")}
           </h2>
           <Swiper
             spaceBetween={20}

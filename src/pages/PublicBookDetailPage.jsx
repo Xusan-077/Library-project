@@ -90,7 +90,11 @@ export default function PublicBookDetailPage() {
                     {likesBooks.find((el) => el.id == book?.data?.id) ? (
                       <i className="text-red-500 bi bi-heart-fill"></i>
                     ) : (
-                      <i className="bi bi-heart"></i>
+                      <i
+                        className={`${
+                          theme == "light" ? "text-black" : "text-white"
+                        }  bi bi-heart`}
+                      ></i>
                     )}
                   </button>
                 </div>

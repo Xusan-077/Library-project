@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import API from "../../API/API";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function HomeHeroSection() {
+  const { t } = useTranslation();
+
   const { theme } = useThemeStore();
 
   const [search, setSearch] = useState("");
@@ -32,8 +35,7 @@ export default function HomeHeroSection() {
               theme == "light" ? "" : "text-white"
             } text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-[425px]:text-[30px] font-bold text-center leading-tight`}
           >
-            Discover Endless Worlds of <br className="hidden sm:block" />
-            Knowledge, Stories
+            {t("hero.title")}
           </h1>
 
           <p
@@ -41,12 +43,7 @@ export default function HomeHeroSection() {
               theme == "light" ? "text-gray-600" : "text-gray-400"
             } text-base md:text-lg font-medium max-w-2xl max-[425px]:text-[14px] text-center`}
           >
-            Welcome to a place where curiosity meets discovery. Our library is
-            more than just books on shelves—it's a vibrant community hub where
-            learners of all ages come together to explore, create, and grow.
-            Whether you're diving into the latest bestseller, researching for
-            your next big project, or simply finding a quiet corner to escape
-            into another world, we're here to support your journey.
+            {t("hero.text")}
           </p>
 
           <div className="w-full relative max-w-2xl">
@@ -54,7 +51,7 @@ export default function HomeHeroSection() {
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
-                placeholder="Search your book here..."
+                placeholder={t("hero.search")}
                 className={`${
                   theme == "light"
                     ? "border-gray-300 placeholder:text-gray-400"
@@ -91,31 +88,57 @@ export default function HomeHeroSection() {
                     {Array.from({ length: 4 }).map((_, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-2 border-b border-b-gray-300 animate-pulse"
+                        className={`flex items-center justify-between p-2 border-b animate-pulse
+    ${theme === "light" ? "border-b-gray-300" : "border-b-gray-700"}`}
                       >
                         <div>
-                          <div className="w-[200px] h-5 bg-gray-200 rounded mb-2"></div>
+                          <div
+                            className={`w-[200px] h-5 rounded mb-2 
+        ${theme === "light" ? "bg-gray-200" : "bg-gray-700"}`}
+                          ></div>
                           <div className="flex gap-2">
-                            <div className="w-24 h-4 bg-gray-200 rounded"></div>
-                            <div className="w-20 h-4 bg-gray-200 rounded"></div>
+                            <div
+                              className={`w-24 h-4 rounded 
+          ${theme === "light" ? "bg-gray-200" : "bg-gray-700"}`}
+                            ></div>
+                            <div
+                              className={`w-20 h-4 rounded 
+          ${theme === "light" ? "bg-gray-200" : "bg-gray-700"}`}
+                            ></div>
                           </div>
                         </div>
-                        <div className="w-20 h-8 bg-gray-200 rounded"></div>
+                        <div
+                          className={`w-20 h-8 rounded 
+      ${theme === "light" ? "bg-gray-200" : "bg-gray-700"}`}
+                        ></div>
                       </div>
                     ))}
                   </ul>
                 ) : searchBooks?.length > 0 ? (
                   <ul
-                    className="max-h-60 overflow-y-scroll 
-      p-2.5 rounded-lg bg-white"
+                    style={{
+                      scrollbarWidth: "none",
+                    }}
+                    className={`${
+                      theme == "light" ? "bg-white" : "bg-[#1D202AFF]"
+                    } max-h-60 overflow-y-scroll 
+      p-2.5 rounded-lg `}
                   >
                     {searchBooks.map((el) => (
                       <li
                         key={el.id}
-                        className="flex items-center justify-between p-2 border-b border-b-gray-300"
+                        className={`${
+                          theme == "light"
+                            ? "border-b-gray-300"
+                            : "border-b-gray-800"
+                        } flex items-center justify-between p-2 border-b `}
                       >
                         <div>
-                          <h3 className="text-[18px] font-semibold mb-2">
+                          <h3
+                            className={`${
+                              theme == "light" ? "" : "text-gray-300"
+                            } text-[18px] font-semibold mb-2`}
+                          >
                             {el.name}
                           </h3>
                           <div>
@@ -129,7 +152,7 @@ export default function HomeHeroSection() {
                         </div>
                         <div
                           onClick={() => navigate(`/book/${el.id}`)}
-                          className="border border-yellow-600 p-[5px_20px] rounded-lg cursor-pointer text-yellow-600 text-[18px]"
+                          className="border border-yellow-700 p-[5px_20px] rounded-lg cursor-pointer text-yellow-700 text-[18px]"
                         >
                           visit
                         </div>

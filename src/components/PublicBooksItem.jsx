@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useThemeStore from "../store/useThemeStore";
+import { useTranslation } from "react-i18next";
 
 export default function PublicBooksItem({
   name,
@@ -27,6 +28,8 @@ export default function PublicBooksItem({
   const [editBookModal, setEditBookModal] = useState(false);
 
   const { likesBooks, toggleLike } = useLikeStore();
+
+  const { t } = useTranslation();
 
   const [newEditBook, setNewEditBook] = useState({
     name: book?.name || "",
@@ -111,7 +114,7 @@ export default function PublicBooksItem({
           >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[24px] font-semibold text-yellow-700">
-                Delete Book
+                {t("BookItem.BookDelete")}
               </span>
               <button
                 onClick={() => setDeleteBookModal(false)}
@@ -128,7 +131,7 @@ export default function PublicBooksItem({
                   theme == "light" ? "" : "text-white"
                 } text-[18px] text-center mb-7`}
               >
-                realy want to delate
+                {t("BookItem.deleteBookConfirm")} -
                 <span className="text-red-600 underline">{book.name}</span>
               </p>
 
@@ -141,7 +144,7 @@ export default function PublicBooksItem({
                   }}
                   className="p-[10px_20px] bg-red-500 text-white rounded-lg "
                 >
-                  delete
+                  {t("delete")}
                 </button>
                 <button
                   onClick={() => {
@@ -149,7 +152,7 @@ export default function PublicBooksItem({
                   }}
                   className="p-[10px_20px] bg-gray-300 rounded-lg "
                 >
-                  cancle
+                  {t("cancel")}
                 </button>
               </div>
             </div>
@@ -168,7 +171,7 @@ export default function PublicBooksItem({
           >
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-5">
               <span className="text-[22px] font-semibold  text-yellow-700">
-                Add one book
+                {t("BookItem.BookEdit")}
               </span>
               <button className="cursor-pointer">
                 <span
@@ -183,14 +186,20 @@ export default function PublicBooksItem({
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="">
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Book name</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Name")}
+                </span>
                 <input
                   type="text"
                   defaultValue={book.name}
                   {...register("name")}
                   name="name"
                   onChange={handleSaveOneBook}
-                  placeholder="Book name"
+                  placeholder={`${t("MyBooks.Name")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -202,14 +211,20 @@ export default function PublicBooksItem({
                 </span>
               </label>
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Author</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Author")}
+                </span>
                 <input
                   type="text"
                   defaultValue={book.author}
                   {...register("author")}
                   name="author"
                   onChange={handleSaveOneBook}
-                  placeholder="Author"
+                  placeholder={`${t("MyBooks.Author")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -221,14 +236,20 @@ export default function PublicBooksItem({
                 </span>
               </label>
               <label className="block mb-2">
-                <span className="flex pl-2.5 items-center mb-1">Publisher</span>
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Publisher")}
+                </span>
                 <input
                   type="text"
                   {...register("publisher")}
                   defaultValue={book.publisher}
                   name="publisher"
                   onChange={handleSaveOneBook}
-                  placeholder="Publisher"
+                  placeholder={`${t("MyBooks.Publisher")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -240,8 +261,12 @@ export default function PublicBooksItem({
                 </span>
               </label>
               <label className="">
-                <span className="flex pl-2.5 items-center mb-1">
-                  Book count
+                <span
+                  className={`${
+                    theme == "light" ? "" : "text-white"
+                  } flex pl-2.5 items-center mb-1`}
+                >
+                  {t("MyBooks.Quality")}
                 </span>
                 <input
                   type="number"
@@ -249,7 +274,7 @@ export default function PublicBooksItem({
                   defaultValue={book.quantity_in_library}
                   name="quantity_in_library"
                   onChange={handleSaveOneBook}
-                  placeholder="Book count"
+                  placeholder={`${t("MyBooks.Quality")}`}
                   className={`${
                     theme == "light"
                       ? "bg-gray-100"
@@ -269,13 +294,13 @@ export default function PublicBooksItem({
                   } cursor-pointer p-[10px_20px]  border border-[#d9d9d9]  text-[rgba(0,0,0,0.88)] text-[14px] rounded-lg`}
                   type="button"
                 >
-                  cancle
+                  {t("cancel")}
                 </button>
                 <button
                   className="cursor-pointer p-[10px_20px] bg-yellow-700 text-[14px] text-white rounded-lg"
                   type="submit"
                 >
-                  Edit
+                  {t("edit")}
                 </button>
               </div>
             </form>
@@ -311,7 +336,7 @@ export default function PublicBooksItem({
           <div className="absolute flex items-center justify-between w-full p-[0_15px] top-2 right-0">
             {quantity_in_library > 0 && (
               <span className="px-2 py-1 text-xs font-medium bg-white dark:bg-slate-900 text-gray-900 dark:text-white rounded">
-                quantity: {quantity_in_library}
+                {t("BookItem.Quality")}: {quantity_in_library}
               </span>
             )}
 
