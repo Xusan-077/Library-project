@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuthStore from "../store/useUserAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PublicBooksItem from "../components/PublicBooksItem";
 import { AuthAPI } from "../../API/API";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,10 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
 import useThemeStore from "../store/useThemeStore";
 import { useTranslation } from "react-i18next";
+import { queryClient } from "../main";
 
 export default function Profile() {
   const { t } = useTranslation();
@@ -22,34 +24,59 @@ export default function Profile() {
 
   const [activeTab, setActiveTab] = useState("books");
 
-  const { user, logOut } = useAuthStore();
+  const { user, logOut, setUser } = useAuthStore();
   const { theme } = useThemeStore();
+
+  const accessToken = localStorage.getItem("access");
 
   const navigate = useNavigate();
 
+  const [editData, setEditData] = useState({
+    user: {
+      name: user?.user?.name || "",
+    },
+    address: user?.address,
+    social_media: {
+      instagram: user?.social_media?.instagram || "",
+      facebook: user?.social_media?.facebook || "",
+      telegram: user?.social_media?.telegram || "",
+    },
+    can_rent_books: user?.can_rent_books ? "true" : "false",
+    latitude: user?.latitude || "",
+    longitude: user?.longitude || "",
+  });
+
+  const { data: userAction } = useQuery({
+    queryFn: async () => {
+      const res = await AuthAPI.get("/auth/profile/");
+
+      return res.data;
+    },
+    queryKey: ["userData"],
+    enabled: !!accessToken,
+  });
+
+  useEffect(() => {
+    setUser(userAction);
+  }, [userAction]);
+
   // form
 
-  // const schema = yup
-  //   .object({
-  //     address: yup.string().required(),
-  //   })
-  //   .required();
+  const schema = yup
+    .object({
+      address: yup.string().required(),
+    })
+    .required();
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm({
-  //   resolver: yupResolver(schema),
-  // });
-
-  // function onSubmit() {
-  //   mutate();
-  // }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   // form
-
-  const accessToken = localStorage.getItem("access");
 
   const { data: myBooks, isLoading } = useQuery({
     queryFn: async () => {
@@ -61,13 +88,31 @@ export default function Profile() {
     enabled: !!accessToken,
   });
 
-  // const { mutate } = useMutation({
-  //   mutationFn: async (body) => {
-  //     const res = AuthAPI.patch(`/auth/profile/`, body);
+  const { mutate: EditProfile } = useMutation({
+    mutationFn: async (body) => {
+      const res = AuthAPI.patch(`/auth/profile/`, body);
 
-  //     return res;
-  //   },
-  // });
+      return res;
+    },
+    onSuccess: () => {
+      toast.success("Profile edit success");
+
+      queryClient.invalidateQueries();
+
+      setEdit(false);
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed profile edit");
+    },
+  });
+
+  function handleEditSubmit(e) {
+    e.preventDefault();
+
+    EditProfile(editData);
+
+    queryClient.invalidateQueries();
+  }
 
   return (
     <div className="">
@@ -117,15 +162,15 @@ export default function Profile() {
       )}
 
       {edit && (
-        <div className="fixed p-[0_20px] w-screen h-screen inset-0 bg-[#0009] flex items-center justify-center z-100">
+        <div className="fixed max-[425px]:p-0 p-[0_20px] w-screen h-screen inset-0 bg-[#0009] flex items-center justify-center z-100">
           <div
             className={`${
               theme == "light"
                 ? "bg-white"
                 : "bg-[#030712FF] border border-gray-800"
-            }  rounded-lg shadow-lg p-6 max-w-[600px] w-full`}
+            } max-[425px]:w-full max-[425px]:rounded-none max-[425px]:h-screen max-[425px]:m-0 rounded-lg shadow-lg p-6 max-w-[600px] w-full`}
           >
-            <div className="flex pb-1 mb-1 border-b border-b-gray-300 justify-between">
+            <div className="flex mb-5 border-b border-b-gray-300 justify-between">
               <h3 className="text-[20px] font-semibold text-yellow-700">
                 Edit Profile
               </h3>
@@ -138,9 +183,73 @@ export default function Profile() {
                 &times;
               </span>
             </div>
-            {/* onSubmit={handleSubmit(onSubmit)} */}
-            <form className="">
-              <div className={` mt-10 border-b pb-5  mb-5`}>
+
+            <form onSubmit={handleEditSubmit} className="">
+              <div className="flex items-center gap-3 mt-5 border-b pb-5 border-b-gray-200 mb-5">
+                <div className="w-full">
+                  <p className="flex gap-3 items-center mb-5">
+                    <i className="text-yellow-700 bi bi-person-bounding-box"></i>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-gray-300"
+                      } text-[14px] font-medium`}
+                    >
+                      User
+                    </span>
+                  </p>
+                  {/*input*/}
+                  <input
+                    type="text"
+                    placeholder="Enter Location"
+                    defaultValue={user.user.name}
+                    onChange={(e) =>
+                      setEditData({
+                        ...editData,
+                        user: {
+                          ...editData.user,
+                          name: e.target.value,
+                        },
+                      })
+                    }
+                    className={`${
+                      theme == "light"
+                        ? "border-gray-300"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } flex items-center gap-3 w-full h-[50px]  border  p-[0_0_0_20px] rounded-lg`}
+                  />
+                </div>
+                <div className={`w-full`}>
+                  <p className="flex gap-3 items-center mb-5">
+                    <i className="text-yellow-700 bi bi-sliders"></i>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-gray-300"
+                      } text-[14px] font-medium`}
+                    >
+                      Can rent book
+                    </span>
+                  </p>
+                  <select
+                    onChange={(e) =>
+                      setEditData({
+                        ...editData,
+                        can_rent_books: String(e.target.value === "yes"),
+                      })
+                    }
+                    defaultValue={user.can_rent_books ? "yes" : "no"}
+                    className={`${
+                      theme == "light"
+                        ? "border-gray-300"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } border w-full p-3 shadow-sm rounded`}
+                  >
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={`border-b pb-5 border-b-gray-200 mb-5`}>
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-map"></i>
                   <span
@@ -162,6 +271,12 @@ export default function Profile() {
                     <i className="text-yellow-700 bi bi-geo-alt"></i>
                   </span>
                   <input
+                    onChange={(e) =>
+                      setEditData({
+                        ...editData,
+                        address: e.target.value,
+                      })
+                    }
                     type="text"
                     placeholder="Enter Location"
                     defaultValue={user.address}
@@ -169,30 +284,8 @@ export default function Profile() {
                   />
                 </div>
               </div>
-              <div className={`mt-10 border-b pb-5 border-b-gray-200 mb-5`}>
-                <p className="flex gap-3 items-center mb-5">
-                  <i className="text-yellow-700 bi bi-sliders"></i>
-                  <span
-                    className={`${
-                      theme == "light" ? "" : "text-gray-300"
-                    } text-[14px] font-medium`}
-                  >
-                    Can rent book
-                  </span>
-                </p>
-                <select
-                  defaultValue={user.can_rent_books ? "yes" : "no"}
-                  className={`${
-                    theme == "light"
-                      ? "border-gray-300"
-                      : "text-white border-gray-800 bg-[#131A28]"
-                  } border w-full shadow-sm border-gray-300 rounded p-3`}
-                >
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </select>
-              </div>
-              <div className={`mt-10 border-b pb-5 border-b-gray-200 mb-5`}>
+
+              <div className={`border-b pb-5 border-b-gray-200 mb-5`}>
                 <p className="flex gap-3 items-center mb-5">
                   <i className="text-yellow-700 bi bi-server"></i>
                   <span
@@ -214,7 +307,18 @@ export default function Profile() {
                     <span className="">
                       <i className="text-yellow-700 bi bi-instagram"></i>
                     </span>
+                    {/* input */}
+
                     <input
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          social_media: {
+                            ...editData.social_media,
+                            instagram: e.target.value,
+                          },
+                        })
+                      }
                       type="text"
                       placeholder="Instagram"
                       className="max-w-full w-full outline-none"
@@ -231,7 +335,18 @@ export default function Profile() {
                     <span className="">
                       <i className="text-yellow-700 bi bi-facebook"></i>
                     </span>
+                    {/* input */}
+
                     <input
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          social_media: {
+                            ...editData.social_media,
+                            facebook: e.target.value,
+                          },
+                        })
+                      }
                       type="text"
                       placeholder="Facebook"
                       className="max-w-full w-full outline-none"
@@ -248,7 +363,17 @@ export default function Profile() {
                     <span className="">
                       <i className="text-yellow-700 bi bi-telegram"></i>
                     </span>
+                    {/* input */}
                     <input
+                      onChange={(e) =>
+                        setEditData({
+                          ...editData,
+                          social_media: {
+                            ...editData.social_media,
+                            telegram: e.target.value,
+                          },
+                        })
+                      }
                       type="text"
                       placeholder="Telegram"
                       className="max-w-full w-full outline-none"
@@ -265,8 +390,7 @@ export default function Profile() {
                   choose Location on map
                 </button>
               </div>
-
-              <div className="flex justify-end items-center gap-2 mt-10">
+              <div className="flex justify-end items-center gap-2 mt-5">
                 <button
                   onClick={() => setEdit(false)}
                   type="button"
@@ -331,14 +455,16 @@ export default function Profile() {
               </div>
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-bookmarks"></i>
+
                 <span
                   className={`${
                     user?.can_rent_books ? "bg-green-600" : "bg-red-600"
-                  } text-white text-[16px] rounded-lg  p-[5px_20px]`}
+                  } text-white text-[16px] rounded-lg p-[5px_20px]`}
                 >
                   {user?.can_rent_books ? "can rent" : "cannot rent"}
                 </span>
               </div>
+
               <div className="flex gap-3 items-center mb-3">
                 <i className="text-[24px] text-yellow-700 bi bi-house-door"></i>
                 <p

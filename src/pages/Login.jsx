@@ -94,10 +94,10 @@ export default function Login() {
       `}
         >
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700"
           >
-            Back to main
+            Back
           </button>
 
           <div className="w-full mt-20">
