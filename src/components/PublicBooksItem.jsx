@@ -67,14 +67,20 @@ export default function PublicBooksItem({
       return res;
     },
     onSuccess: () => {
-      toast.success("Book delete success");
+      toast.success("Book delete success", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
 
       setDeleteBookModal(false);
 
       queryClient.invalidateQueries();
     },
     onError: (err) => {
-      toast.error(err.message || "Failed to delete book");
+      toast.error(err.message || "Failed to delete book", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     },
   });
 
@@ -84,14 +90,20 @@ export default function PublicBooksItem({
       return res;
     },
     onSuccess: () => {
-      toast.success("Book successfully edited");
+      toast.success("Book successfully edited", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
 
       queryClient.invalidateQueries();
 
       setEditBookModal(false);
     },
     onError: () => {
-      toast.error("Failed to edit book");
+      toast.error("Failed to edit book", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     },
   });
 

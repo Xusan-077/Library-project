@@ -95,14 +95,20 @@ export default function Profile() {
       return res;
     },
     onSuccess: () => {
-      toast.success("Profile edit success");
+      toast.success("Profile edit success", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
 
       queryClient.invalidateQueries();
 
       setEdit(false);
     },
     onError: (err) => {
-      toast.error(err.message || "Failed profile edit");
+      toast.error(err.message || "Failed profile edit", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     },
   });
 
@@ -145,7 +151,10 @@ export default function Profile() {
                 onClick={() => {
                   logOut();
 
-                  toast.success("success log out");
+                  toast.success("success log out", {
+                    className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+                    bodyClassName: "text-sm sm:text-base md:text-lg",
+                  });
                 }}
               >
                 Yes

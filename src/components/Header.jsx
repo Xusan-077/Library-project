@@ -126,7 +126,7 @@ export default function Header() {
                     `${
                       isActive
                         ? `${
-                              theme == "light"
+                            theme == "light"
                               ? "border-b-yellow-700 text-yellow-700"
                               : "border-b-white text-white"
                           } border-b-2 `
@@ -286,7 +286,9 @@ export default function Header() {
                               isActive
                                 ? "border-b-2 w-full border-b-yellow-700 text-yellow-700"
                                 : ""
-                            } text-[18px] w-full text-gray-800 mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
+                            } ${
+                              theme == "light" ? "" : "text-white"
+                            } text-[18px] w-full  mb-2 p-[10px_20px_10px_30px] font-medium transition-all duration-300 ease hover:text-yellow-700`
                           }
                         >
                           Login

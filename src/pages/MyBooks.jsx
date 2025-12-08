@@ -135,10 +135,16 @@ export default function MyBooks() {
       return res;
     },
     onError: () => {
-      toast.error("Failed to add book");
+      toast.error("Failed to add book", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     },
     onSuccess: () => {
-      toast.success("Add book success");
+      toast.success("Add book success", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
 
       setAddBookModal(false);
 
@@ -157,7 +163,10 @@ export default function MyBooks() {
       queryClient.invalidateQueries();
     },
     onError: (err) => {
-      toast.error(err.message || "Failed to upload file");
+      toast.error(err.message || "Failed to upload file", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     },
   });
 
@@ -226,7 +235,10 @@ export default function MyBooks() {
       setFileData([]);
       setFileAction(null);
     } else {
-      toast.error("No file data to add");
+      toast.error("No file data to add", {
+        className: "max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg",
+        bodyClassName: "text-sm sm:text-base md:text-lg",
+      });
     }
   }
 
