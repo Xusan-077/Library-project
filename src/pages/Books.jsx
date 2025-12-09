@@ -72,6 +72,7 @@ export default function Books() {
           <div className="mt-5 flex gap-10 items-center justify-center  flex-wrap">
             <div className="">
               <select
+                className={`${theme == "light" ? "" : "text-gray-300"}`}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
                   setPageNum(0);
@@ -87,7 +88,9 @@ export default function Books() {
               <button
                 disabled={pageNum === 0}
                 onClick={() => setPageNum((p) => p - 1)}
-                className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                className={`${
+                  theme == "light" ? "text-gray-800" : "text-gray-300"
+                } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
               >
                 prev
               </button>
@@ -96,8 +99,10 @@ export default function Books() {
                 <button
                   onClick={() => setPageNum(index)}
                   className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
-                    pageNum === index ? "bg-yellow-700 text-white" : ""
-                  } border`}
+                    pageNum === index
+                      ? "bg-yellow-700 border-yellow-700 text-white"
+                      : ""
+                  } ${theme == "light" ? "" : "text-white "} border`}
                   key={index}
                 >
                   {index + 1}
@@ -107,7 +112,9 @@ export default function Books() {
               <button
                 disabled={pageNum === totalPages - 1}
                 onClick={() => setPageNum((p) => p + 1)}
-                className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                className={`${
+                  theme == "light" ? "text-gray-800" : "text-gray-300"
+                } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
               >
                 next
               </button>

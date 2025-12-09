@@ -640,6 +640,9 @@ export default function Profile() {
                             setPageSize(Number(e.target.value));
                             setPageNum(0);
                           }}
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          }`}
                         >
                           <option value="8">8</option>
                           <option value="16">16</option>
@@ -651,7 +654,9 @@ export default function Profile() {
                         <button
                           disabled={pageNum === 0}
                           onClick={() => setPageNum((p) => p - 1)}
-                          className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                          className={`${
+                            theme == "light" ? "text-gray-800" : "text-gray-300"
+                          } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
                         >
                           prev
                         </button>
@@ -661,9 +666,9 @@ export default function Profile() {
                             onClick={() => setPageNum(index)}
                             className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
                               pageNum === index
-                                ? "bg-yellow-700 text-white"
+                                ? "bg-yellow-700 border-yellow-700 text-white"
                                 : ""
-                            } border`}
+                            } ${theme == "light" ? "" : "text-white "} border`}
                             key={index}
                           >
                             {index + 1}
@@ -673,7 +678,9 @@ export default function Profile() {
                         <button
                           disabled={pageNum === totalPages - 1}
                           onClick={() => setPageNum((p) => p + 1)}
-                          className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                          className={`${
+                            theme == "light" ? "text-gray-800" : "text-gray-300"
+                          } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
                         >
                           next
                         </button>

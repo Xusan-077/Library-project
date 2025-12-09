@@ -42,8 +42,6 @@ export default function HomePublicBooksSection() {
             loop={true}
             autoplay={{ delay: 1500, disableOnInteraction: false }}
             breakpoints={{
-              default: { slidesPerView: 4 },
-              640: { slidesPerView: 2 },
               1200: { slidesPerView: 3 },
               1024: { slidesPerView: 4 },
             }}
