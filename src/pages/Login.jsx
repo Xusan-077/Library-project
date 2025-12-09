@@ -61,18 +61,6 @@ export default function Login() {
     mutation.mutate(data);
   };
 
-  useEffect(() => {
-    const handleUnload = () => {
-      localStorage.clear();
-    };
-
-    window.addEventListener("beforeunload", handleUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-    };
-  }, []);
-
   return (
     <section
       style={{

@@ -268,6 +268,27 @@ export default function MyBooks() {
     setExeEditBook(null);
   }
 
+  const [pageSize, setPageSize] = useState(8);
+  const [pageNum, setPageNum] = useState(0);
+
+  const start = pageNum * pageSize;
+  const end = start + pageSize;
+
+  const pagination = myBooks?.data.slice(start, end);
+
+  const totalPages = Math.ceil((myBooks?.data.length || 0) / pageSize);
+
+  // Exe
+  const [pageSizeExe, setPageSizeExe] = useState(6);
+  const [pageNumExe, setPageNumExe] = useState(0);
+
+  const startExe = pageNumExe * pageSizeExe;
+  const endExe = startExe + pageSizeExe;
+
+  const paginationExe = fileData?.slice(startExe, endExe) || [];
+
+  const totalPagesExe = Math.ceil((fileData?.length || 0) / pageSizeExe);
+
   return (
     <section className="mb-auto">
       <button
@@ -936,7 +957,7 @@ export default function MyBooks() {
               theme == "light"
                 ? "bg-white"
                 : "bg-[#030712FF] border-gray-700 border"
-            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[350px] w-full`}
+            }   m-[0_20px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[400px] w-full`}
           >
             <p className="text-[17px] mb-4 text-center font-semibold ">
               <span
@@ -998,7 +1019,7 @@ export default function MyBooks() {
               theme == "light"
                 ? "bg-white"
                 : "bg-[#030712FF] border-gray-700 border"
-            }   m-[0_20px] min-h-[600px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[800px] w-full`}
+            }   m-[0_20px] min-h-[600px] max-[425px]:p-[15px] rounded-lg p-[20px_25px] max-w-[850px] w-full`}
           >
             {/* top */}
             <div className="flex items-center justify-between border-b border-b-gray-300 mb-3">
@@ -1070,7 +1091,7 @@ export default function MyBooks() {
                     </span>
                   </div>
                   <ul className="">
-                    {fileData?.map((book) => (
+                    {paginationExe?.map((book) => (
                       <ExeItem
                         key={`${book.name}-${book.author}-${book.publisher}-${book.quantity_in_library}`}
                         books={fileData}
@@ -1084,6 +1105,52 @@ export default function MyBooks() {
                       />
                     ))}
                   </ul>
+                  <div className="mt-10 flex gap-10 items-center justify-center  flex-wrap">
+                    <div className="">
+                      <select
+                        onChange={(e) => {
+                          setPageSizeExe(Number(e.target.value));
+                          setPageNumExe(0);
+                        }}
+                      >
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="24">24</option>
+                        <option value="32">32</option>
+                      </select>
+                    </div>
+                    <div className="flex gap-5 items-center justify-center flex-wrap">
+                      <button
+                        disabled={pageNumExe === 0}
+                        onClick={() => setPageNumExe((p) => p - 1)}
+                        className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                      >
+                        prev
+                      </button>
+
+                      {Array.from({ length: totalPagesExe }).map((_, index) => (
+                        <button
+                          onClick={() => setPageNumExe(index)}
+                          className={`p-2 cursor-pointer w-[35px] rounded-lg border ${
+                            pageNumExe === index
+                              ? "bg-yellow-700 text-white"
+                              : ""
+                          }`}
+                          key={index}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+
+                      <button
+                        disabled={pageNumExe === totalPagesExe - 1}
+                        onClick={() => setPageNumExe((p) => p + 1)}
+                        className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                      >
+                        next
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1294,7 +1361,7 @@ export default function MyBooks() {
             } `}
           >
             {isLoading ? (
-              Array.from({ length: 12 }).map((_, index) => (
+              Array.from({ length: 8 }).map((_, index) => (
                 <li key={index} className="min-w-[250px]">
                   <div className="mb-3 rounded-lg bg-gray-200 h-[280px]"></div>
                   <div className="px-1 space-y-2">
@@ -1306,7 +1373,7 @@ export default function MyBooks() {
                 </li>
               ))
             ) : myBooks?.data?.length > 0 ? (
-              myBooks.data.map((book, index) => (
+              pagination.map((book, index) => (
                 <PublicBooksItem
                   auth
                   index={index}
@@ -1328,6 +1395,50 @@ export default function MyBooks() {
               </div>
             )}
           </ul>
+          <div className="mt-5 flex gap-10 items-center justify-center  flex-wrap">
+            <div className="">
+              <select
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setPageNum(0);
+                }}
+              >
+                <option value="8">8</option>
+                <option value="16">16</option>
+                <option value="24">24</option>
+                <option value="32">32</option>
+              </select>
+            </div>
+            <div className="flex gap-5 items-center justify-center flex-wrap">
+              <button
+                disabled={pageNum === 0}
+                onClick={() => setPageNum((p) => p - 1)}
+                className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+              >
+                prev
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  onClick={() => setPageNum(index)}
+                  className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
+                    pageNum === index ? "bg-yellow-700 text-white" : ""
+                  } border`}
+                  key={index}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                disabled={pageNum === totalPages - 1}
+                onClick={() => setPageNum((p) => p + 1)}
+                className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+              >
+                next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

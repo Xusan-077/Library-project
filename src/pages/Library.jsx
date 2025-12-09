@@ -62,6 +62,16 @@ export default function Library() {
     return result;
   }, [libraries?.data, sort, searchQuery]);
 
+  const [pageNum, setPageNum] = useState(0);
+  const [pageSize, setPageSize] = useState(6);
+
+  const start = pageNum * pageSize;
+  const end = start + pageSize;
+
+  const totalPages = Math.ceil((libraries?.data.length || 0) / pageSize);
+
+  const pagination = libraries?.data.slice(start, end);
+
   return (
     <section className={`${theme == "light" ? "bg-gray-50" : "bg-[#0A0F18]"}`}>
       <div className="container mx-auto px-4">
@@ -236,7 +246,7 @@ export default function Library() {
                   ))
                 : isLoading && format == "list"
                 ? ""
-                : filteredAndSortedLibraries.map((library) =>
+                : pagination.map((library) =>
                     format === "grid" ? (
                       <li
                         onClick={() => navigate(`/library/${library.id}`)}
@@ -471,6 +481,51 @@ export default function Library() {
                     )
                   )}
             </ul>
+
+            <div className="mt-10 flex gap-10 items-center justify-center  flex-wrap">
+              <div className="">
+                <select
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                    setPageNum(0);
+                  }}
+                >
+                  <option value="8">8</option>
+                  <option value="16">16</option>
+                  <option value="24">24</option>
+                  <option value="32">32</option>
+                </select>
+              </div>
+              <div className="flex gap-5 items-center justify-center flex-wrap">
+                <button
+                  disabled={pageNum === 0}
+                  onClick={() => setPageNum((p) => p - 1)}
+                  className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                >
+                  prev
+                </button>
+
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    onClick={() => setPageNum(index)}
+                    className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
+                      pageNum === index ? "bg-yellow-700 text-white" : ""
+                    } border`}
+                    key={index}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+
+                <button
+                  disabled={pageNum === totalPages - 1}
+                  onClick={() => setPageNum((p) => p + 1)}
+                  className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                >
+                  next
+                </button>
+              </div>
+            </div>
 
             {!isLoading && filteredAndSortedLibraries.length === 0 && (
               <div className="text-center py-12">

@@ -120,6 +120,16 @@ export default function Profile() {
     queryClient.invalidateQueries();
   }
 
+  const [pageNum, setPageNum] = useState(0);
+  const [pageSize, setPageSize] = useState(8);
+
+  const start = pageNum * pageSize;
+  const end = start + pageSize;
+
+  const pagination = myBooks?.data.slice(start, end);
+
+  const totalPages = Math.ceil((myBooks?.data.length || 0) / pageSize);
+
   return (
     <div className="">
       {logOutModal && (
@@ -599,7 +609,7 @@ export default function Profile() {
                     </h2>
                     <ul className="grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
                       {isLoading
-                        ? Array.from({ length: 12 }).map((_, index) => (
+                        ? Array.from({ length: 8 }).map((_, index) => (
                             <li key={index} className="min-w-[250px]">
                               <div className="mb-3 rounded-lg bg-gray-200 h-[280px]"></div>
 
@@ -611,7 +621,7 @@ export default function Profile() {
                               </div>
                             </li>
                           ))
-                        : myBooks?.data?.map((book, index) => (
+                        : pagination.map((book, index) => (
                             <div key={book.id} className="">
                               <PublicBooksItem
                                 index={index}
@@ -622,6 +632,53 @@ export default function Profile() {
                             </div>
                           ))}
                     </ul>
+
+                    <div className="mt-10 flex gap-10 items-center justify-center  flex-wrap">
+                      <div className="">
+                        <select
+                          onChange={(e) => {
+                            setPageSize(Number(e.target.value));
+                            setPageNum(0);
+                          }}
+                        >
+                          <option value="8">8</option>
+                          <option value="16">16</option>
+                          <option value="24">24</option>
+                          <option value="32">32</option>
+                        </select>
+                      </div>
+                      <div className="flex gap-5 items-center justify-center flex-wrap">
+                        <button
+                          disabled={pageNum === 0}
+                          onClick={() => setPageNum((p) => p - 1)}
+                          className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                        >
+                          prev
+                        </button>
+
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                          <button
+                            onClick={() => setPageNum(index)}
+                            className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
+                              pageNum === index
+                                ? "bg-yellow-700 text-white"
+                                : ""
+                            } border`}
+                            key={index}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
+
+                        <button
+                          disabled={pageNum === totalPages - 1}
+                          onClick={() => setPageNum((p) => p + 1)}
+                          className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-gray-800 text-[18px] font-semibold"
+                        >
+                          next
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
                 {activeTab === "network" && (
