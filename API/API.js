@@ -35,6 +35,5 @@ AuthAPI.interceptors.response.use(
     if (err.response?.status === 404) {
       toast.warning("404 not found");
     }
-    return Promise.reject(err);
   }
 );

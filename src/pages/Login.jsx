@@ -9,11 +9,7 @@ import * as yup from "yup";
 import useThemeStore from "../store/useThemeStore";
 import useAuthStore from "../store/useUserAuth";
 
-import Logo from "../assets/icons/Logo.png";
 import API from "../../API/API";
-import { useEffect } from "react";
-
-import bg from "../assets/images/bg.png";
 
 export default function Login() {
   const { theme } = useThemeStore();
@@ -62,15 +58,21 @@ export default function Login() {
   };
 
   return (
-    <section className={`${theme == "light" ? "" : ""} h-screen w-full `}>
+    <section
+      className={`${
+        theme == "light" ? "" : "bg-gray-800"
+      } h-screen w-full relative`}
+    >
+      <div onClick={() => navigate(-1)} className="">
+        <button className="absolute z-100 cursor-pointer bottom-4 right-4 bg-yellow-700 text-white rounded-lg max-w-[140px] w-full text-[18px] p-[10px_0]">
+          Back
+        </button>
+      </div>
+
       <div className="relative z-10 max-[900px]:block flex items-center justify-center h-full">
         <div
           className={`
-        ${
-          theme === "light"
-            ? "bg-white"
-            : "bg-white/10 backdrop-blur-xl border border-white/20"
-        }
+        ${theme === "light" ? "bg-white" : "bg-gray-800 text-white"}
         max-[900px]:w-full max-[900px]:max-w-full max-[900px]:h-screen max-[900px]:rounded-none max-[900px]:p-[90px_57px]
         max-w-[630px] w-full p-[70px_50px]
         rounded-2xl shadow-2xl

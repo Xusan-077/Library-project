@@ -95,15 +95,23 @@ export default function PublicLibraryPage() {
                     />
 
                     {location && (
-                      <div className="fixed bg-[#0009] inset-0 z-100 flex items-center justify-center ">
-                        <div className="bg-white rounded-lg max-w-[800px]  p-[25px] w-full shadow-2xl">
+                      <div className="fixed bg-[#0005] inset-0 z-100 flex items-center justify-center ">
+                        <div
+                          className={`${
+                            theme == "light"
+                              ? "bg-white  border-gray-300"
+                              : " bg-[#030712FF] border-gray-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+                          }  rounded-lg max-w-[800px] border p-[25px] w-full shadow-2xl`}
+                        >
                           <div className="flex items-center justify-between border-b border-b-yellow-700 mb-2.5 pb-2.5">
                             <span className="text-yellow-700 text-[20px] font-semibold">
                               Location
                             </span>
                             <span
                               onClick={() => setLocation(false)}
-                              className="text-[30px] font-semibold cursor-pointer"
+                              className={`${
+                                theme == "light" ? "" : "text-white"
+                              } text-[30px] font-semibold cursor-pointer`}
                             >
                               &times;
                             </span>
@@ -215,7 +223,7 @@ export default function PublicLibraryPage() {
                       </span>
                       <button
                         onClick={() => setLocation(true)}
-                        className="text-[18px] bg-yellow-700 text-white rounded-lg cursor-pointer p-[5px_15px]"
+                        className="text-[18px] bg-yellow-700 text-white rounded-lg cursor-pointer w-full p-[5px_15px]"
                       >
                         See location
                       </button>

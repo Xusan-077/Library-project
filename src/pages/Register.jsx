@@ -116,11 +116,22 @@ export default function Register() {
   }
 
   return (
-    <section>
-      <div className="flex justify-center m-[100px_0]">
-        <div className="bg-white rounded-2xl shadow-2xl p-[50px_60px_90px_60px] max-w-[1240px] w-full">
+    <section
+      className={`${
+        theme === "light"
+          ? "bg-gray-100 text-gray-800"
+          : "bg-gray-700 text-white"
+      }
+     min-h-screen flex justify-center items-start py-12 max-[600px]:p-0`}
+    >
+      <div className="w-full flex justify-center px-4 max-[425px]:p-0">
+        <div
+          className={`${theme === "light" ? "bg-white" : "bg-gray-800"}
+         rounded-2xl shadow-2xl p-[50px_60px_90px_60px]
+         max-w-[1240px] w-full max-[630px]:p-[30px] max-[425px]:rounded-none`}
+        >
           <div className="mb-10">
-            <h2 className="text-[32px] font-bold mb-2 text-center">
+            <h2 className="text-[32px] font-bold mb-2 text-center max-[425px]:text-[24px]">
               Librarian Registration
             </h2>
             <p className="text-[18px] font-semibold text-center">
@@ -129,7 +140,7 @@ export default function Register() {
           </div>
 
           <form ref={refForm} onSubmit={handleSubmit(handleRegister)}>
-            <div className="grid grid-cols-2 gap-10 mb-10 items-center">
+            <div className="grid grid-cols-2 gap-10 mb-10 items-center max-[570px]:grid-cols-1">
               {/* user */}
 
               <div className="flex flex-col gap-3">
@@ -304,17 +315,16 @@ export default function Register() {
             </div>
 
             {/* address */}
-            <div className="flex gap-10">
+            <div className="flex gap-10 max-[960px]:flex flex-col-reverse">
               <div className="w-full h-[430px]">
                 <YMaps
                   query={{ apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202" }}
                 >
                   <Map
                     className="w-full h-full"
-                    defaultState={{ center: [41.3, 69.2], zoom: 13 }}
+                    defaultState={{ center: [41.3, 69.2], zoom: 11 }}
                     onClick={handleClick}
                   >
-                    {!coords && <Placemark defaultGeometry={[41.3, 69.2]} />}
                     {coords && <Placemark geometry={[coords[0], coords[1]]} />}
 
                     <FullscreenControl />

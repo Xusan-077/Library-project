@@ -71,7 +71,9 @@ export default function Books() {
 
           <div className="mt-5 flex flex-wrap gap-10 items-center justify-center">
             <select
-              className={theme === "light" ? "" : "text-gray-300"}
+              className={`${
+                theme == "light" ? "" : "text-gray-300 bg-gray-800"
+              } py-1 px-3`}
               onChange={(e) => {
                 setPageSize(+e.target.value);
                 setPageNum(0);
@@ -95,19 +97,13 @@ export default function Books() {
                 prev
               </button>
 
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPageNum(i)}
-                  className={`w-[35px] p-2 rounded-lg border font-medium ${
-                    pageNum === i
-                      ? "bg-yellow-700 border-yellow-700 text-white"
-                      : ""
-                  } ${theme === "light" ? "" : "text-white"} border-gray-300`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              <p
+                className={`${
+                  theme == "light" ? "text-black" : "text-gray-200"
+                }`}
+              >
+                {pageNum + 1} / {totalPages}
+              </p>
 
               <button
                 disabled={pageNum === totalPages - 1}
