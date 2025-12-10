@@ -68,9 +68,11 @@ export default function Library() {
   const start = pageNum * pageSize;
   const end = start + pageSize;
 
-  const totalPages = Math.ceil((libraries?.data.length || 0) / pageSize);
+  const totalPages = Math.ceil(
+    (filteredAndSortedLibraries.length || 0) / pageSize
+  );
 
-  const pagination = libraries?.data.slice(start, end);
+  const pagination = filteredAndSortedLibraries.slice(start, end);
 
   return (
     <section className={`${theme == "light" ? "bg-gray-50" : "bg-[#0A0F18]"}`}>

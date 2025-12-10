@@ -14,6 +14,15 @@ import useThemeStore from "../store/useThemeStore";
 import { useTranslation } from "react-i18next";
 import { queryClient } from "../main";
 
+import {
+  YMaps,
+  Map,
+  Placemark,
+  FullscreenControl,
+  GeolocationControl,
+  ZoomControl,
+} from "@pbe/react-yandex-maps";
+
 export default function Profile() {
   const { t } = useTranslation();
 
@@ -31,21 +40,6 @@ export default function Profile() {
 
   const navigate = useNavigate();
 
-  const [editData, setEditData] = useState({
-    user: {
-      name: user?.user?.name || "",
-    },
-    address: user?.address,
-    social_media: {
-      instagram: user?.social_media?.instagram || "",
-      facebook: user?.social_media?.facebook || "",
-      telegram: user?.social_media?.telegram || "",
-    },
-    can_rent_books: user?.can_rent_books ? "true" : "false",
-    latitude: user?.latitude || "",
-    longitude: user?.longitude || "",
-  });
-
   const { data: userAction } = useQuery({
     queryFn: async () => {
       const res = await AuthAPI.get("/auth/profile/");
@@ -60,21 +54,66 @@ export default function Profile() {
     setUser(userAction);
   }, [userAction]);
 
+  const [chooseLocation, setChooseLocation] = useState(false);
+  const [coords, setCoords] = useState(null);
+  const [address, setAddress] = useState("");
+
   // form
 
-  const schema = yup
-    .object({
-      address: yup.string().required(),
-    })
-    .required();
+  const schema = yup.object({
+    user: yup.object({
+      name: yup.string().required("Name is required"),
+    }),
+    library: yup.object({
+      social_media: yup.object({
+        instagram: yup.string().required("Instagram is required"),
+        facebook: yup.string().required("Facebook is required"),
+        telegram: yup.string().required("Telegram is required"),
+      }),
+    }),
+    address: yup.string().required("Address is required"),
+    can_rent_books: yup.string().required(),
+    latitude: yup.string().required(),
+    longitude: yup.string().required(),
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
+    defaultValues: {
+      address: user?.address,
+      latitude: user?.latitude,
+      longitude: user?.longitude,
+    },
     resolver: yupResolver(schema),
   });
+
+  async function handleClick(e) {
+    const c = e.get("coords");
+    setCoords(c);
+
+    try {
+      const response = await fetch(
+        `https://geocode-maps.yandex.ru/1.x/?apikey=bc32072f-a50d-4f7e-b22c-a4b70bba1202&geocode=${c[1]},${c[0]}&format=json&results=1&kind=house&lang=en_US`
+      );
+
+      const data = await response.json();
+
+      const address =
+        data.response?.GeoObjectCollection?.featureMember?.[0]?.GeoObject
+          ?.metaDataProperty?.GeocoderMetaData?.text;
+
+      setAddress(address);
+
+      return address ?? `${c[0].toFixed(6)}, ${c[1].toFixed(6)}`;
+    } catch (error) {
+      toast.warn("Failed to catch location:", error.message);
+      return;
+    }
+  }
 
   // form
 
@@ -112,10 +151,8 @@ export default function Profile() {
     },
   });
 
-  function handleEditSubmit(e) {
-    e.preventDefault();
-
-    EditProfile(editData);
+  function handleEditSubmit(data) {
+    EditProfile(data);
 
     queryClient.invalidateQueries();
   }
@@ -203,7 +240,7 @@ export default function Profile() {
               </span>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="">
+            <form onSubmit={handleSubmit(handleEditSubmit)} className="">
               <div className="flex items-center gap-3 mt-5 border-b pb-5 border-b-gray-200 mb-5">
                 <div className="w-full">
                   <p className="flex gap-3 items-center mb-5">
@@ -221,23 +258,20 @@ export default function Profile() {
                     type="text"
                     placeholder="Enter Location"
                     defaultValue={user.user.name}
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        user: {
-                          ...editData.user,
-                          name: e.target.value,
-                        },
-                      })
-                    }
+                    {...register("user.name")}
                     className={`${
                       theme == "light"
                         ? "border-gray-300"
                         : "text-white border-gray-800 bg-[#131A28]"
                     } flex items-center gap-3 w-full h-[50px]  border  p-[0_0_0_20px] rounded-lg`}
                   />
+                  {errors?.user?.name && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.user.name.message}
+                    </p>
+                  )}
                 </div>
-                <div className={`w-full`}>
+                <div className={`${errors?.user?.name ? "mb-6" : ""} w-full`}>
                   <p className="flex gap-3 items-center mb-5">
                     <i className="text-yellow-700 bi bi-sliders"></i>
                     <span
@@ -249,12 +283,7 @@ export default function Profile() {
                     </span>
                   </p>
                   <select
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        can_rent_books: String(e.target.value === "yes"),
-                      })
-                    }
+                    {...register("can_rent_books")}
                     defaultValue={user.can_rent_books ? "yes" : "no"}
                     className={`${
                       theme == "light"
@@ -265,42 +294,11 @@ export default function Profile() {
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
-                </div>
-              </div>
-
-              <div className={`border-b pb-5 border-b-gray-200 mb-5`}>
-                <p className="flex gap-3 items-center mb-5">
-                  <i className="text-yellow-700 bi bi-map"></i>
-                  <span
-                    className={`${
-                      theme == "light" ? "" : "text-gray-300"
-                    } text-[14px] font-medium`}
-                  >
-                    Location
-                  </span>
-                </p>
-                <div
-                  className={`${
-                    theme == "light"
-                      ? "border-gray-300"
-                      : "text-white border-gray-800 bg-[#131A28]"
-                  } flex items-center gap-3  border  p-[0_0_0_20px] rounded-lg`}
-                >
-                  <span className="">
-                    <i className="text-yellow-700 bi bi-geo-alt"></i>
-                  </span>
-                  <input
-                    onChange={(e) =>
-                      setEditData({
-                        ...editData,
-                        address: e.target.value,
-                      })
-                    }
-                    type="text"
-                    placeholder="Enter Location"
-                    defaultValue={user.address}
-                    className="w-full h-[50px] border-none outline-none border"
-                  />
+                  {errors?.can_rent_books && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.can_rent_books.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -316,98 +314,200 @@ export default function Profile() {
                   </span>
                 </p>
                 <div className="">
-                  <span
-                    className={`${
-                      theme == "light"
-                        ? "bg-gray-100"
-                        : "text-white border-gray-800 bg-[#131A28]"
-                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
-                  >
-                    <span className="">
-                      <i className="text-yellow-700 bi bi-instagram"></i>
-                    </span>
-                    {/* input */}
+                  <div className="">
+                    <div
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                    >
+                      <span className="">
+                        <i className="text-yellow-700 bi bi-instagram"></i>
+                      </span>
+                      {/* input */}
 
-                    <input
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          social_media: {
-                            ...editData.social_media,
-                            instagram: e.target.value,
-                          },
-                        })
-                      }
-                      type="text"
-                      placeholder="Instagram"
-                      className="max-w-full w-full outline-none"
-                      defaultValue={user.social_media.instagram}
-                    />
-                  </span>
-                  <span
-                    className={`${
-                      theme == "light"
-                        ? "bg-gray-100"
-                        : "text-white border-gray-800 bg-[#131A28]"
-                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
-                  >
-                    <span className="">
-                      <i className="text-yellow-700 bi bi-facebook"></i>
-                    </span>
-                    {/* input */}
+                      <input
+                        {...register("library.social_media.instagram")}
+                        type="text"
+                        placeholder="Instagram"
+                        className="max-w-full w-full outline-none"
+                        defaultValue={user.social_media.instagram}
+                      />
+                    </div>
+                    {errors?.library?.social_media?.instagram && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.library.social_media.instagram.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="">
+                    <div
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                    >
+                      <span className="">
+                        <i className="text-yellow-700 bi bi-facebook"></i>
+                      </span>
+                      {/* input */}
 
-                    <input
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          social_media: {
-                            ...editData.social_media,
-                            facebook: e.target.value,
-                          },
-                        })
-                      }
-                      type="text"
-                      placeholder="Facebook"
-                      className="max-w-full w-full outline-none"
-                      defaultValue={user.social_media.facebook}
-                    />
-                  </span>
-                  <span
-                    className={`${
-                      theme == "light"
-                        ? "bg-gray-100"
-                        : "text-white border-gray-800 bg-[#131A28]"
-                    } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
-                  >
-                    <span className="">
-                      <i className="text-yellow-700 bi bi-telegram"></i>
-                    </span>
-                    {/* input */}
-                    <input
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          social_media: {
-                            ...editData.social_media,
-                            telegram: e.target.value,
-                          },
-                        })
-                      }
-                      type="text"
-                      placeholder="Telegram"
-                      className="max-w-full w-full outline-none"
-                      defaultValue={user.social_media.telegram}
-                    />
-                  </span>
+                      <input
+                        {...register("library.social_media.facebook")}
+                        type="text"
+                        placeholder="Facebook"
+                        className="max-w-full w-full outline-none"
+                        defaultValue={user.social_media.facebook}
+                      />
+                    </div>
+                    {errors?.library?.social_media?.facebook && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.library.social_media.facebook.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="">
+                    <div
+                      className={`${
+                        theme == "light"
+                          ? "bg-gray-100"
+                          : "text-white border-gray-800 bg-[#131A28]"
+                      } border mb-2.5 h-[50px] w-full rounded-lg p-[0_0_0_20px] border-gray-200 flex items-center gap-2`}
+                    >
+                      <span className="">
+                        <i className="text-yellow-700 bi bi-telegram"></i>
+                      </span>
+                      {/* input */}
+                      <input
+                        {...register("library.social_media.telegram")}
+                        type="text"
+                        placeholder="Telegram"
+                        className="max-w-full w-full outline-none"
+                        defaultValue={user.social_media.telegram}
+                      />
+                    </div>
+                    {errors?.library?.social_media?.telegram && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.library.social_media.telegram.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
+
               <div className="">
-                <button
-                  type="button"
-                  className="bg-yellow-700 rounded-xl text-[18px] text-white p-[10px_20px]"
-                >
-                  choose Location on map
-                </button>
+                <div className={`border-b pb-5 border-b-gray-200 mb-5`}>
+                  <p className="flex gap-3 items-center mb-5">
+                    <i className="text-yellow-700 bi bi-map"></i>
+                    <span
+                      className={`${
+                        theme == "light" ? "" : "text-gray-300"
+                      } text-[14px] font-medium`}
+                    >
+                      Address
+                    </span>
+                  </p>
+                  <div
+                    className={`${
+                      theme == "light"
+                        ? "border-gray-300"
+                        : "text-white border-gray-800 bg-[#131A28]"
+                    } flex items-center gap-3  min-h-[100px] max-h-[100px] border p-[0_0_0_20px] rounded-lg`}
+                  >
+                    <span className="">
+                      <i className="text-yellow-700 bi bi-geo-alt"></i>
+                    </span>
+                    <textarea
+                      {...register("address")}
+                      type="text"
+                      placeholder="Enter Location"
+                      value={address ? address : user?.address}
+                      className="w-full p-[20px_0] min-h-[100px] max-h-[100px] border-none outline-none border"
+                    />
+                  </div>
+                  {errors?.address && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.address.message}
+                    </p>
+                  )}
+                </div>
+                <div className="">
+                  <button
+                    onClick={() => setChooseLocation(true)}
+                    type="button"
+                    className="bg-yellow-700 rounded-xl text-[18px] text-white p-[10px_20px]"
+                  >
+                    choose Location on map
+                  </button>
+
+                  {chooseLocation && (
+                    <div className="fixed bg-[#0004] p-[0_20px] flex justify-center top-0 left-0 items-center z-1100 w-full h-screen">
+                      <div className="bg-white w-[800px] shadow-2xl rounded-lg p-[25px]">
+                        <div className="">
+                          <span className="">Edit Location</span>
+                        </div>
+                        <div className="w-full h-[300px]">
+                          <YMaps
+                            query={{
+                              apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                            }}
+                          >
+                            <Map
+                              className="w-full h-full"
+                              defaultState={{
+                                center: [user?.latitude, user?.longitude],
+                                zoom: 15,
+                              }}
+                              onClick={handleClick}
+                            >
+                              {!coords && (
+                                <Placemark
+                                  defaultGeometry={[
+                                    user?.latitude,
+                                    user?.longitude,
+                                  ]}
+                                />
+                              )}
+
+                              {coords && (
+                                <Placemark geometry={[coords[0], coords[1]]} />
+                              )}
+
+                              <FullscreenControl />
+                              <GeolocationControl options={{ float: "left" }} />
+                              <ZoomControl options={{ float: "right" }} />
+                            </Map>
+                          </YMaps>
+                        </div>
+                        <div className="flex gap-2 justify-end mt-3">
+                          <button
+                            className="p-[8px_16px] max-w-[100px] w-full bg-gray-400 text-white rounded-lg "
+                            onClick={() => {
+                              setCoords([user.latitude, user.longitude]);
+                              setAddress(user?.address);
+                              setChooseLocation(false);
+                            }}
+                          >
+                            close
+                          </button>
+                          <button
+                            className="p-[8px_16px] max-w-[150px] w-full bg-yellow-700 text-white rounded-lg "
+                            onClick={() => {
+                              setChooseLocation(false);
+                              setValue("address", address);
+                              setValue("latitude", coords[0].toFixed(6));
+                              setValue("longitude", coords[1].toFixed(6));
+                            }}
+                          >
+                            save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="flex justify-end items-center gap-2 mt-5">
                 <button
@@ -518,7 +618,7 @@ export default function Profile() {
                   >
                     <button
                       onClick={() => setEdit(true)}
-                      className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
+                      className="cursor-pointer w-full flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="bi bi-pencil-square"></i>
                       <span className="">{t("edit")}</span>
@@ -526,7 +626,7 @@ export default function Profile() {
 
                     <button
                       onClick={() => navigate("/switch")}
-                      className="cursor-pointer flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
+                      className="cursor-pointer w-full flex mb-3 text-yellow-700 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="text-[20px] bi bi-toggle-off"></i>
                       <span className="">{t("switch")}</span>
@@ -534,7 +634,7 @@ export default function Profile() {
 
                     <button
                       onClick={() => setLogOurModal(true)}
-                      className="cursor-pointer flex text-red-500 text-[18px] font-semibold items-center gap-3"
+                      className="cursor-pointer w-full flex text-red-500 text-[18px] font-semibold items-center gap-3"
                     >
                       <i className="bi bi-box-arrow-left"></i>
                       <span className="">{t("logout")}</span>
@@ -750,13 +850,43 @@ export default function Profile() {
                       {t("profile.location")}
                     </h2>
 
-                    <div className="flex gap-5 items-center p-2.5">
-                      <i className={` text-yellow-700 bi bi-geo-alt`}></i>
-                      <span
-                        className={`${theme == "light" ? "" : "text-gray-300"}`}
-                      >
-                        {user?.address}
-                      </span>
+                    <div className="">
+                      <div className="flex gap-5 items-center p-2.5 mb-10">
+                        <i className={` text-yellow-700 bi bi-geo-alt`}></i>
+                        <span
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          }`}
+                        >
+                          {user?.address}
+                        </span>
+                      </div>
+
+                      <div className="w-full h-100">
+                        {!user ? (
+                          <div className="w-full h-100 bg-gray-200"></div>
+                        ) : (
+                          <YMaps
+                            query={{
+                              apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                            }}
+                          >
+                            <Map
+                              className="w-full h-full"
+                              state={{
+                                center: [user.latitude, user.longitude],
+                                zoom: 15,
+                              }}
+                            >
+                              <Placemark
+                                geometry={[user.latitude, user.longitude]}
+                              />
+                              <FullscreenControl />
+                              <ZoomControl options={{ float: "right" }} />
+                            </Map>
+                          </YMaps>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}

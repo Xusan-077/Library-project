@@ -29,11 +29,6 @@ export default function Header() {
     enabled: !!accessToken,
   });
 
-  const userName = user?.user?.name;
-  const capitalizedName = userName
-    ? userName.charAt(0).toUpperCase() + userName.slice(1)
-    : "";
-
   useEffect(() => {
     setUser(userAction);
   }, [userAction]);

@@ -62,18 +62,7 @@ export default function Login() {
   };
 
   return (
-    <section
-      style={{
-        backgroundImage: theme === "light" ? "none" : `url(${bg})`,
-      }}
-      className={`${
-        theme == "light" ? "" : ""
-      } relative h-screen w-full bg-cover bg-center bg-no-repeat`}
-    >
-      {theme !== "light" && (
-        <div className="absolute inset-0 bg-black/80"></div>
-      )}
-
+    <section className={`${theme == "light" ? "" : ""} h-screen w-full `}>
       <div className="relative z-10 max-[900px]:block flex items-center justify-center h-full">
         <div
           className={`
@@ -82,47 +71,33 @@ export default function Login() {
             ? "bg-white"
             : "bg-white/10 backdrop-blur-xl border border-white/20"
         }
-        max-[900px]:w-full max-[900px]:max-w-full max-[900px]:h-screen max-[900px]:rounded-none max-[900px]:p-[30px_20px]
-        max-w-[700px] w-full p-[70px_50px]
+        max-[900px]:w-full max-[900px]:max-w-full max-[900px]:h-screen max-[900px]:rounded-none max-[900px]:p-[90px_57px]
+        max-w-[630px] w-full p-[70px_50px]
         rounded-2xl shadow-2xl
       `}
         >
-          <button
-            onClick={() => navigate(-1)}
-            className="cursor-pointer p-2.5 text-white rounded-lg w-[120px] bg-yellow-700"
-          >
-            Back
-          </button>
-
-          <div className="w-full mt-20">
-            <div className="flex flex-col items-center gap-4">
-              <Link className="flex items-center gap-2" to="/">
-                <img src={Logo} alt="" className="w-[50px] h-[50px]" />
-                <span className="text-[35px] font-bold text-yellow-700">
-                  LibraSpace
-                </span>
-              </Link>
-
+          <div className="w-full">
+            <div className="mb-[30px]">
               <h2
-                className={`
-              ${theme === "light" ? "text-gray-700" : "text-white"}
-              text-[18px] mb-[50px] text-center
-            `}
+                className={`${
+                  theme == "light" ? "" : ""
+                } text-[32px] text-center font-bold`}
               >
-                Login into your account
+                Login to Account
               </h2>
+              <p className={` text-center text-[18px] font-semibold`}>
+                Please enter your phone and password to continue
+              </p>
             </div>
-
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-              {/* PHONE */}
-              <label className="mb-[30px]">
+              <label className="mb-10">
                 <span
                   className={`
-                ${theme === "light" ? "text-gray-700" : "text-white"}
-                mb-2.5 block
+                ${theme === "light" ? "text-[#202224]" : "text-white"}
+                mb-2.5 block text-[18px] font-semibold
               `}
                 >
-                  Phone number
+                  Phone:
                 </span>
                 <input
                   type="text"
@@ -143,16 +118,14 @@ export default function Login() {
                   </p>
                 )}
               </label>
-
-              {/* PASSWORD */}
-              <label>
+              <label className="mb-3">
                 <span
                   className={`
-                ${theme === "light" ? "text-gray-700" : "text-white"}
-                mb-2.5 block
-              `}
+                ${theme === "light" ? "text-[#202224]" : "text-white"}
+                mb-2.5 block text-[18px] font-semibold
+                 `}
                 >
-                  Password
+                  Password:
                 </span>
 
                 <input
@@ -182,6 +155,18 @@ export default function Login() {
               >
                 Login
               </button>
+
+              <Link
+                to="/register"
+                className={`${
+                  theme == "light" ? "text-black" : "text-white"
+                } text-center  text-[18x] mt-3`}
+              >
+                Don’t have an account?
+                <span className="text-yellow-600 underline">
+                  Create Account
+                </span>
+              </Link>
             </form>
           </div>
         </div>

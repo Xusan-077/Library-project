@@ -9,8 +9,18 @@ import BookSkleton from "../components/BookSkleton";
 import uselikeStore from "../store/useLikeStore";
 import useThemeStore from "../store/useThemeStore";
 
+import {
+  YMaps,
+  Map,
+  Placemark,
+  FullscreenControl,
+  ZoomControl,
+} from "@pbe/react-yandex-maps";
+import { useState } from "react";
+
 export default function PublicLibraryPage() {
   const { theme } = useThemeStore();
+  const [location, setLocation] = useState(false);
 
   const { toggleLibraryLike, likesLibraries } = uselikeStore();
   const params = useParams();
@@ -77,11 +87,64 @@ export default function PublicLibraryPage() {
                 </>
               ) : (
                 <>
-                  <img
-                    src={LibraryImg}
-                    alt={libraryData?.name || "Library"}
-                    className="w-[300px] h-[300px] rounded-lg max-[650px]:w-full max-[650px]:mb-5"
-                  />
+                  <div className="">
+                    <img
+                      src={LibraryImg}
+                      alt={libraryData?.name || "Library"}
+                      className="w-[300px] h-[300px] rounded-lg max-[650px]:w-full max-[650px]:mb-5"
+                    />
+
+                    {location && (
+                      <div className="fixed bg-[#0009] inset-0 z-100 flex items-center justify-center ">
+                        <div className="bg-white rounded-lg max-w-[800px]  p-[25px] w-full shadow-2xl">
+                          <div className="flex items-center justify-between border-b border-b-yellow-700 mb-2.5 pb-2.5">
+                            <span className="text-yellow-700 text-[20px] font-semibold">
+                              Location
+                            </span>
+                            <span
+                              onClick={() => setLocation(false)}
+                              className="text-[30px] font-semibold cursor-pointer"
+                            >
+                              &times;
+                            </span>
+                          </div>
+                          <div className="w-full h-[300px]">
+                            {!library ? (
+                              <div className="w-full h-[300px] bg-gray-300"></div>
+                            ) : (
+                              <YMaps
+                                query={{
+                                  apikey:
+                                    "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                                }}
+                              >
+                                <Map
+                                  className="w-full h-full"
+                                  state={{
+                                    center: [
+                                      library?.results?.library?.latitude,
+                                      library?.results?.library?.longitude,
+                                    ],
+                                    zoom: 15,
+                                  }}
+                                >
+                                  <Placemark
+                                    geometry={[
+                                      library?.results?.library?.latitude,
+                                      library?.results?.library?.longitude,
+                                    ]}
+                                  />
+                                  <FullscreenControl />
+                                  <ZoomControl options={{ float: "right" }} />
+                                </Map>
+                              </YMaps>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="">
                     <h3
                       className={`${
@@ -138,17 +201,25 @@ export default function PublicLibraryPage() {
                       )}
                     </div>
 
-                    <span className="text-[18px] font-medium mb-3 flex gap-2 items-center">
-                      {results?.is_active ? (
-                        <div className="bg-green-500 text-white rounded-lg p-[5px_10px] w-[100px] text-center">
-                          Active
-                        </div>
-                      ) : (
-                        <div className="bg-red-500 text-white rounded-lg p-[5px_10px] w-[130px] text-center">
-                          Not active
-                        </div>
-                      )}
-                    </span>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-[18px] font-medium  flex gap-2 items-center">
+                        {results?.is_active ? (
+                          <div className="bg-green-500 text-white rounded-lg p-[5px_15px] w-[100px] text-center">
+                            Active
+                          </div>
+                        ) : (
+                          <div className="bg-red-500 text-white rounded-lg p-[5px_15px] w-[130px] text-center">
+                            Not active
+                          </div>
+                        )}
+                      </span>
+                      <button
+                        onClick={() => setLocation(true)}
+                        className="text-[18px] bg-yellow-700 text-white rounded-lg cursor-pointer p-[5px_15px]"
+                      >
+                        See location
+                      </button>
+                    </div>
 
                     <span
                       className={`${

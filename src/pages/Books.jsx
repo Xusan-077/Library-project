@@ -69,43 +69,43 @@ export default function Books() {
                 ))}
           </ul>
 
-          <div className="mt-5 flex gap-10 items-center justify-center  flex-wrap">
-            <div className="">
-              <select
-                className={`${theme == "light" ? "" : "text-gray-300"}`}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                  setPageNum(0);
-                }}
-              >
-                <option value="8">8</option>
-                <option value="16">16</option>
-                <option value="24">24</option>
-                <option value="32">32</option>
-              </select>
-            </div>
-            <div className="flex gap-5 items-center justify-center flex-wrap">
+          <div className="mt-5 flex flex-wrap gap-10 items-center justify-center">
+            <select
+              className={theme === "light" ? "" : "text-gray-300"}
+              onChange={(e) => {
+                setPageSize(+e.target.value);
+                setPageNum(0);
+              }}
+            >
+              {[8, 16, 24, 32].map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+
+            <div className="flex flex-wrap gap-5 items-center justify-center">
               <button
                 disabled={pageNum === 0}
                 onClick={() => setPageNum((p) => p - 1)}
                 className={`${
-                  theme == "light" ? "text-gray-800" : "text-gray-300"
-                } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
+                  theme === "light" ? "text-gray-800" : "text-gray-300"
+                } disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-[18px]`}
               >
                 prev
               </button>
 
-              {Array.from({ length: totalPages }).map((_, index) => (
+              {Array.from({ length: totalPages }).map((_, i) => (
                 <button
-                  onClick={() => setPageNum(index)}
-                  className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
-                    pageNum === index
+                  key={i}
+                  onClick={() => setPageNum(i)}
+                  className={`w-[35px] p-2 rounded-lg border font-medium ${
+                    pageNum === i
                       ? "bg-yellow-700 border-yellow-700 text-white"
                       : ""
-                  } ${theme == "light" ? "" : "text-white "} border`}
-                  key={index}
+                  } ${theme === "light" ? "" : "text-white"} border-gray-300`}
                 >
-                  {index + 1}
+                  {i + 1}
                 </button>
               ))}
 
@@ -113,8 +113,8 @@ export default function Books() {
                 disabled={pageNum === totalPages - 1}
                 onClick={() => setPageNum((p) => p + 1)}
                 className={`${
-                  theme == "light" ? "text-gray-800" : "text-gray-300"
-                } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
+                  theme === "light" ? "text-gray-800" : "text-gray-300"
+                } disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-[18px]`}
               >
                 next
               </button>

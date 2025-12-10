@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const API = axios.create({
   baseURL: "https://org-ave-jimmy-learners.trycloudflare.com/api/v1",
@@ -30,6 +31,9 @@ AuthAPI.interceptors.response.use(
       localStorage.clear();
 
       window.location.href = "/login";
+    }
+    if (err.response?.status === 404) {
+      toast.warning("404 not found");
     }
     return Promise.reject(err);
   }
