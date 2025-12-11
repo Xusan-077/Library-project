@@ -67,7 +67,8 @@ export default function Register() {
       toast.success(
         "success register to ibrary it will acceptance in 24 hours"
       );
-      refForm.reset();
+
+      refForm.current.reset();
 
       navigate("/", {
         replace: true,
@@ -79,8 +80,6 @@ export default function Register() {
   });
 
   function handleRegister(data) {
-    console.log("data", data);
-
     handleRegisterToLibrary(data);
   }
 
@@ -379,6 +378,7 @@ export default function Register() {
                   <input
                     type="text"
                     {...register("library.address")}
+                    disabled
                     placeholder="Enter your address"
                     className={`${
                       theme === "light"
@@ -407,6 +407,7 @@ export default function Register() {
                   <input
                     type="text"
                     {...register("library.latitude")}
+                    disabled
                     placeholder="Enter your latitude"
                     className={`${
                       theme === "light"
@@ -435,6 +436,7 @@ export default function Register() {
                   <input
                     type="text"
                     {...register("library.longitude")}
+                    disabled
                     placeholder="Enter your longitude"
                     className={`${
                       theme === "light"
@@ -452,7 +454,7 @@ export default function Register() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 mt-4 justify-end">
+            {
               <button
                 onClick={() =>
                   navigate("/", {
@@ -460,10 +462,13 @@ export default function Register() {
                   })
                 }
                 type="button"
-                className="p-2.5 bg-gray-500 cursor-pointer text-white rounded-lg text-[18px] max-w-[100px] w-full"
+                className="fixed z-100 cursor-pointer bottom-4 right-4 bg-yellow-700 text-white rounded-lg max-w-[140px] w-full text-[18px] p-[10px_0]"
               >
                 Back
               </button>
+            }
+
+            <div className="flex items-center gap-2 mt-4 justify-end">
               <button
                 className="p-2.5 bg-yellow-700 cursor-pointer text-white rounded-lg text-[18px] max-w-[200px] w-full"
                 type="submit"

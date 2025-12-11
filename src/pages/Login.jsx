@@ -64,7 +64,7 @@ export default function Login() {
       } h-screen w-full relative`}
     >
       <div onClick={() => navigate(-1)} className="">
-        <button className="absolute z-100 cursor-pointer bottom-4 right-4 bg-yellow-700 text-white rounded-lg max-w-[140px] w-full text-[18px] p-[10px_0]">
+        <button className="fixed z-100 cursor-pointer bottom-4 right-4 bg-yellow-700 text-white rounded-lg max-w-[140px] w-full text-[18px] p-[10px_0]">
           Back
         </button>
       </div>

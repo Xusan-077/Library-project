@@ -168,7 +168,7 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => navigate("/login")}
-                    className="cursor-pointer text-[16px] font-medium p-[8px_20px] bg-blue-400 text-white rounded-lg"
+                    className="cursor-pointer text-[16px] block font-medium p-[8px_20px] bg-yellow-700 text-white rounded-lg"
                   >
                     Login
                   </button>

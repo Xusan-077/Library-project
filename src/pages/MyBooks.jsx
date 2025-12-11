@@ -1090,70 +1090,83 @@ export default function MyBooks() {
                       {t("MyBooks.Action")}
                     </span>
                   </div>
-                  <ul className="">
-                    {paginationExe?.map((book) => (
-                      <ExeItem
-                        key={`${book.name}-${book.author}-${book.publisher}-${book.quantity_in_library}`}
-                        books={fileData}
-                        book={book}
-                        exeDataDelete={exeDataDelete}
-                        setExeDataDelete={setExeDataDelete}
-                        setDeleteBook={setDeleteBook}
-                        setExeEditBook={setExeEditBook}
-                        setEditExeBook={setEditExeBook}
-                        setExeOneBook={setExeOneBook}
-                      />
-                    ))}
-                  </ul>
-                  <div className="mt-10 flex gap-10 items-center justify-center  flex-wrap">
-                    <div className="">
-                      <select
-                        onChange={(e) => {
-                          setPageSizeExe(Number(e.target.value));
-                          setPageNumExe(0);
-                        }}
-                        className={`${theme == "light" ? "" : "text-gray-300"}`}
-                      >
-                        <option value="8">8</option>
-                        <option value="16">16</option>
-                        <option value="24">24</option>
-                        <option value="32">32</option>
-                      </select>
+                  <div className="relative flex flex-col h-[500px]">
+                    <div
+                      style={{ scrollbarWidth: "none" }}
+                      className="flex-1 overflow-y-auto "
+                    >
+                      <ul>
+                        {paginationExe?.map((book) => (
+                          <ExeItem
+                            key={`${book.name}-${book.author}-${book.publisher}-${book.quantity_in_library}`}
+                            books={fileData}
+                            book={book}
+                            exeDataDelete={exeDataDelete}
+                            setExeDataDelete={setExeDataDelete}
+                            setDeleteBook={setDeleteBook}
+                            setExeEditBook={setExeEditBook}
+                            setEditExeBook={setEditExeBook}
+                            setExeOneBook={setExeOneBook}
+                          />
+                        ))}
+                      </ul>
                     </div>
-                    <div className="flex gap-5 items-center justify-center flex-wrap">
-                      <button
-                        disabled={pageNumExe === 0}
-                        onClick={() => setPageNumExe((p) => p - 1)}
-                        className={`${
-                          theme == "light" ? "text-gray-800" : "text-gray-300"
-                        } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
-                      >
-                        prev
-                      </button>
 
-                      {Array.from({ length: totalPagesExe }).map((_, index) => (
-                        <button
-                          onClick={() => setPageNumExe(index)}
-                          className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
-                            pageNum === index
-                              ? "bg-yellow-700 border-yellow-700 text-white"
-                              : ""
-                          } ${theme == "light" ? "" : "text-white "} border`}
-                          key={index}
+                    <div className="w-full bg-white p-2.5 flex gap-10 items-center justify-center flex-wrap border-t">
+                      <div>
+                        <select
+                          onChange={(e) => {
+                            setPageSizeExe(Number(e.target.value));
+                            setPageNumExe(0);
+                          }}
+                          className={`${
+                            theme == "light" ? "" : "text-gray-300"
+                          }`}
                         >
-                          {index + 1}
-                        </button>
-                      ))}
+                          <option value="8">8</option>
+                          <option value="16">16</option>
+                          <option value="24">24</option>
+                          <option value="32">32</option>
+                        </select>
+                      </div>
 
-                      <button
-                        disabled={pageNumExe === totalPagesExe - 1}
-                        onClick={() => setPageNumExe((p) => p + 1)}
-                        className={`${
-                          theme == "light" ? "text-gray-800" : "text-gray-300"
-                        } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed  text-[18px] font-semibold`}
-                      >
-                        next
-                      </button>
+                      <div className="flex gap-5 items-center justify-center flex-wrap">
+                        <button
+                          disabled={pageNumExe === 0}
+                          onClick={() => setPageNumExe((p) => p - 1)}
+                          className={`${
+                            theme == "light" ? "text-gray-800" : "text-gray-300"
+                          } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-[18px] font-semibold`}
+                        >
+                          prev
+                        </button>
+
+                        {Array.from({ length: totalPagesExe }).map(
+                          (_, index) => (
+                            <button
+                              onClick={() => setPageNumExe(index)}
+                              className={`p-2 cursor-pointer w-[35px] rounded-lg border-gray-300 font-medium ${
+                                pageNumExe === index
+                                  ? "bg-yellow-700 border-yellow-700 text-white"
+                                  : ""
+                              } ${theme == "light" ? "" : "text-white"} border`}
+                              key={index}
+                            >
+                              {index + 1}
+                            </button>
+                          )
+                        )}
+
+                        <button
+                          disabled={pageNumExe === totalPagesExe - 1}
+                          onClick={() => setPageNumExe((p) => p + 1)}
+                          className={`${
+                            theme == "light" ? "text-gray-800" : "text-gray-300"
+                          } cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-[18px] font-semibold`}
+                        >
+                          next
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
