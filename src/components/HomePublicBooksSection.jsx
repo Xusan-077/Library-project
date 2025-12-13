@@ -56,7 +56,7 @@ export default function HomePublicBooksSection() {
                     <BookSkleton />
                   </SwiperSlide>
                 ))
-              : books.data.map((book, index) => (
+              : books?.data?.map((book, index) => (
                   <SwiperSlide
                     key={book.id}
                     className="py-4 rounded-lg"
