@@ -13,7 +13,8 @@ export default function Books() {
     queryKey: ["books"],
     queryFn: async () => {
       const res = await API.get("/books/books/");
-      return res;
+
+      return res?.data;
     },
   });
 
@@ -23,9 +24,9 @@ export default function Books() {
   const start = pageNum * pageSize;
   const end = start + pageSize;
 
-  const pagination = books?.data.slice(start, end);
+  const pagination = books?.slice(start, end);
 
-  const totalPages = Math.ceil((books?.data.length || 0) / pageSize);
+  const totalPages = Math.ceil((books?.length || 0) / pageSize);
 
   return (
     <section>

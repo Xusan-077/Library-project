@@ -44,7 +44,7 @@ export default function Profile() {
     queryFn: async () => {
       const res = await AuthAPI.get("/auth/profile/");
 
-      return res.data;
+      return res?.data;
     },
     queryKey: ["userData"],
     enabled: !!accessToken,
@@ -121,7 +121,7 @@ export default function Profile() {
     queryFn: async () => {
       const res = AuthAPI.get("/libraries/library/books");
 
-      return res;
+      return res?.data;
     },
     queryKey: ["myBooks"],
     enabled: !!accessToken,
@@ -163,9 +163,9 @@ export default function Profile() {
   const start = pageNum * pageSize;
   const end = start + pageSize;
 
-  const pagination = myBooks?.data.slice(start, end);
+  const pagination = myBooks?.slice(start, end);
 
-  const totalPages = Math.ceil((myBooks?.data.length || 0) / pageSize);
+  const totalPages = Math.ceil((myBooks?.length || 0) / pageSize);
 
   return (
     <div className="">
@@ -721,7 +721,7 @@ export default function Profile() {
                               </div>
                             </li>
                           ))
-                        : pagination.map((book, index) => (
+                        : pagination?.map((book, index) => (
                             <div key={book.id} className="">
                               <PublicBooksItem
                                 index={index}

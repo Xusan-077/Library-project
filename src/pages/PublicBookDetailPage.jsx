@@ -46,8 +46,6 @@ export default function PublicBookDetailPage() {
     },
   });
 
-  console.log(searchBooksLibrary);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [params]);

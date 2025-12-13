@@ -119,12 +119,13 @@ export default function MyBooks() {
 
   const { data: myBooks, isLoading } = useQuery({
     queryFn: async () => {
-      const res = AuthAPI.get("/libraries/library/books");
+      const res = await AuthAPI.get("/libraries/library/books");
 
-      return res;
+      return res?.data;
     },
 
     queryKey: ["myBooks"],
+
     enabled: !!accessToken,
   });
 
@@ -155,6 +156,7 @@ export default function MyBooks() {
   const { mutate: BookFileMutate } = useMutation({
     mutationFn: async (body) => {
       const res = await AuthAPI.post("/books/upload-excel/", body);
+
       return res?.data;
     },
     onSuccess: (data) => {
@@ -227,7 +229,7 @@ export default function MyBooks() {
   };
 
   function handleAddFileToBooks() {
-    if (fileData?.length > 0) {
+    if (fileData.length > 0) {
       addBookMutation(fileData);
 
       setAddBooksWithFile(false);
@@ -274,9 +276,9 @@ export default function MyBooks() {
   const start = pageNum * pageSize;
   const end = start + pageSize;
 
-  const pagination = myBooks?.data.slice(start, end);
+  const pagination = myBooks?.slice(start, end);
 
-  const totalPages = Math.ceil((myBooks?.data.length || 0) / pageSize);
+  const totalPages = Math.ceil((myBooks?.length || 0) / pageSize);
 
   // Exe
   const [pageSizeExe, setPageSizeExe] = useState(6);
@@ -1367,13 +1369,12 @@ export default function MyBooks() {
                 theme == "light" ? "" : "text-white"
               } text-[30px] max-[425px]:text-[20px] font-semibold`}
             >
-              {t("MyBooks.books")} : (
-              {myBooks?.data?.length ? myBooks?.data?.length : 0})
+              {t("MyBooks.books")} : ({myBooks?.length ? myBooks?.length : 0})
             </div>
           </div>
           <ul
             className={`${
-              myBooks?.data?.length > 0
+              myBooks?.length > 0
                 ? "grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1"
                 : ""
             } `}
@@ -1390,7 +1391,7 @@ export default function MyBooks() {
                   </div>
                 </li>
               ))
-            ) : myBooks?.data?.length > 0 ? (
+            ) : myBooks?.length > 0 ? (
               pagination.map((book, index) => (
                 <PublicBooksItem
                   auth

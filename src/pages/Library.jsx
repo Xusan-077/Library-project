@@ -24,15 +24,16 @@ export default function Library() {
   const { data: libraries, isLoading } = useQuery({
     queryFn: async () => {
       const res = await API.get("/libraries/libraries/");
-      return res;
+
+      return res?.data;
     },
     queryKey: ["libraries"],
   });
 
   const filteredAndSortedLibraries = useMemo(() => {
-    if (!libraries?.data) return [];
+    if (!libraries) return [];
 
-    let result = [...libraries.data];
+    let result = [...libraries];
 
     if (searchQuery) {
       result = result.filter(
@@ -60,7 +61,7 @@ export default function Library() {
     }
 
     return result;
-  }, [libraries?.data, sort, searchQuery]);
+  }, [libraries, sort, searchQuery]);
 
   const [pageNum, setPageNum] = useState(0);
   const [pageSize, setPageSize] = useState(6);

@@ -10,6 +10,7 @@ import "swiper/css/navigation";
 import useThemeStore from "../store/useThemeStore";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export default function HomePublicBooksSection() {
   const { t } = useTranslation();
@@ -23,16 +24,19 @@ export default function HomePublicBooksSection() {
   } = useQuery({
     queryFn: async () => {
       const res = await API.get("/books/books/");
-      return res;
+
+      return res?.data;
     },
     queryKey: ["books"],
   });
 
-  if (isError) {
-    toast.error('error')
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error loading books");
+    }
+  }, [isError]);
 
-    return;
-  }
+  if (isError) return null;
 
   return (
     <section className={``}>
@@ -51,10 +55,11 @@ export default function HomePublicBooksSection() {
             modules={[Navigation, Autoplay]}
             className="p-4 rounded-lg"
             loop={true}
-            autoplay={{ delay: 1500, disableOnInteraction: false }}
+            autoplay={{ delay: 2500 }}
             breakpoints={{
-              1200: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1200: { slidesPerView: 4 },
             }}
           >
             {isLoading
@@ -67,7 +72,7 @@ export default function HomePublicBooksSection() {
                     <BookSkleton />
                   </SwiperSlide>
                 ))
-              : books?.data?.map((book, index) => (
+              : books?.map((book, index) => (
                   <SwiperSlide
                     key={book.id}
                     className="py-4 rounded-lg"
