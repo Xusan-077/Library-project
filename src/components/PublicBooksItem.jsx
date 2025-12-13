@@ -330,19 +330,11 @@ export default function PublicBooksItem({
       >
         <div className="relative mb-4 rounded-lg overflow-hidden bg-gray-100">
           <div className="w-full h-[220px] bg-gray-200">
-            {index % 2 == 0 ? (
-              <img
-                src={publicImg || "/placeholder-book.jpg"}
-                alt={name}
-                className="w-full h-[220px]  object-cover transition-transform duration-300"
-              />
-            ) : (
-              <img
-                src={publicImg2 || "/placeholder-book.jpg"}
-                alt={name}
-                className="w-full h-[220px]  object-cover transition-transform duration-300"
-              />
-            )}
+            <img
+              src={publicImg || "/placeholder-book.jpg"}
+              alt={name}
+              className="w-full h-[220px]  object-cover transition-transform duration-300"
+            />
           </div>
 
           <div className="absolute flex items-center justify-between w-full p-[0_15px] top-2 right-0">

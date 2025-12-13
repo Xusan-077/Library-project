@@ -9,19 +9,30 @@ import "swiper/css";
 import "swiper/css/navigation";
 import useThemeStore from "../store/useThemeStore";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export default function HomePublicBooksSection() {
   const { t } = useTranslation();
 
   const { theme } = useThemeStore();
 
-  const { data: books, isLoading } = useQuery({
-    queryKey: ["books"],
+  const {
+    data: books,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: async () => {
       const res = await API.get("/books/books/");
       return res;
     },
+    queryKey: ["books"],
   });
+
+  if (isError) {
+    toast.error('error')
+
+    return;
+  }
 
   return (
     <section className={``}>
