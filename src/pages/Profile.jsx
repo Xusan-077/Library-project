@@ -451,7 +451,7 @@ export default function Profile() {
                         <div className="w-full h-[300px]">
                           <YMaps
                             query={{
-                              apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                              apikey: import.meta.env.VITE_YANDEX_API_KEY,
                             }}
                           >
                             <Map
@@ -868,7 +868,7 @@ export default function Profile() {
                         ) : (
                           <YMaps
                             query={{
-                              apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                              apikey: import.meta.env.VITE_YANDEX_API_KEY,
                             }}
                           >
                             <Map

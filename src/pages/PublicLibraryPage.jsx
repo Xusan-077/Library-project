@@ -122,8 +122,7 @@ export default function PublicLibraryPage() {
                             ) : (
                               <YMaps
                                 query={{
-                                  apikey:
-                                    "bc32072f-a50d-4f7e-b22c-a4b70bba1202",
+                                  apikey: import.meta.env.VITE_YANDEX_API_KEY,
                                 }}
                               >
                                 <Map

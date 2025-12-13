@@ -2,13 +2,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const API = axios.create({
-  baseURL: "https://org-ave-jimmy-learners.trycloudflare.com/api/v1",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 export default API;
 
 export const AuthAPI = axios.create({
-  baseURL: "https://org-ave-jimmy-learners.trycloudflare.com/api/v1",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 AuthAPI.interceptors.request.use((config) => {

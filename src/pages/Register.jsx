@@ -316,9 +316,7 @@ export default function Register() {
             {/* address */}
             <div className="flex gap-10 max-[960px]:flex flex-col-reverse">
               <div className="w-full h-[430px]">
-                <YMaps
-                  query={{ apikey: "bc32072f-a50d-4f7e-b22c-a4b70bba1202" }}
-                >
+                <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_API_KEY }}>
                   <Map
                     className="w-full h-full"
                     defaultState={{ center: [41.3, 69.2], zoom: 11 }}
