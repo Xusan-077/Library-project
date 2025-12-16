@@ -1,6 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+console.log(import.meta.env.VITE_API_URL);
+
 const API = axios.create({
   baseURL: `https://org-ave-jimmy-learners.trycloudflare.com/api/v1`,
 });

@@ -117,7 +117,11 @@ export default function MyBooks() {
     },
   });
 
-  const { data: myBooks, isLoading } = useQuery({
+  const {
+    data: myBooks,
+    isLoading,
+    error: myBooksEror,
+  } = useQuery({
     queryFn: async () => {
       const res = await AuthAPI.get("/libraries/library/books");
 
@@ -290,6 +294,36 @@ export default function MyBooks() {
   const paginationExe = fileData?.slice(startExe, endExe) || [];
 
   const totalPagesExe = Math.ceil((fileData?.length || 0) / pageSizeExe);
+
+  if (myBooks?.length < 0) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <i
+          className={`${
+            theme == "light" ? "text-gray-400" : "text-white"
+          } bi bi-book  text-[100px]`}
+        ></i>
+        <p className="text-center font-semibold justify-center text-red-600 text-[40px]">
+          In your library no Books Yet
+        </p>
+      </div>
+    );
+  }
+
+  if (myBooksEror) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <i
+          className={`${
+            theme == "light" ? "text-gray-400" : "text-white"
+          } bi bi-book  text-[100px]`}
+        ></i>
+        <p className="text-center font-semibold justify-center text-red-600 text-[40px]">
+          book not found
+        </p>
+      </div>
+    );
+  }
 
   return (
     <section className="mb-auto">
@@ -1372,47 +1406,33 @@ export default function MyBooks() {
               {t("MyBooks.books")} : ({myBooks?.length ? myBooks?.length : 0})
             </div>
           </div>
+
           <ul
-            className={`${
-              myBooks?.length > 0
-                ? "grid grid-cols-4 gap-6 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1"
-                : ""
-            } `}
+            className={` grid grid-cols-4 max-[1140px]:grid-cols-3 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1 gap-6`}
           >
-            {isLoading ? (
-              Array.from({ length: 8 }).map((_, index) => (
-                <li key={index} className="min-w-[250px]">
-                  <div className="mb-3 rounded-lg bg-gray-200 h-[280px]"></div>
-                  <div className="px-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-full"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                  </div>
-                </li>
-              ))
-            ) : myBooks?.length > 0 ? (
-              pagination.map((book, index) => (
-                <PublicBooksItem
-                  auth
-                  index={index}
-                  book={book}
-                  key={book.id}
-                  {...book}
-                />
-              ))
-            ) : (
-              <div className="flex flex-col justify-center items-center">
-                <i
-                  className={`${
-                    theme == "light" ? "text-gray-400" : "text-white"
-                  } bi bi-book  text-[100px]`}
-                ></i>
-                <p className="text-center font-semibold justify-center text-red-600 text-[40px]">
-                  In your library no Books Yet
-                </p>
-              </div>
-            )}
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <li key={index} className="min-w-[250px]">
+                    <div className="mb-3 rounded-lg bg-gray-200 h-[280px]"></div>
+                    <div className="px-1 space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-full"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                    </div>
+                  </li>
+                ))
+              : myBooks?.length > 0
+              ? pagination?.map((book, index) => (
+                  <PublicBooksItem
+                    auth
+                    index={index}
+                    book={book}
+                    key={book.id}
+                    {...book}
+                  />
+                ))
+              : ""}
           </ul>
           <div className="mt-5 flex gap-10 items-center justify-center  flex-wrap">
             <div className="">
